@@ -1,0 +1,58 @@
+CHAPTER 1
+ABOUT THIS MANUAL
+1.1 INTEL 64 AND IA-32 PROCESSORS COVERED IN THIS MANUAL . . . . . . . 1-1
+1.2 OVERVIEW OF THE SYSTEM PROGRAMMING GUIDE . . . . . . . . . 1-4
+1.3 NOTATIONAL CONVENTIONS . . . . . . . . . . . 1-4
+1.3.1 Bit and Byte Order . . . . . . . . . . . . 1-4
+1.3.2 Reserved Bits and Software Compatibility . . . . . . . . . 1-4
+1.3.3 Instruction Operands. . . . . . . . . . . . 1-5
+1.3.4 Hexadecimal and Binary Numbers . . . . . . . . . . 1-5
+1.3.5 Segmented Addressing . . . . . . . . . . . . 1-5
+1.3.6 Syntax for CPUID, CR, and MSR Values . . . . . . . . . . 1-6
+1.3.7 Exceptions . . . . . . . . . . . . . 1-7
+1.4 RELATED LITERATURE . . . . . . . . . . . . 1-7
+CHAPTER 2
+MODEL-SPECIFIC REGISTERS (MSRS)
+2.1 ARCHITECTURAL MSRS . . . . . . . . . . . . 2-3
+2.2 MSRS IN THE INTEL CORE 2 PROCESSOR FAMILY . . . . . . . . 2-46
+2.3 MSRS IN THE 45 NM AND 32 NM INTEL ATOM PROCESSOR FAMILY . . . . . . 2-60
+2.4 MSRS IN INTEL PROCESSORS BASED ON SILVERMONT MICROARCHITECTURE . . . . . 2-71
+2.4.1 MSRs with Model-Specific Behavior in the Silvermont Microarchitecture . . . . . . 2-84
+2.4.2 MSRs In Intel Atom Processors Based on Airmont Microarchitecture . . . . . . 2-87
+2.5 MSRS IN INTEL ATOM PROCESSORS BASED ON GOLDMONT MICROARCHITECTURE . . . . . 2-90
+2.6 MSRS IN INTEL ATOM PROCESSORS BASED ON GOLDMONT PLUS MICROARCHITECTURE . . . . 2-113
+2.7 MSRS IN INTEL ATOM PROCESSORS BASED ON TREMONT MICROARCHITECTURE. . . . . 2-117
+2.8 MSRS IN THE INTEL MICROARCHITECTURE CODE NAME NEHALEM . . . . . . 2-119
+2.8.1 Additional MSRs in the Intel Xeon Processor 5500 and 3400 Series. . . . . .2-137
+2.8.2 Additional MSRs in the Intel Xeon Processor 7500 Series. . . . . . . .2-139
+2.9 MSRS IN THE INTEL XEON PROCESSOR 5600 SERIES (BASED ON INTEL MICROARCHITECTURE CODE NAME WESTMERE) . . . . . . . . . . . . . 2-153
+2.10 MSRS IN THE INTEL XEON PROCESSOR E7 FAMILY (BASED ON INTEL MICROARCHITECTURE CODE NAME WESTMERE) . . . . . . . . . . . . . 2-154
+2.11 MSRS IN INTEL PROCESSOR FAMILY BASED ON INTEL MICROARCHITECTURE CODE NAME SANDY BRIDGE. 2-156
+2.11.1 MSRs In 2nd Generation Intel Core Processor Family (Based on Intel Microarchitecture Code Name Sandy Bridge) . . . . . . . . . . . . . .2-176
+2.11.2 MSRs In Intel Xeon Processor E5 Family (Based on Intel Microarchitecture Code Name Sandy Bridge) . .2-180
+2.11.3 Additional Uncore PMU MSRs in the Intel Xeon Processor E5 Family. . . . . .2-184
+2.12 MSRS IN THE 3RD GENERATION INTEL CORE PROCESSOR FAMILY (BASED ON INTEL MICROARCHITECTURE CODE NAME IVY BRIDGE) . . . . . . . . . . . . 2-188
+2.12.1 MSRs In Intel Xeon Processor E5 v2 Product Family (Based on Ivy Bridge-E Microarchitecture) . . .2-191
+2.12.2 Additional MSRs Supported by Intel Xeon Processor E7 v2 Family. . . . . . .2-199
+2.12.3 Additional Uncore PMU MSRs in the Intel Xeon Processor E5 v2 and E7 v2 Families. . . . .2-201
+2.13 MSRS IN THE 4TH GENERATION INTEL CORE PROCESSORS (BASED ON HASWELL MICROARCHITECTURE) . 2-205
+2.13.1 MSRs in 4th Generation Intel Core Processor Family (based on Haswell Microarchitecture) . . . .2-210
+2.13.2 Additional Residency MSRs Supported in 4th Generation Intel Core Processors. . . . .2-222
+2.14 MSRS IN INTEL XEON PROCESSOR E5 V3 AND E7 V3 PRODUCT FAMILY . . . . . 2-224
+2.14.1 Additional Uncore PMU MSRs in the Intel Xeon Processor E5 v3 Family. . . . . .2-234
+2.15 MSRS IN INTEL CORE M PROCESSORS AND 5TH GENERATION INTEL CORE PROCESSORS . . . 2-244
+2.16 MSRS IN INTEL XEON PROCESSORS E5 V4 FAMILY . . . . . . . . 2-248
+2.16.1 Additional MSRs Supported in the Intel Xeon Processor D Product Family . . . . . .2-259
+2.16.2 Additional MSRs Supported in Intel Xeon Processors E5 v4 and E7 v4 Families . . . . .2-260
+2.17 MSRS IN THE 6TH GENERATION, 7TH GENERATION AND 8TH GENERATION INTEL CORE PROCESSORS, INTEL XEON PROCESSOR SCALABLE FAMILY, AND FUTURE INTEL CORE PROCESSORS . . . . . 2-264
+2.17.1 MSRs Specific to 7th Generation and 8th Generation Intel Core Processors based on Kaby Lake Microarchitecture and Coffee Lake Microarchitecture . . . . . . . . . . .2-286
+2.17.2 MSRs Specific to Future Intel Core Processors . . . . . . . . .2-288
+2.17.3 MSRs Specific to Intel Xeon Processor Scalable Family . . . . . . . .2-295
+2.18 MSRS IN INTEL XEON PHI PROCESSOR 3200/5200/7200 SERIES AND INTEL XEON PHI PROCESSOR 7215/7285/7295 SERIES . . . . . . . . . . . 2-307
+2.19 MSRS IN THE PENTIUM 4 AND INTEL XEON PROCESSORS . . . . . . . 2-324
+2.19.1 MSRs Unique to Intel Xeon Processor MP with L3 Cache. . . . . . . .2-349
+2.20 MSRS IN INTEL CORE SOLO AND INTEL CORE DUO PROCESSORS. . . . . . 2-351
+2.21 MSRS IN THE PENTIUM M PROCESSOR . . . . . . . . . . 2-360
+2.22 MSRS IN THE P6 FAMILY PROCESSORS. . . . . . . . . . 2-367
+2.23 MSRS IN PENTIUM PROCESSORS. . . . . . . . . . . 2-376
+2.24 MSR INDEX . . . . . . . . . . . . . 2-377

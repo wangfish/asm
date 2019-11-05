@@ -1,0 +1,1944 @@
+CHAPTER 1
+ABOUT THIS MANUAL
+1.1 INTEL 64 AND IA-32 PROCESSORS COVERED IN THIS MANUAL . . . . 1-1
+1.2 OVERVIEW OF THE SYSTEM PROGRAMMING GUIDE . . . . . 1-4
+1.3 NOTATIONAL CONVENTIONS . . . . . . 1-6
+1.3.1 Bit and Byte Order . . . . . . 1-7
+1.3.2 Reserved Bits and Software Compatibility . . . . . 1-7
+1.3.3 Instruction Operands. . . . . . 1-8
+1.3.4 Hexadecimal and Binary Numbers . . . . . 1-8
+1.3.5 Segmented Addressing . . . . . . 1-8
+1.3.6 Syntax for CPUID, CR, and MSR Values . . . . . 1-9
+1.3.7 Exceptions . . . . . . . 1-9
+1.4 RELATED LITERATURE . . . . . . 1-10
+CHAPTER 2
+SYSTEM ARCHITECTURE OVERVIEW
+2.1 OVERVIEW OF THE SYSTEM-LEVEL ARCHITECTURE. . . . . 2-1
+2.1.1 Global and Local Descriptor Tables . . . . . 2-3
+2.1.1.1 Global and Local Descriptor Tables in IA-32e Mode. . . . 2-4
+2.1.2 System Segments, Segment Descriptors, and Gates . . . . 2-4
+2.1.2.1 Gates in IA-32e Mode . . . . . . 2-4
+2.1.3 Task-State Segments and Task Gates. . . . . 2-5
+2.1.3.1 Task-State Segments in IA-32e Mode. . . . . 2-5
+2.1.4 Interrupt and Exception Handling . . . . . 2-5
+2.1.4.1 Interrupt and Exception Handling IA-32e Mode . . . . 2-5
+2.1.5 Memory Management . . . . . . 2-6
+2.1.5.1 Memory Management in IA-32e Mode . . . . . 2-6
+2.1.6 System Registers . . . . . . 2-6
+2.1.6.1 System Registers in IA-32e Mode. . . . . 2-7
+2.1.7 Other System Resources . . . . . . 2-7
+2.2 MODES OF OPERATION. . . . . . 2-7
+2.2.1 Extended Feature Enable Register. . . . . 2-9
+2.3 SYSTEM FLAGS AND FIELDS IN THE EFLAGS REGISTER. . . . 2-9
+2.3.1 System Flags and Fields in IA-32e Mode . . . . . 2-11
+2.4 MEMORY-MANAGEMENT REGISTERS . . . . . 2-11
+2.4.1 Global Descriptor Table Register (GDTR) . . . . . 2-12
+2.4.2 Local Descriptor Table Register (LDTR) . . . . . 2-12
+2.4.3 IDTR Interrupt Descriptor Table Register. . . . . 2-12
+2.4.4 Task Register (TR) . . . . . . 2-13
+2.5 CONTROL REGISTERS . . . . . . 2-13
+2.5.1 CPUID Qualification of Control Register Flags . . . . . 2-19
+2.6 EXTENDED CONTROL REGISTERS (INCLUDING XCR0) . . . . 2-19
+2.7 PROTECTION KEY RIGHTS REGISTER (PKRU) . . . . . 2-21
+2.8 SYSTEM INSTRUCTION SUMMARY . . . . . 2-21
+2.8.1 Loading and Storing System Registers . . . . . 2-23
+2.8.2 Verifying of Access Privileges . . . . . . 2-23
+2.8.3 Loading and Storing Debug Registers . . . . . 2-24
+2.8.4 Invalidating Caches and TLBs . . . . . . 2-24
+2.8.5 Controlling the Processor . . . . . . 2-25
+2.8.6 Reading Performance-Monitoring and Time-Stamp Counters . . . . 2-25
+2.8.6.1 Reading Counters in 64-Bit Mode . . . . . 2-26
+2.8.7 Reading and Writing Model-Specific Registers . . . . . 2-26
+2.8.7.1 Reading and Writing Model-Specific Registers in 64-Bit Mode . . . . 2-26
+2.8.8 Enabling Processor Extended States . . . . . 2-26
+CHAPTER 3
+PROTECTED-MODE MEMORY MANAGEMENT
+3.1 MEMORY MANAGEMENT OVERVIEW . . . . . 3-1
+3.2 USING SEGMENTS. . . . . . . 3-2
+3.2.1 Basic Flat Model . . . . . . 3-3
+3.2.2 Protected Flat Model. . . . . . 3-3
+3.2.3 Multi-Segment Model . . . . . . 3-4
+3.2.4 Segmentation in IA-32e Mode . . . . . . 3-5
+3.2.5 Paging and Segmentation . . . . . . 3-5
+3.3 PHYSICAL ADDRESS SPACE. . . . . . 3-6
+3.3.1 Intel 64 Processors and Physical Address Space . . . . . 3-6
+3.4 LOGICAL AND LINEAR ADDRESSES. . . . . . 3-6
+3.4.1 Logical Address Translation in IA-32e Mode . . . . . 3-7
+3.4.2 Segment Selectors. . . . . . 3-7
+3.4.3 Segment Registers . . . . . . 3-8
+3.4.4 Segment Loading Instructions in IA-32e Mode. . . . . 3-9
+3.4.5 Segment Descriptors. . . . . . 3-9
+3.4.5.1 Code- and Data-Segment Descriptor Types. . . . . 3-12
+3.5 SYSTEM DESCRIPTOR TYPES . . . . . . 3-13
+3.5.1 Segment Descriptor Tables. . . . . . 3-14
+3.5.2 Segment Descriptor Tables in IA-32e Mode . . . . . 3-16
+CHAPTER 4
+PAGING
+4.1 PAGING MODES AND CONTROL BITS . . . . . 4-1
+4.1.1 Three Paging Modes . . . . . . 4-1
+4.1.2 Paging-Mode Enabling. . . . . . 4-3
+4.1.3 Paging-Mode Modifiers . . . . . . 4-4
+4.1.4 Enumeration of Paging Features by CPUID . . . . . 4-5
+4.2 HIERARCHICAL PAGING STRUCTURES: AN OVERVIEW. . . . 4-6
+4.3 32-BIT PAGING . . . . . . . 4-7
+4.4 PAE PAGING . . . . . . . 4-13
+4.4.1 PDPTE Registers. . . . . . 4-13
+4.4.2 Linear-Address Translation with PAE Paging . . . . . 4-14
+4.5 4-LEVEL PAGING. . . . . . . 4-19
+4.6 ACCESS RIGHTS. . . . . . . 4-28
+4.6.1 Determination of Access Rights . . . . . 4-29
+4.6.2 Protection Keys . . . . . . 4-31
+4.7 PAGE-FAULT EXCEPTIONS . . . . . . 4-31
+4.8 ACCESSED AND DIRTY FLAGS . . . . . . 4-33
+4.9 PAGING AND MEMORY TYPING . . . . . . 4-34
+4.9.1 Paging and Memory Typing When the PAT is Not Supported (Pentium Pro and Pentium II Processors) . 4-34
+4.9.2 Paging and Memory Typing When the PAT is Supported (Pentium III and More Recent Processor Families). 4-34
+4.9.3 Caching Paging-Related Information about Memory Typing . . . . 4-35
+4.10 CACHING TRANSLATION INFORMATION . . . . . 4-35
+4.10.1 Process-Context Identifiers (PCIDs) . . . . . 4-35
+4.10.2 Translation Lookaside Buffers (TLBs) . . . . . 4-36
+4.10.2.1 Page Numbers, Page Frames, and Page Offsets . . . . 4-36
+4.10.2.2 Caching Translations in TLBs . . . . . 4-37
+4.10.2.3 Details of TLB Use . . . . . . 4-37
+4.10.2.4 Global Pages . . . . . . 4-38
+4.10.3 Paging-Structure Caches . . . . . . 4-38
+4.10.3.1 Caches for Paging Structures. . . . . 4-38
+4.10.3.2 Using the Paging-Structure Caches to Translate Linear Addresses. . . 4-40
+4.10.3.3 Multiple Cached Entries for a Single Paging-Structure Entry . . . . 4-41
+4.10.4 Invalidation of TLBs and Paging-Structure Caches . . . . 4-41
+4.10.4.1 Operations that Invalidate TLBs and Paging-Structure Caches. . . . 4-41
+4.10.4.2 Recommended Invalidation. . . . . . 4-43
+4.10.4.3 Optional Invalidation . . . . . . 4-44
+4.10.4.4 Delayed Invalidation . . . . . . 4-45
+4.10.5 Propagation of Paging-Structure Changes to Multiple Processors. . . . 4-46
+4.11 INTERACTIONS WITH VIRTUAL-MACHINE EXTENSIONS (VMX) . . . . 4-47
+4.11.1 VMX Transitions . . . . . . 4-47
+4.11.2 VMX Support for Address Translation . . . . . 4-47
+4.12 USING PAGING FOR VIRTUAL MEMORY . . . . . 4-47
+4.13 MAPPING SEGMENTS TO PAGES . . . . . . 4-48
+CHAPTER 5
+PROTECTION
+5.1 ENABLING AND DISABLING SEGMENT AND PAGE PROTECTION . . . . 5-1
+5.2 FIELDS AND FLAGS USED FOR SEGMENT-LEVEL AND PAGE-LEVEL PROTECTION . . . 5-2
+5.2.1 Code-Segment Descriptor in 64-bit Mode . . . . . 5-3
+5.3 LIMIT CHECKING . . . . . . . 5-4
+5.3.1 Limit Checking in 64-bit Mode . . . . . . 5-5
+5.4 TYPE CHECKING . . . . . . . 5-5
+5.4.1 Null Segment Selector Checking . . . . . . 5-6
+5.4.1.1 NULL Segment Checking in 64-bit Mode . . . . . 5-6
+5.5 PRIVILEGE LEVELS. . . . . . . 5-6
+5.6 PRIVILEGE LEVEL CHECKING WHEN ACCESSING DATA SEGMENTS . . . . 5-8
+5.6.1 Accessing Data in Code Segments . . . . . 5-9
+5.7 PRIVILEGE LEVEL CHECKING WHEN LOADING THE SS REGISTER . . . . 5-10
+5.8 PRIVILEGE LEVEL CHECKING WHEN TRANSFERRING PROGRAM CONTROL BETWEEN CODE SEGMENTS . 5-10
+5.8.1 Direct Calls or Jumps to Code Segments . . . . . 5-10
+5.8.1.1 Accessing Nonconforming Code Segments . . . . . 5-11
+5.8.1.2 Accessing Conforming Code Segments. . . . . 5-12
+5.8.2 Gate Descriptors . . . . . . 5-13
+5.8.3 Call Gates . . . . . . . 5-13
+5.8.3.1 IA-32e Mode Call Gates . . . . . . 5-14
+5.8.4 Accessing a Code Segment Through a Call Gate . . . . . 5-15
+5.8.5 Stack Switching . . . . . . 5-17
+5.8.5.1 Stack Switching in 64-bit Mode. . . . . 5-19
+5.8.6 Returning from a Called Procedure . . . . . 5-20
+5.8.7 Performing Fast Calls to System Procedures with the SYSENTER and SYSEXIT Instructions . . 5-20
+5.8.7.1 SYSENTER and SYSEXIT Instructions in IA-32e Mode . . . . 5-21
+5.8.8 Fast System Calls in 64-Bit Mode . . . . . 5-22
+5.9 PRIVILEGED INSTRUCTIONS . . . . . . 5-23
+5.10 POINTER VALIDATION . . . . . . 5-24
+5.10.1 Checking Access Rights (LAR Instruction) . . . . . 5-24
+5.10.2 Checking Read/Write Rights (VERR and VERW Instructions) . . . . 5-25
+5.10.3 Checking That the Pointer Offset Is Within Limits (LSL Instruction) . . . 5-25
+5.10.4 Checking Caller Access Privileges (ARPL Instruction) . . . . 5-26
+5.10.5 Checking Alignment. . . . . . 5-27
+5.11 PAGE-LEVEL PROTECTION . . . . . . 5-27
+5.11.1 Page-Protection Flags . . . . . . 5-28
+5.11.2 Restricting Addressable Domain . . . . . 5-28
+5.11.3 Page Type . . . . . . . 5-28
+5.11.4 Combining Protection of Both Levels of Page Tables . . . . 5-28
+5.11.5 Overrides to Page Protection . . . . . . 5-29
+5.12 COMBINING PAGE AND SEGMENT PROTECTION. . . . . 5-29
+5.13 PAGE-LEVEL PROTECTION AND EXECUTE-DISABLE BIT . . . . 5-30
+5.13.1 Detecting and Enabling the Execute-Disable Capability . . . . 5-30
+5.13.2 Execute-Disable Page Protection . . . . . 5-30
+5.13.3 Reserved Bit Checking . . . . . . 5-31
+5.13.4 Exception Handling . . . . . . 5-32
+CHAPTER 6
+INTERRUPT AND EXCEPTION HANDLING
+6.1 INTERRUPT AND EXCEPTION OVERVIEW. . . . . 6-1
+6.2 EXCEPTION AND INTERRUPT VECTORS . . . . . 6-1
+6.3 SOURCES OF INTERRUPTS . . . . . . 6-2
+6.3.1 External Interrupts . . . . . . 6-2
+6.3.2 Maskable Hardware Interrupts . . . . . . 6-3
+6.3.3 Software-Generated Interrupts . . . . . . 6-4
+6.4 SOURCES OF EXCEPTIONS . . . . . . 6-4
+6.4.1 Program-Error Exceptions. . . . . . 6-4
+6.4.2 Software-Generated Exceptions. . . . . . 6-4
+6.4.3 Machine-Check Exceptions . . . . . . 6-4
+6.5 EXCEPTION CLASSIFICATIONS . . . . . . 6-5
+6.6 PROGRAM OR TASK RESTART. . . . . . 6-5
+6.7 NONMASKABLE INTERRUPT (NMI) . . . . . . 6-6
+6.7.1 Handling Multiple NMIs . . . . . . 6-6
+6.8 ENABLING AND DISABLING INTERRUPTS . . . . . 6-6
+6.8.1 Masking Maskable Hardware Interrupts . . . . . 6-6
+6.8.2 Masking Instruction Breakpoints . . . . . . 6-7
+6.8.3 Masking Exceptions and Interrupts When Switching Stacks . . . . 6-7
+6.9 PRIORITY AMONG SIMULTANEOUS EXCEPTIONS AND INTERRUPTS. . . . 6-8
+6.10 INTERRUPT DESCRIPTOR TABLE (IDT) . . . . . 6-9
+6.11 IDT DESCRIPTORS . . . . . . 6-10
+6.12 EXCEPTION AND INTERRUPT HANDLING . . . . . 6-11
+6.12.1 Exception- or Interrupt-Handler Procedures . . . . . 6-11
+6.12.1.1 Protection of Exception- and Interrupt-Handler Procedures . . . . 6-13
+6.12.1.2 Flag Usage By Exception- or Interrupt-Handler Procedure. . . . 6-14
+6.12.2 Interrupt Tasks . . . . . . 6-14
+6.13 ERROR CODE . . . . . . . 6-15
+6.14 EXCEPTION AND INTERRUPT HANDLING IN 64-BIT MODE . . . . 6-16
+6.14.1 64-Bit Mode IDT . . . . . . 6-16
+6.14.2 64-Bit Mode Stack Frame . . . . . . 6-17
+6.14.3 IRET in IA-32e Mode . . . . . . 6-18
+6.14.4 Stack Switching in IA-32e Mode . . . . . 6-18
+6.14.5 Interrupt Stack Table . . . . . . 6-19
+6.15 EXCEPTION AND INTERRUPT REFERENCE . . . . . 6-19
+Interrupt 0！Divide Error Exception (#DE) . . . . . 6-20
+Interrupt 1！Debug Exception (#DB) . . . . . 6-21
+Interrupt 2！NMI Interrupt . . . . . . 6-23
+Interrupt 3！Breakpoint Exception (#BP). . . . . 6-24
+Interrupt 4！Overflow Exception (#OF) . . . . . 6-25
+Interrupt 5！BOUND Range Exceeded Exception (#BR) . . . . 6-26
+Interrupt 6！Invalid Opcode Exception (#UD) . . . . . 6-27
+Interrupt 7！Device Not Available Exception (#NM) . . . . 6-28
+Interrupt 8！Double Fault Exception (#DF) . . . . . 6-29
+Interrupt 9！Coprocessor Segment Overrun. . . . . 6-31
+Interrupt 10！Invalid TSS Exception (#TS) . . . . . 6-32
+Interrupt 11！Segment Not Present (#NP) . . . . . 6-34
+Interrupt 12！Stack Fault Exception (#SS) . . . . . 6-36
+Interrupt 13！General Protection Exception (#GP). . . . 6-37
+Interrupt 14！Page-Fault Exception (#PF). . . . . 6-40
+Interrupt 16！x87 FPU Floating-Point Error (#MF) . . . . 6-43
+Interrupt 17！Alignment Check Exception (#AC) . . . . . 6-45
+Interrupt 18！Machine-Check Exception (#MC) . . . . . 6-47
+Interrupt 19！SIMD Floating-Point Exception (#XM) . . . . 6-48
+Interrupt 20！Virtualization Exception (#VE) . . . . . 6-50
+Interrupts 32 to 255！User Defined Interrupts . . . . . 6-51
+CHAPTER 7
+TASK MANAGEMENT
+7.1 TASK MANAGEMENT OVERVIEW. . . . . . 7-1
+7.1.1 Task Structure . . . . . . . 7-1
+7.1.2 Task State . . . . . . . 7-2
+7.1.3 Executing a Task . . . . . . 7-2
+7.2 TASK MANAGEMENT DATA STRUCTURES . . . . . 7-3
+7.2.1 Task-State Segment (TSS) . . . . . . 7-3
+7.2.2 TSS Descriptor . . . . . . . 7-5
+7.2.3 TSS Descriptor in 64-bit mode. . . . . . 7-6
+7.2.4 Task Register . . . . . . . 7-7
+7.2.5 Task-Gate Descriptor . . . . . . 7-8
+7.3 TASK SWITCHING . . . . . . . 7-9
+7.4 TASK LINKING . . . . . . . 7-12
+7.4.1 Use of Busy Flag To Prevent Recursive Task Switching. . . . 7-13
+7.4.2 Modifying Task Linkages . . . . . . 7-13
+7.5 TASK ADDRESS SPACE. . . . . . 7-14
+7.5.1 Mapping Tasks to the Linear and Physical Address Spaces . . . . 7-14
+7.5.2 Task Logical Address Space . . . . . . 7-15
+7.6 16-BIT TASK-STATE SEGMENT (TSS) . . . . . 7-15
+7.7 TASK MANAGEMENT IN 64-BIT MODE . . . . . 7-16
+CHAPTER 8
+MULTIPLE-PROCESSOR MANAGEMENT
+8.1 LOCKED ATOMIC OPERATIONS . . . . . . 8-1
+8.1.1 Guaranteed Atomic Operations. . . . . . 8-2
+8.1.2 Bus Locking . . . . . . . 8-3
+8.1.2.1 Automatic Locking. . . . . . 8-3
+8.1.2.2 Software Controlled Bus Locking . . . . . 8-3
+8.1.3 Handling Self- and Cross-Modifying Code. . . . . 8-4
+8.1.4 Effects of a LOCK Operation on Internal Processor Caches . . . . 8-5
+8.2 MEMORY ORDERING . . . . . . 8-5
+8.2.1 Memory Ordering in the Intel Pentium and Intel486 Processors . . . 8-6
+8.2.2 Memory Ordering in P6 and More Recent Processor Families. . . . 8-6
+8.2.3 Examples Illustrating the Memory-Ordering Principles . . . . 8-7
+8.2.3.1 Assumptions, Terminology, and Notation . . . . . 8-8
+8.2.3.2 Neither Loads Nor Stores Are Reordered with Like Operations. . . . 8-9
+8.2.3.3 Stores Are Not Reordered With Earlier Loads . . . . . 8-9
+8.2.3.4 Loads May Be Reordered with Earlier Stores to Different Locations . . . 8-9
+8.2.3.5 Intra-Processor Forwarding Is Allowed. . . . . 8-10
+8.2.3.6 Stores Are Transitively Visible . . . . . 8-10
+8.2.3.7 Stores Are Seen in a Consistent Order by Other Processors. . . . 8-11
+8.2.3.8 Locked Instructions Have a Total Order . . . . . 8-11
+8.2.3.9 Loads and Stores Are Not Reordered with Locked Instructions. . . 8-12
+8.2.4 Fast-String Operation and Out-of-Order Stores. . . . . 8-12
+8.2.4.1 Memory-Ordering Model for String Operations on Write-Back (WB) Memory. . . 8-13
+8.2.4.2 Examples Illustrating Memory-Ordering Principles for String Operations . . . 8-13
+8.2.5 Strengthening or Weakening the Memory-Ordering Model . . . . 8-15
+8.3 SERIALIZING INSTRUCTIONS . . . . . . 8-17
+8.4 MULTIPLE-PROCESSOR (MP) INITIALIZATION . . . . . 8-18
+8.4.1 BSP and AP Processors . . . . . . 8-18
+8.4.2 MP Initialization Protocol Requirements and Restrictions . . . . 8-19
+8.4.3 MP Initialization Protocol Algorithm for MP Systems . . . . 8-19
+8.4.4 MP Initialization Example. . . . . . 8-20
+8.4.4.1 Typical BSP Initialization Sequence . . . . . 8-21
+8.4.4.2 Typical AP Initialization Sequence . . . . . 8-22
+8.4.5 Identifying Logical Processors in an MP System . . . . . 8-23
+8.5 INTEL HYPER-THREADING TECHNOLOGY AND INTEL MULTI-CORE TECHNOLOGY . . 8-24
+8.6 DETECTING HARDWARE MULTI-THREADING SUPPORT AND TOPOLOGY . . . 8-24
+8.6.1 Initializing Processors Supporting Hyper-Threading Technology . . . . 8-25
+8.6.2 Initializing Multi-Core Processors . . . . . 8-26
+8.6.3 Executing Multiple Threads on an Intel 64 or IA-32 Processor Supporting Hardware Multi-Threading . 8-26
+8.6.4 Handling Interrupts on an IA-32 Processor Supporting Hardware Multi-Threading. . . 8-26
+8.7 INTEL HYPER-THREADING TECHNOLOGY ARCHITECTURE. . . . 8-27
+8.7.1 State of the Logical Processors . . . . . 8-28
+8.7.2 APIC Functionality . . . . . . 8-29
+8.7.3 Memory Type Range Registers (MTRR) . . . . . 8-29
+8.7.4 Page Attribute Table (PAT) . . . . . . 8-29
+8.7.5 Machine Check Architecture. . . . . . 8-29
+8.7.6 Debug Registers and Extensions . . . . . 8-30
+8.7.7 Performance Monitoring Counters . . . . . 8-30
+8.7.8 IA32_MISC_ENABLE MSR . . . . . . 8-30
+8.7.9 Memory Ordering. . . . . . 8-30
+8.7.10 Serializing Instructions. . . . . . 8-30
+8.7.11 Microcode Update Resources. . . . . . 8-30
+8.7.12 Self Modifying Code . . . . . . 8-31
+8.7.13 Implementation-Specific Intel HT Technology Facilities . . . . 8-31
+8.7.13.1 Processor Caches . . . . . . 8-31
+8.7.13.2 Processor Translation Lookaside Buffers (TLBs) . . . . 8-31
+8.7.13.3 Thermal Monitor . . . . . . 8-32
+8.7.13.4 External Signal Compatibility . . . . . 8-32
+8.8 MULTI-CORE ARCHITECTURE . . . . . . 8-32
+8.8.1 Logical Processor Support. . . . . . 8-33
+8.8.2 Memory Type Range Registers (MTRR) . . . . . 8-33
+8.8.3 Performance Monitoring Counters . . . . . 8-33
+8.8.4 IA32_MISC_ENABLE MSR. . . . . . 8-33
+8.8.5 Microcode Update Resources . . . . . . 8-33
+8.9 PROGRAMMING CONSIDERATIONS FOR HARDWARE MULTI-THREADING CAPABLE PROCESSORS . . 8-34
+8.9.1 Hierarchical Mapping of Shared Resources . . . . . 8-34
+8.9.2 Hierarchical Mapping of CPUID Extended Topology Leaf. . . . 8-36
+8.9.3 Hierarchical ID of Logical Processors in an MP System . . . . 8-38
+8.9.3.1 Hierarchical ID of Logical Processors with x2APIC ID . . . . 8-40
+8.9.4 Algorithm for Three-Level Mappings of APIC_ID . . . . . 8-40
+8.9.5 Identifying Topological Relationships in a MP System . . . . 8-45
+8.10 MANAGEMENT OF IDLE AND BLOCKED CONDITIONS . . . . 8-49
+8.10.1 HLT Instruction . . . . . . 8-49
+8.10.2 PAUSE Instruction . . . . . . 8-49
+8.10.3 Detecting Support MONITOR/MWAIT Instruction. . . . . 8-49
+8.10.4 MONITOR/MWAIT Instruction . . . . . . 8-50
+8.10.5 Monitor/Mwait Address Range Determination . . . . . 8-51
+8.10.6 Required Operating System Support . . . . . 8-51
+8.10.6.1 Use the PAUSE Instruction in Spin-Wait Loops. . . . 8-52
+8.10.6.2 Potential Usage of MONITOR/MWAIT in C0 Idle Loops. . . . 8-52
+8.10.6.3 Halt Idle Logical Processors . . . . . . 8-53
+8.10.6.4 Potential Usage of MONITOR/MWAIT in C1 Idle Loops. . . . 8-54
+8.10.6.5 Guidelines for Scheduling Threads on Logical Processors Sharing Execution Resources . . 8-54
+8.10.6.6 Eliminate Execution-Based Timing Loops. . . . . 8-55
+8.10.6.7 Place Locks and Semaphores in Aligned, 128-Byte Blocks of Memory . . . 8-55
+8.11 MP INITIALIZATION FOR P6 FAMILY PROCESSORS . . . . . 8-55
+8.11.1 Overview of the MP Initialization Process For P6 Family Processors . . . 8-55
+8.11.2 MP Initialization Protocol Algorithm. . . . . 8-56
+8.11.2.1 Error Detection and Handling During the MP Initialization Protocol. . . 8-58
+CHAPTER 9
+PROCESSOR MANAGEMENT AND INITIALIZATION
+9.1 INITIALIZATION OVERVIEW. . . . . . 9-1
+9.1.1 Processor State After Reset . . . . . . 9-2
+9.1.2 Processor Built-In Self-Test (BIST) . . . . . 9-5
+9.1.3 Model and Stepping Information . . . . . . 9-5
+9.1.4 First Instruction Executed. . . . . . 9-5
+9.2 X87 FPU INITIALIZATION. . . . . . 9-5
+9.2.1 Configuring the x87 FPU Environment . . . . . 9-6
+9.2.2 Setting the Processor for x87 FPU Software Emulation. . . . 9-6
+9.3 CACHE ENABLING. . . . . . . 9-7
+9.4 MODEL-SPECIFIC REGISTERS (MSRS) . . . . . 9-7
+9.5 MEMORY TYPE RANGE REGISTERS (MTRRS) . . . . . 9-8
+9.6 INITIALIZING SSE/SSE2/SSE3/SSSE3 EXTENSIONS . . . . . 9-8
+9.7 SOFTWARE INITIALIZATION FOR REAL-ADDRESS MODE OPERATION . . . . 9-8
+9.7.1 Real-Address Mode IDT . . . . . . 9-8
+9.7.2 NMI Interrupt Handling . . . . . . 9-9
+9.8 SOFTWARE INITIALIZATION FOR PROTECTED-MODE OPERATION. . . . 9-9
+9.8.1 Protected-Mode System Data Structures . . . . . 9-9
+9.8.2 Initializing Protected-Mode Exceptions and Interrupts . . . . 9-10
+9.8.3 Initializing Paging . . . . . . 9-10
+9.8.4 Initializing Multitasking . . . . . . 9-10
+9.8.5 Initializing IA-32e Mode . . . . . . 9-11
+9.8.5.1 IA-32e Mode System Data Structures. . . . . 9-11
+9.8.5.2 IA-32e Mode Interrupts and Exceptions . . . . . 9-12
+9.8.5.3 64-bit Mode and Compatibility Mode Operation. . . . 9-12
+9.8.5.4 Switching Out of IA-32e Mode Operation . . . . . 9-12
+9.9 MODE SWITCHING. . . . . . 9-13
+9.9.1 Switching to Protected Mode . . . . . . 9-13
+9.9.2 Switching Back to Real-Address Mode . . . . . 9-14
+9.10 INITIALIZATION AND MODE SWITCHING EXAMPLE . . . . . 9-14
+9.10.1 Assembler Usage . . . . . . 9-16
+9.10.2 STARTUP.ASM Listing . . . . . . 9-16
+9.10.3 MAIN.ASM Source Code . . . . . . 9-25
+9.10.4 Supporting Files . . . . . . 9-25
+9.11 MICROCODE UPDATE FACILITIES. . . . . . 9-27
+9.11.1 Microcode Update . . . . . . 9-28
+9.11.2 Optional Extended Signature Table . . . . . 9-31
+9.11.3 Processor Identification. . . . . . 9-32
+9.11.4 Platform Identification . . . . . . 9-32
+9.11.5 Microcode Update Checksum . . . . . . 9-33
+9.11.6 Microcode Update Loader . . . . . . 9-34
+9.11.6.1 Hard Resets in Update Loading. . . . . 9-35
+9.11.6.2 Update in a Multiprocessor System. . . . . 9-35
+9.11.6.3 Update in a System Supporting Intel Hyper-Threading Technology . . . 9-35
+9.11.6.4 Update in a System Supporting Dual-Core Technology . . . . 9-35
+9.11.6.5 Update Loader Enhancements . . . . . 9-35
+9.11.7 Update Signature and Verification. . . . . 9-36
+9.11.7.1 Determining the Signature . . . . . . 9-36
+9.11.7.2 Authenticating the Update. . . . . . 9-37
+9.11.8 Optional Processor Microcode Update Specifications. . . . 9-37
+9.11.8.1 Responsibilities of the BIOS . . . . . . 9-38
+9.11.8.2 Responsibilities of the Calling Program . . . . . 9-39
+9.11.8.3 Microcode Update Functions . . . . . 9-42
+9.11.8.4 INT 15H-based Interface. . . . . . 9-42
+9.11.8.5 Function 00H！Presence Test. . . . . 9-42
+9.11.8.6 Function 01H！Write Microcode Update Data . . . . 9-43
+9.11.8.7 Function 02H！Microcode Update Control. . . . . 9-46
+9.11.8.8 Function 03H！Read Microcode Update Data. . . . . 9-47
+9.11.8.9 Return Codes . . . . . . 9-48
+CHAPTER 10
+ADVANCED PROGRAMMABLE INTERRUPT CONTROLLER (APIC)
+10.1 LOCAL AND I/O APIC OVERVIEW . . . . . . 10-1
+10.2 SYSTEM BUS VS. APIC BUS . . . . . . 10-4
+10.3 THE INTEL 82489DX EXTERNAL APIC, THE APIC, THE XAPIC, AND THE X2APIC. . . 10-4
+10.4 LOCAL APIC . . . . . . . 10-4
+10.4.1 The Local APIC Block Diagram . . . . . . 10-4
+10.4.2 Presence of the Local APIC. . . . . . 10-8
+10.4.3 Enabling or Disabling the Local APIC . . . . . 10-8
+10.4.4 Local APIC Status and Location . . . . . . 10-8
+10.4.5 Relocating the Local APIC Registers . . . . . 10-9
+10.4.6 Local APIC ID . . . . . . . 10-9
+10.4.7 Local APIC State. . . . . . .10-10
+10.4.7.1 Local APIC State After Power-Up or Reset . . . . . .10-10
+10.4.7.2 Local APIC State After It Has Been Software Disabled . . . . .10-11
+10.4.7.3 Local APIC State After an INIT Reset (＾Wait-for-SIPI￣ State) . . . . .10-11
+10.4.7.4 Local APIC State After It Receives an INIT-Deassert IPI . . . . .10-11
+10.4.8 Local APIC Version Register . . . . . . .10-11
+10.5 HANDLING LOCAL INTERRUPTS . . . . . . 10-12
+10.5.1 Local Vector Table. . . . . . .10-12
+10.5.2 Valid Interrupt Vectors . . . . . . .10-14
+10.5.3 Error Handling. . . . . . .10-15
+10.5.4 APIC Timer . . . . . . . .10-16
+10.5.4.1 TSC-Deadline Mode . . . . . . .10-17
+10.5.5 Local Interrupt Acceptance. . . . . . .10-18
+10.6 ISSUING INTERPROCESSOR INTERRUPTS . . . . . 10-18
+10.6.1 Interrupt Command Register (ICR) . . . . . .10-19
+10.6.2 Determining IPI Destination . . . . . . .10-23
+10.6.2.1 Physical Destination Mode . . . . . .10-23
+10.6.2.2 Logical Destination Mode . . . . . . .10-23
+10.6.2.3 Broadcast/Self Delivery Mode . . . . . .10-25
+10.6.2.4 Lowest Priority Delivery Mode . . . . . .10-25
+10.6.3 IPI Delivery and Acceptance . . . . . . .10-26
+10.7 SYSTEM AND APIC BUS ARBITRATION . . . . . 10-26
+10.8 HANDLING INTERRUPTS . . . . . . 10-26
+10.8.1 Interrupt Handling with the Pentium 4 and Intel Xeon Processors . . . .10-27
+10.8.2 Interrupt Handling with the P6 Family and Pentium Processors . . . .10-27
+10.8.3 Interrupt, Task, and Processor Priority . . . . . .10-28
+10.8.3.1 Task and Processor Priorities. . . . . .10-29
+10.8.4 Interrupt Acceptance for Fixed Interrupts. . . . . .10-30
+10.8.5 Signaling Interrupt Servicing Completion . . . . . .10-31
+10.8.6 Task Priority in IA-32e Mode . . . . . . .10-31
+10.8.6.1 Interaction of Task Priorities between CR8 and APIC . . . . .10-32
+10.9 SPURIOUS INTERRUPT . . . . . . 10-32
+10.10 APIC BUS MESSAGE PASSING MECHANISM AND PROTOCOL (P6 FAMILY, PENTIUM PROCESSORS) . . 10-33
+10.10.1 Bus Message Formats. . . . . . .10-34
+10.11 MESSAGE SIGNALLED INTERRUPTS . . . . . 10-34
+10.11.1 Message Address Register Format. . . . . .10-34
+10.11.2 Message Data Register Format . . . . . .10-35
+10.12 EXTENDED XAPIC (X2APIC). . . . . . 10-36
+10.12.1 Detecting and Enabling x2APIC Mode . . . . . .10-37
+10.12.1.1 Instructions to Access APIC Registers. . . . . .10-37
+10.12.1.2 x2APIC Register Address Space . . . . . .10-38
+10.12.1.3 Reserved Bit Checking . . . . . . .10-40
+10.12.2 x2APIC Register Availability . . . . . . .10-40
+10.12.3 MSR Access in x2APIC Mode. . . . . . .10-40
+10.12.4 VM-Exit Controls for MSRs and x2APIC Registers . . . . .10-41
+10.12.5 x2APIC State Transitions. . . . . . .10-41
+10.12.5.1 x2APIC States . . . . . . .10-41
+x2APIC After Reset . . . . . . .10-42
+x2APIC Transitions From x2APIC Mode . . . . . .10-42
+x2APIC Transitions From Disabled Mode . . . . . .10-43
+State Changes From xAPIC Mode to x2APIC Mode . . . . .10-43
+10.12.6 Routing of Device Interrupts in x2APIC Mode. . . . . .10-43
+10.12.7 Initialization by System Software. . . . . .10-43
+10.12.8 CPUID Extensions And Topology Enumeration . . . . . .10-43
+10.12.8.1 Consistency of APIC IDs and CPUID . . . . . .10-44
+10.12.9 ICR Operation in x2APIC Mode . . . . . .10-44
+10.12.10 Determining IPI Destination in x2APIC Mode. . . . . .10-45
+10.12.10.1 Logical Destination Mode in x2APIC Mode . . . . . .10-45
+10.12.10.2 Deriving Logical x2APIC ID from the Local x2APIC ID . . . . .10-46
+10.12.11 SELF IPI Register . . . . . . .10-47
+10.13 APIC BUS MESSAGE FORMATS. . . . . . 10-47
+10.13.1 Bus Message Formats. . . . . . .10-47
+10.13.2 EOI Message. . . . . . . .10-47
+10.13.2.1 Short Message . . . . . . .10-48
+10.13.2.2 Non-focused Lowest Priority Message . . . . . .10-49
+10.13.2.3 APIC Bus Status Cycles. . . . . . .10-50
+CHAPTER 11
+MEMORY CACHE CONTROL
+11.1 INTERNAL CACHES, TLBS, AND BUFFERS. . . . . 11-1
+11.2 CACHING TERMINOLOGY . . . . . . 11-5
+11.3 METHODS OF CACHING AVAILABLE . . . . . 11-6
+11.3.1 Buffering of Write Combining Memory Locations . . . . 11-7
+11.3.2 Choosing a Memory Type . . . . . . 11-8
+11.3.3 Code Fetches in Uncacheable Memory . . . . . 11-9
+11.4 CACHE CONTROL PROTOCOL . . . . . . 11-9
+11.5 CACHE CONTROL . . . . . . 11-10
+11.5.1 Cache Control Registers and Bits . . . . . .11-10
+11.5.2 Precedence of Cache Controls . . . . . .11-13
+11.5.2.1 Selecting Memory Types for Pentium Pro and Pentium II Processors . . . .11-14
+11.5.2.2 Selecting Memory Types for Pentium III and More Recent Processor Families . . .11-15
+11.5.2.3 Writing Values Across Pages with Different Memory Types . . . . .11-16
+11.5.3 Preventing Caching . . . . . . .11-16
+11.5.4 Disabling and Enabling the L3 Cache . . . . . .11-17
+11.5.5 Cache Management Instructions. . . . . .11-17
+11.5.6 L1 Data Cache Context Mode. . . . . . .11-18
+11.5.6.1 Adaptive Mode . . . . . . .11-18
+11.5.6.2 Shared Mode . . . . . . .11-18
+11.6 SELF-MODIFYING CODE . . . . . . 11-18
+11.7 IMPLICIT CACHING (PENTIUM 4, INTEL XEON, AND P6 FAMILY PROCESSORS). . . 11-19
+11.8 EXPLICIT CACHING. . . . . . 11-19
+11.9 INVALIDATING THE TRANSLATION LOOKASIDE BUFFERS (TLBS) . . . . 11-19
+11.10 STORE BUFFER. . . . . . . 11-20
+11.11 MEMORY TYPE RANGE REGISTERS (MTRRS). . . . . 11-20
+11.11.1 MTRR Feature Identification . . . . . . .11-21
+11.11.2 Setting Memory Ranges with MTRRs . . . . . .11-22
+11.11.2.1 IA32_MTRR_DEF_TYPE MSR . . . . . .11-22
+11.11.2.2 Fixed Range MTRRs . . . . . . .11-23
+11.11.2.3 Variable Range MTRRs. . . . . . .11-23
+11.11.2.4 System-Management Range Register Interface . . . . .11-25
+11.11.3 Example Base and Mask Calculations . . . . . .11-26
+11.11.3.1 Base and Mask Calculations for Greater-Than 36-bit Physical Address Support. . .11-27
+11.11.4 Range Size and Alignment Requirement . . . . . .11-28
+11.11.4.1 MTRR Precedences . . . . . . .11-28
+11.11.5 MTRR Initialization. . . . . . .11-29
+11.11.6 Remapping Memory Types . . . . . . .11-29
+11.11.7 MTRR Maintenance Programming Interface . . . . . .11-29
+11.11.7.1 MemTypeGet() Function . . . . . . .11-29
+11.11.7.2 MemTypeSet() Function . . . . . . .11-31
+11.11.8 MTRR Considerations in MP Systems . . . . . .11-32
+11.11.9 Large Page Size Considerations . . . . . .11-33
+11.12 PAGE ATTRIBUTE TABLE (PAT). . . . . . 11-33
+11.12.1 Detecting Support for the PAT Feature. . . . . .11-34
+11.12.2 IA32_PAT MSR . . . . . . .11-34
+11.12.3 Selecting a Memory Type from the PAT . . . . . .11-35
+11.12.4 Programming the PAT . . . . . . .11-35
+11.12.5 PAT Compatibility with Earlier IA-32 Processors. . . . .11-36
+CHAPTER 12
+INTEL MMX TECHNOLOGY SYSTEM PROGRAMMING
+12.1 EMULATION OF THE MMX INSTRUCTION SET. . . . . 12-1
+12.2 THE MMX STATE AND MMX REGISTER ALIASING . . . . . 12-1
+12.2.1 Effect of MMX, x87 FPU, FXSAVE, and FXRSTOR Instructions on the x87 FPU Tag Word . . 12-3
+12.3 SAVING AND RESTORING THE MMX STATE AND REGISTERS . . . . 12-3
+12.4 SAVING MMX STATE ON TASK OR CONTEXT SWITCHES . . . . 12-4
+12.5 EXCEPTIONS THAT CAN OCCUR WHEN EXECUTING MMX INSTRUCTIONS . . . 12-4
+12.5.1 Effect of MMX Instructions on Pending x87 Floating-Point Exceptions. . . 12-5
+12.6 DEBUGGING MMX CODE . . . . . . 12-5
+CHAPTER 13
+SYSTEM PROGRAMMING FOR INSTRUCTION SET EXTENSIONS AND PROCESSOR EXTENDED STATES
+13.1 PROVIDING OPERATING SYSTEM SUPPORT FOR SSE EXTENSIONS . . . . 13-1
+13.1.1 Adding Support to an Operating System for SSE Extensions . . . . 13-2
+13.1.2 Checking for CPU Support . . . . . . 13-2
+13.1.3 Initialization of the SSE Extensions . . . . . 13-2
+13.1.4 Providing Non-Numeric Exception Handlers for Exceptions Generated by the SSE Instructions. . 13-4
+13.1.5 Providing a Handler for the SIMD Floating-Point Exception (#XM) . . . 13-5
+13.1.5.1 Numeric Error flag and IGNNE#. . . . . 13-6
+13.2 EMULATION OF SSE EXTENSIONS . . . . . . 13-6
+13.3 SAVING AND RESTORING SSE STATE . . . . . 13-6
+13.4 DESIGNING OS FACILITIES FOR SAVING X87 FPU, SSE AND EXTENDED STATES ON TASK OR CONTEXT SWITCHES. 13-6
+13.4.1 Using the TS Flag to Control the Saving of the x87 FPU and SSE State . . . 13-7
+13.5 THE XSAVE FEATURE SET AND PROCESSOR EXTENDED STATE MANAGEMENT . . . 13-7
+13.5.1 Checking the Support for XSAVE Feature Set . . . . . 13-8
+13.5.2 Determining the XSAVE Managed Feature States And The Required Buffer Size . . . 13-8
+13.5.3 Enable the Use Of XSAVE Feature Set And XSAVE State Components . . . 13-9
+13.5.4 Provide an Initialization for the XSAVE State Components . . . . 13-9
+13.5.5 Providing the Required Exception Handlers . . . . . 13-9
+13.6 INTEROPERABILITY OF THE XSAVE FEATURE SET AND FXSAVE/FXRSTOR . . . 13-9
+13.7 THE XSAVE FEATURE SET AND PROCESSOR SUPERVISOR STATE MANAGEMENT . . . 13-10
+13.8 SYSTEM PROGRAMMING FOR XSAVE MANAGED FEATURES . . . . 13-10
+13.8.1 Intel Advanced Vector Extensions (Intel AVX) . . . . .13-11
+13.8.2 Intel Advanced Vector Extensions 512 (Intel AVX-512) . . . . .13-11
+CHAPTER 14
+POWER AND THERMAL MANAGEMENT
+14.1 ENHANCED INTEL SPEEDSTEP TECHNOLOGY. . . . . 14-1
+14.1.1 Software Interface For Initiating Performance State Transitions . . . . 14-1
+14.2 P-STATE HARDWARE COORDINATION. . . . . 14-1
+14.3 SYSTEM SOFTWARE CONSIDERATIONS AND OPPORTUNISTIC PROCESSOR PERFORMANCE OPERATION . 14-3
+14.3.1 Intel Dynamic Acceleration Technology. . . . . 14-3
+14.3.2 System Software Interfaces for Opportunistic Processor Performance Operation . . . 14-3
+14.3.2.1 Discover Hardware Support and Enabling of Opportunistic Processor Performance Operation. . 14-3
+14.3.2.2 OS Control of Opportunistic Processor Performance Operation . . . 14-4
+14.3.2.3 Required Changes to OS Power Management P-State Policy . . . . 14-4
+14.3.3 Intel Turbo Boost Technology . . . . . . 14-5
+14.3.4 Performance and Energy Bias Hint support. . . . . 14-5
+14.4 HARDWARE-CONTROLLED PERFORMANCE STATES (HWP) . . . . 14-5
+14.4.1 HWP Programming Interfaces . . . . . . 14-6
+14.4.2 Enabling HWP . . . . . . . 14-7
+14.4.3 HWP Performance Range and Dynamic Capabilities . . . . 14-7
+14.4.4 Managing HWP . . . . . . 14-8
+14.4.4.1 IA32_HWP_REQUEST MSR (Address: 0x774 Logical Processor Scope) . . . 14-8
+14.4.4.2 IA32_HWP_REQUEST_PKG MSR (Address: 0x772 Package Scope). . . .14-11
+14.4.4.3 IA32_HWP_PECI_REQUEST_INFO MSR (Address 0x775 Package Scope) . . . .14-11
+14.4.5 HWP Feedback . . . . . . .14-12
+14.4.5.1 Non-Architectural HWP Feedback. . . . . .14-14
+14.4.6 HWP Notifications . . . . . . .14-15
+14.4.7 Idle Logical Processor Impact on Core Frequency . . . . .14-15
+14.4.8 Fast Write of Uncore MSR (Model Specific Feature) . . . . .14-16
+14.4.8.1 FAST_UNCORE_MSRS_CAPABILITY (Address: 0x65F, Logical Processor Scope). . .14-16
+14.4.8.2 FAST_UNCORE_MSRS_CTL (Address: 0x657, Logical Processor Scope) . . . .14-16
+14.4.8.3 FAST_UNCORE_MSRS_STATUS (Address: 0x65E, Logical Processor Scope) . . . .14-17
+14.4.9 Fast_IA32_HWP_REQUEST CPUID . . . . . .14-17
+14.4.10 Recommendations for OS use of HWP Controls . . . . .14-17
+14.5 HARDWARE DUTY CYCLING (HDC) . . . . . 14-19
+14.5.1 Hardware Duty Cycling Programming Interfaces. . . . .14-19
+14.5.2 Package level Enabling HDC . . . . . . .14-20
+14.5.3 Logical-Processor Level HDC Control . . . . . .14-20
+14.5.4 HDC Residency Counters . . . . . . .14-21
+14.5.4.1 IA32_THREAD_STALL . . . . . . .14-21
+14.5.4.2 Non-Architectural HDC Residency Counters . . . . .14-22
+14.5.5 MPERF and APERF Counters Under HDC . . . . . .14-24
+14.6 MWAIT EXTENSIONS FOR ADVANCED POWER MANAGEMENT . . . . 14-24
+14.7 THERMAL MONITORING AND PROTECTION . . . . . 14-25
+14.7.1 Catastrophic Shutdown Detector . . . . . .14-26
+14.7.2 Thermal Monitor . . . . . . .14-26
+14.7.2.1 Thermal Monitor 1 . . . . . . .14-26
+14.7.2.2 Thermal Monitor 2 . . . . . . .14-26
+14.7.2.3 Two Methods for Enabling TM2 . . . . . .14-26
+14.7.2.4 Performance State Transitions and Thermal Monitoring . . . . .14-27
+14.7.2.5 Thermal Status Information . . . . . .14-27
+14.7.2.6 Adaptive Thermal Monitor. . . . . . .14-28
+14.7.3 Software Controlled Clock Modulation. . . . . .14-29
+14.7.3.1 Extension of Software Controlled Clock Modulation. . . . .14-30
+14.7.4 Detection of Thermal Monitor and Software Controlled Clock Modulation Facilities . . .14-30
+14.7.4.1 Detection of Software Controlled Clock Modulation Extension. . . .14-30
+14.7.5 On Die Digital Thermal Sensors . . . . . .14-30
+14.7.5.1 Digital Thermal Sensor Enumeration. . . . . .14-31
+14.7.5.2 Reading the Digital Sensor . . . . . .14-31
+14.7.6 Power Limit Notification . . . . . . .14-34
+14.8 PACKAGE LEVEL THERMAL MANAGEMENT. . . . . 14-34
+14.8.1 Support for Passive and Active cooling . . . . . .14-36
+14.9 PLATFORM SPECIFIC POWER MANAGEMENT SUPPORT . . . . 14-37
+14.9.1 RAPL Interfaces . . . . . . .14-37
+14.9.2 RAPL Domains and Platform Specificity . . . . . .14-38
+14.9.3 Package RAPL Domain . . . . . . .14-39
+14.9.4 PP0/PP1 RAPL Domains . . . . . . .14-41
+14.9.5 DRAM RAPL Domain . . . . . . .14-43
+CHAPTER 15
+MACHINE-CHECK ARCHITECTURE
+15.1 MACHINE-CHECK ARCHITECTURE. . . . . . 15-1
+15.2 COMPATIBILITY WITH PENTIUM PROCESSOR . . . . . 15-1
+15.3 MACHINE-CHECK MSRS . . . . . . 15-2
+15.3.1 Machine-Check Global Control MSRs . . . . . 15-2
+15.3.1.1 IA32_MCG_CAP MSR. . . . . . 15-2
+15.3.1.2 IA32_MCG_STATUS MSR. . . . . . 15-4
+15.3.1.3 IA32_MCG_CTL MSR . . . . . . 15-4
+15.3.1.4 IA32_MCG_EXT_CTL MSR. . . . . . 15-5
+15.3.1.5 Enabling Local Machine Check . . . . . 15-5
+15.3.2 Error-Reporting Register Banks . . . . . 15-5
+15.3.2.1 IA32_MCi_CTL MSRs . . . . . . 15-5
+15.3.2.2 IA32_MCi_STATUS MSRS . . . . . . 15-6
+15.3.2.3 IA32_MCi_ADDR MSRs. . . . . . 15-9
+15.3.2.4 IA32_MCi_MISC MSRs . . . . . . 15-9
+15.3.2.5 IA32_MCi_CTL2 MSRs . . . . . . .15-11
+15.3.2.6 IA32_MCG Extended Machine Check State MSRs . . . . .15-12
+15.3.3 Mapping of the Pentium Processor Machine-Check Errors to the Machine-Check Architecture . . .15-13
+15.4 ENHANCED CACHE ERROR REPORTING . . . . . 15-13
+15.5 CORRECTED MACHINE CHECK ERROR INTERRUPT . . . . 15-14
+15.5.1 CMCI Local APIC Interface . . . . . . .15-14
+15.5.2 System Software Recommendation for Managing CMCI and Machine Check Resources . . .15-15
+15.5.2.1 CMCI Initialization. . . . . . .15-15
+15.5.2.2 CMCI Threshold Management. . . . . .15-16
+15.5.2.3 CMCI Interrupt Handler . . . . . . .15-16
+15.6 RECOVERY OF UNCORRECTED RECOVERABLE (UCR) ERRORS . . . . 15-16
+15.6.1 Detection of Software Error Recovery Support . . . . .15-16
+15.6.2 UCR Error Reporting and Logging. . . . . .15-17
+15.6.3 UCR Error Classification . . . . . . .15-17
+15.6.4 UCR Error Overwrite Rules . . . . . . .15-18
+15.7 MACHINE-CHECK AVAILABILITY . . . . . . 15-19
+15.8 MACHINE-CHECK INITIALIZATION. . . . . 15-19
+15.9 INTERPRETING THE MCA ERROR CODES . . . . . 15-20
+15.9.1 Simple Error Codes . . . . . . .15-21
+15.9.2 Compound Error Codes. . . . . . .15-21
+15.9.2.1 Correction Report Filtering (F) Bit . . . . . .15-22
+15.9.2.2 Transaction Type (TT) Sub-Field. . . . . .15-22
+15.9.2.3 Level (LL) Sub-Field. . . . . . .15-22
+15.9.2.4 Request (RRRR) Sub-Field. . . . . . .15-22
+15.9.2.5 Bus and Interconnect Errors . . . . . .15-23
+15.9.2.6 Memory Controller and Extended Memory Errors . . . . .15-24
+15.9.3 Architecturally Defined UCR Errors . . . . . .15-24
+15.9.3.1 Architecturally Defined SRAO Errors. . . . . .15-24
+15.9.3.2 Architecturally Defined SRAR Errors. . . . . .15-25
+15.9.4 Multiple MCA Errors. . . . . . .15-27
+15.9.5 Machine-Check Error Codes Interpretation . . . . . .15-27
+15.10 GUIDELINES FOR WRITING MACHINE-CHECK SOFTWARE . . . . 15-28
+15.10.1 Machine-Check Exception Handler . . . . . .15-28
+15.10.2 Pentium Processor Machine-Check Exception Handling . . . . .15-29
+15.10.3 Logging Correctable Machine-Check Errors . . . . . .15-29
+15.10.4 Machine-Check Software Handler Guidelines for Error Recovery. . . .15-31
+15.10.4.1 Machine-Check Exception Handler for Error Recovery . . . . .15-31
+15.10.4.2 Corrected Machine-Check Handler for Error Recovery. . . . .15-35
+CHAPTER 16
+INTERPRETING MACHINE-CHECK ERROR CODES
+16.1 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY 06H MACHINE ERROR CODES FOR MACHINE CHECK . 16-1
+16.2 INCREMENTAL DECODING INFORMATION: INTEL CORE 2 PROCESSOR FAMILY MACHINE ERROR CODES FOR MACHINE CHECK . . . . . . . 16-3
+16.2.1 Model-Specific Machine Check Error Codes for Intel Xeon Processor 7400 Series . . . 16-5
+16.2.1.1 Processor Machine Check Status Register Incremental MCA Error Code Definition . . 16-6
+16.2.2 Intel Xeon Processor 7400 Model Specific Error Code Field. . . . 16-6
+16.2.2.1 Processor Model Specific Error Code Field Type B: Bus and Interconnect Error . . . 16-6
+16.2.2.2 Processor Model Specific Error Code Field Type C: Cache Bus Controller Error . . . 16-7
+16.3 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_1AH, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-7
+16.3.1 Intel QPI Machine Check Errors . . . . . . 16-8
+16.3.2 Internal Machine Check Errors . . . . . . 16-8
+16.3.3 Memory Controller Errors . . . . . . 16-9
+16.4 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_2DH, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-10
+16.4.1 Internal Machine Check Errors . . . . . .16-10
+16.4.2 Intel QPI Machine Check Errors . . . . . .16-11
+16.4.3 Integrated Memory Controller Machine Check Errors . . . . .16-11
+16.5 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_3EH, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-13
+16.5.1 Internal Machine Check Errors . . . . . .16-13
+16.5.2 Integrated Memory Controller Machine Check Errors . . . . .16-14
+16.5.3 Home Agent Machine Check Errors . . . . . .16-15
+16.6 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_3FH, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-15
+16.6.1 Internal Machine Check Errors . . . . . .16-16
+16.6.2 Intel QPI Machine Check Errors . . . . . .16-17
+16.6.3 Integrated Memory Controller Machine Check Errors . . . . .16-17
+16.6.4 Home Agent Machine Check Errors . . . . . .16-19
+16.7 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_56H, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-19
+16.7.1 Internal Machine Check Errors . . . . . .16-19
+16.7.2 Integrated Memory Controller Machine Check Errors . . . . .16-20
+16.8 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_4FH, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-21
+16.8.1 Integrated Memory Controller Machine Check Errors . . . . .16-21
+16.8.2 Home Agent Machine Check Errors . . . . . .16-22
+16.9 INCREMENTAL DECODING INFORMATION: INTEL XEON PROCESSOR SCALABLE FAMILY, MACHINE ERROR CODES FOR MACHINE CHECK . . . . . . 16-22
+16.9.1 Internal Machine Check Errors . . . . . .16-23
+16.9.2 Interconnect Machine Check Errors . . . . . .16-24
+16.9.3 Integrated Memory Controller Machine Check Errors . . . . .16-26
+16.9.4 M2M Machine Check Errors . . . . . . .16-27
+16.9.5 Home Agent Machine Check Errors . . . . . .16-27
+16.10 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY WITH CPUID DISPLAYFAMILY_DISPLAYMODEL SIGNATURE 06_5FH, MACHINE ERROR CODES FOR MACHINE CHECK . . . . 16-28
+16.10.1 Integrated Memory Controller Machine Check Errors . . . . .16-28
+16.11 INCREMENTAL DECODING INFORMATION: PROCESSOR FAMILY 0FH MACHINE ERROR CODES FOR MACHINE CHECK . 16-29
+16.11.1 Model-Specific Machine Check Error Codes for Intel Xeon Processor MP 7100 Series . . .16-29
+16.11.1.1 Processor Machine Check Status Register MCA Error Code Definition . . . .16-30
+16.11.2 Other_Info Field (all MCA Error Types) . . . . . .16-31
+16.11.3 Processor Model Specific Error Code Field . . . . . .16-32
+16.11.3.1 MCA Error Type A: L3 Error. . . . . .16-32
+16.11.3.2 Processor Model Specific Error Code Field Type B: Bus and Interconnect Error . . .16-32
+16.11.3.3 Processor Model Specific Error Code Field Type C: Cache Bus Controller Error . . .16-33
+CHAPTER 17
+DEBUG, BRANCH PROFILE, TSC, AND INTEL RESOURCE DIRECTOR TECHNOLOGY (INTEL RDT) FEATURES
+17.1 OVERVIEW OF DEBUG SUPPORT FACILITIES. . . . . 17-1
+17.2 DEBUG REGISTERS. . . . . . 17-2
+17.2.1 Debug Address Registers (DR0-DR3) . . . . . 17-3
+17.2.2 Debug Registers DR4 and DR5 . . . . . . 17-3
+17.2.3 Debug Status Register (DR6) . . . . . . 17-3
+17.2.4 Debug Control Register (DR7) . . . . . . 17-4
+17.2.5 Breakpoint Field Recognition . . . . . . 17-5
+17.2.6 Debug Registers and Intel 64 Processors . . . . . 17-6
+17.3 DEBUG EXCEPTIONS . . . . . . 17-6
+17.3.1 Debug Exception (#DB)！Interrupt Vector 1. . . . . 17-7
+17.3.1.1 Instruction-Breakpoint Exception Condition . . . . . 17-8
+17.3.1.2 Data Memory and I/O Breakpoint Exception Conditions . . . . 17-9
+17.3.1.3 General-Detect Exception Condition . . . . . .17-10
+17.3.1.4 Single-Step Exception Condition. . . . . .17-10
+17.3.1.5 Task-Switch Exception Condition . . . . . .17-10
+17.3.2 Breakpoint Exception (#BP)！Interrupt Vector 3 . . . . .17-10
+17.3.3 Debug Exceptions, Breakpoint Exceptions, and Restricted Transactional Memory (RTM) . . .17-11
+17.4 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING OVERVIEW . . . 17-11
+17.4.1 IA32_DEBUGCTL MSR. . . . . . .17-12
+17.4.2 Monitoring Branches, Exceptions, and Interrupts . . . . .17-13
+17.4.3 Single-Stepping on Branches . . . . . . .17-13
+17.4.4 Branch Trace Messages. . . . . . .17-13
+17.4.4.1 Branch Trace Message Visibility . . . . . .17-14
+17.4.5 Branch Trace Store (BTS) . . . . . . .17-14
+17.4.6 CPL-Qualified Branch Trace Mechanism . . . . . .17-14
+17.4.7 Freezing LBR and Performance Counters on PMI . . . . .17-14
+17.4.8 LBR Stack . . . . . . . .17-16
+17.4.8.1 LBR Stack and Intel 64 Processors. . . . . .17-16
+17.4.8.2 LBR Stack and IA-32 Processors. . . . . .17-17
+17.4.8.3 Last Exception Records and Intel 64 Architecture . . . . .17-17
+17.4.9 BTS and DS Save Area . . . . . . .17-18
+17.4.9.1 64 Bit Format of the DS Save Area . . . . . .17-20
+17.4.9.2 Setting Up the DS Save Area . . . . . .17-22
+17.4.9.3 Setting Up the BTS Buffer . . . . . .17-23
+17.4.9.4 Setting Up CPL-Qualified BTS . . . . . .17-24
+17.4.9.5 Writing the DS Interrupt Service Routine . . . . . .17-24
+17.5 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING (INTEL CORE 2 DUO AND INTEL ATOM PROCESSORS) . 17-25
+17.5.1 LBR Stack . . . . . . . .17-25
+17.5.2 LBR Stack in Intel Atom Processors based on the Silvermont Microarchitecture . . . .17-26
+17.6 LAST BRANCH, CALL STACK, INTERRUPT, AND EXCEPTION RECORDING FOR PROCESSORS BASED ON GOLDMONT MICROARCHITECTURE . . . . . . 17-26
+17.7 LAST BRANCH, CALL STACK, INTERRUPT, AND EXCEPTION RECORDING FOR PROCESSORS BASED ON GOLDMONT PLUS MICROARCHITECTURE. . . . . . 17-27
+17.8 LAST BRANCH, INTERRUPT AND EXCEPTION RECORDING FOR INTEL XEON PHI PROCESSOR 7200/5200/3200 . 17-27
+17.9 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING FOR PROCESSORS BASED ON INTEL MICROARCHITECTURE CODE NAME NEHALEM. . . . . . 17-27
+17.9.1 LBR Stack . . . . . . . .17-29
+17.9.2 Filtering of Last Branch Records. . . . . .17-29
+17.10 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING FOR PROCESSORS BASED ON INTEL MICROARCHITECTURE CODE NAME SANDY BRIDGE . . . . . . 17-30
+17.11 LAST BRANCH, CALL STACK, INTERRUPT, AND EXCEPTION RECORDING FOR PROCESSORS BASED ON HASWELL MICROARCHITECTURE . . . . . . 17-30
+17.11.1 LBR Stack Enhancement . . . . . . .17-31
+17.12 LAST BRANCH, CALL STACK, INTERRUPT, AND EXCEPTION RECORDING FOR PROCESSORS BASED ON SKYLAKE MICROARCHITECTURE . . . . . . 17-32
+17.12.1 MSR_LBR_INFO_x MSR . . . . . . .17-32
+17.12.2 Streamlined Freeze_LBRs_On_PMI Operation . . . . . .17-33
+17.12.3 LBR Behavior and Deep C-State . . . . . .17-33
+17.13 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING (PROCESSORS BASED ON INTEL NETBURST MICROARCHITECTURE). . . . . . 17-33
+17.13.1 MSR_DEBUGCTLA MSR . . . . . . .17-34
+17.13.2 LBR Stack for Processors Based on Intel NetBurst Microarchitecture . . . .17-35
+17.13.3 Last Exception Records . . . . . . .17-36
+17.14 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING (INTEL CORE SOLO AND INTEL CORE DUO PROCESSORS) . . . . . . . 17-36
+17.15 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING (PENTIUM M PROCESSORS) . . 17-38
+17.16 LAST BRANCH, INTERRUPT, AND EXCEPTION RECORDING (P6 FAMILY PROCESSORS) . . 17-39
+17.16.1 DEBUGCTLMSR Register . . . . . . .17-39
+17.16.2 Last Branch and Last Exception MSRs. . . . . .17-40
+17.16.3 Monitoring Branches, Exceptions, and Interrupts . . . . .17-40
+17.17 TIME-STAMP COUNTER . . . . . . 17-41
+17.17.1 Invariant TSC . . . . . . .17-42
+17.17.2 IA32_TSC_AUX Register and RDTSCP Support . . . . .17-42
+17.17.3 Time-Stamp Counter Adjustment . . . . . .17-43
+17.17.4 Invariant Time-Keeping . . . . . . .17-43
+17.18 INTEL RESOURCE DIRECTOR TECHNOLOGY (INTEL RDT) MONITORING FEATURES. . . 17-43
+17.18.1 Overview of Cache Monitoring Technology and Memory Bandwidth Monitoring . . . .17-44
+17.18.2 Enabling Monitoring: Usage Flow. . . . . .17-44
+17.18.3 Enumeration and Detecting Support of Cache Monitoring Technology and Memory Bandwidth Monitoring . .17-45
+17.18.4 Monitoring Resource Type and Capability Enumeration . . . . .17-45
+17.18.5 Feature-Specific Enumeration . . . . . .17-46
+17.18.5.1 Cache Monitoring Technology . . . . . .17-47
+17.18.5.2 Memory Bandwidth Monitoring . . . . . .17-47
+17.18.6 Monitoring Resource RMID Association. . . . . .17-47
+17.18.7 Monitoring Resource Selection and Reporting Infrastructure . . . . .17-48
+17.18.8 Monitoring Programming Considerations . . . . . .17-49
+17.18.8.1 Monitoring Dynamic Configuration . . . . . .17-50
+17.18.8.2 Monitoring Operation With Power Saving Features . . . . .17-50
+17.18.8.3 Monitoring Operation with Other Operating Modes . . . . .17-50
+17.18.8.4 Monitoring Operation with RAS Features. . . . . .17-50
+17.19 INTEL RESOURCE DIRECTOR TECHNOLOGY (INTEL RDT) ALLOCATION FEATURES. . . 17-50
+17.19.1 Introduction to Cache Allocation Technology (CAT) . . . . .17-50
+17.19.2 Cache Allocation Technology Architecture. . . . . .17-51
+17.19.3 Code and Data Prioritization (CDP) Technology . . . . .17-54
+17.19.4 Enabling Cache Allocation Technology Usage Flow. . . . .17-55
+17.19.4.1 Enumeration and Detection Support of Cache Allocation Technology . . . .17-56
+17.19.4.2 Cache Allocation Technology: Resource Type and Capability Enumeration. . . .17-56
+17.19.4.3 Cache Allocation Technology: Cache Mask Configuration . . . . .17-59
+17.19.4.4 Class of Service to Cache Mask Association: Common Across Allocation Features . . .17-59
+17.19.5 Code and Data Prioritization (CDP): Enumerating and Enabling L3 CDP Technology. . .17-60
+17.19.5.1 Mapping Between L3 CDP Masks and CAT Masks . . . . .17-60
+17.19.6 Code and Data Prioritization (CDP): Enumerating and Enabling L2 CDP Technology. . .17-61
+17.19.6.1 Mapping Between L2 CDP Masks and L2 CAT Masks . . . . .17-62
+17.19.6.2 Common L2 and L3 CDP Programming Considerations . . . . .17-62
+17.19.6.3 Cache Allocation Technology Dynamic Configuration. . . . .17-62
+17.19.6.4 Cache Allocation Technology Operation With Power Saving Features . . . .17-63
+17.19.6.5 Cache Allocation Technology Operation with Other Operating Modes . . . .17-63
+17.19.6.6 Associating Threads with CAT/CDP Classes of Service . . . . .17-63
+17.19.7 Introduction to Memory Bandwidth Allocation . . . . . .17-64
+17.19.7.1 Memory Bandwidth Allocation Enumeration . . . . .17-65
+17.19.7.2 Memory Bandwidth Allocation Configuration . . . . .17-66
+17.19.7.3 Memory Bandwidth Allocation Usage Considerations . . . . .17-67
+CHAPTER 18
+PERFORMANCE MONITORING
+18.1 PERFORMANCE MONITORING OVERVIEW. . . . . 18-1
+18.2 ARCHITECTURAL PERFORMANCE MONITORING. . . . . 18-2
+18.2.1 Architectural Performance Monitoring Version 1 . . . . 18-3
+18.2.1.1 Architectural Performance Monitoring Version 1 Facilities . . . . 18-3
+18.2.1.2 Pre-defined Architectural Performance Events . . . . 18-5
+18.2.2 Architectural Performance Monitoring Version 2 . . . . 18-6
+18.2.3 Architectural Performance Monitoring Version 3 . . . . .18-10
+18.2.3.1 AnyThread Counting and Software Evolution. . . . .18-12
+18.2.4 Architectural Performance Monitoring Version 4 . . . . .18-13
+18.2.4.1 Enhancement in IA32_PERF_GLOBAL_STATUS. . . . .18-13
+18.2.4.2 IA32_PERF_GLOBAL_STATUS_RESET and IA32_PERF_GLOBAL_STATUS_SET MSRS . . .18-14
+18.2.4.3 IA32_PERF_GLOBAL_INUSE MSR. . . . . .18-15
+18.2.5 Architectural Performance Monitoring Version 5 . . . . .18-16
+18.2.5.1 AnyThread Mode Deprecation. . . . . .18-16
+18.2.5.2 Fixed Counter Enumeration . . . . . .18-17
+18.2.6 Full-Width Writes to Performance Counter Registers . . . . .18-17
+18.3 PERFORMANCE MONITORING (INTEL CORE PROCESSORS AND INTEL XEON PROCESSORS) . . 18-18
+18.3.1 Performance Monitoring for Processors Based on Intel Microarchitecture Code Name Nehalem. .18-18
+18.3.1.1 Enhancements of Performance Monitoring in the Processor Core . . . .18-19
+18.3.1.2 Performance Monitoring Facility in the Uncore . . . . .18-26
+18.3.1.3 Intel Xeon Processor 7500 Series Performance Monitoring Facility . . . .18-31
+18.3.2 Performance Monitoring for Processors Based on Intel Microarchitecture Code Name Westmere . .18-33
+18.3.3 Intel Xeon Processor E7 Family Performance Monitoring Facility. . . .18-33
+18.3.4 Performance Monitoring for Processors Based on Intel Microarchitecture Code Name Sandy Bridge . .18-34
+18.3.4.1 Global Counter Control Facilities In Intel Microarchitecture Code Name Sandy Bridge . . .18-35
+18.3.4.2 Counter Coalescence . . . . . . .18-37
+18.3.4.3 Full Width Writes to Performance Counters . . . . .18-37
+18.3.4.4 PEBS Support in Intel Microarchitecture Code Name Sandy Bridge . . . .18-37
+18.3.4.5 Off-core Response Performance Monitoring . . . . .18-41
+18.3.4.6 Uncore Performance Monitoring Facilities In Intel Core i7-2xxx, Intel Core i5-2xxx, Intel Core i3-2xxx Processor Series . . . . . . .18-44
+18.3.4.7 Intel Xeon Processor E5 Family Performance Monitoring Facility. . . .18-46
+18.3.4.8 Intel Xeon Processor E5 Family Uncore Performance Monitoring Facility . . .18-47
+18.3.5 3rd Generation Intel Core Processor Performance Monitoring Facility . . . .18-47
+18.3.5.1 Intel Xeon Processor E5 v2 and E7 v2 Family Uncore Performance Monitoring Facility. . .18-47
+18.3.6 4th Generation Intel Core Processor Performance Monitoring Facility . . . .18-48
+18.3.6.1 Processor Event Based Sampling (PEBS) Facility. . . . .18-49
+18.3.6.2 PEBS Data Format . . . . . . .18-49
+18.3.6.3 PEBS Data Address Profiling . . . . . .18-50
+18.3.6.4 Off-core Response Performance Monitoring . . . . .18-51
+18.3.6.5 Performance Monitoring and Intel TSX . . . . . .18-53
+18.3.6.6 Uncore Performance Monitoring Facilities in the 4th Generation Intel Core Processors . . .18-55
+18.3.6.7 Intel Xeon Processor E5 v3 Family Uncore Performance Monitoring Facility . . .18-56
+18.3.7 5th Generation Intel Core Processor and Intel Core M Processor Performance Monitoring Facility. .18-56
+18.3.8 6th Generation, 7th Generation and 8th Generation Intel Core Processor Performance Monitoring Facility . .18-57
+18.3.8.1 Processor Event Based Sampling (PEBS) Facility. . . . .18-59
+18.3.8.2 Off-core Response Performance Monitoring . . . . .18-63
+18.3.8.3 Uncore Performance Monitoring Facilities on Intel Core Processors Based on Cannon Lake Microarchitecture.18-67
+18.3.9 Next Generation Intel Core Processor Performance Monitoring Facility . . . .18-67
+18.3.9.1 Processor Event Based Sampling (PEBS) Facility. . . . .18-68
+18.3.9.2 Off-core Response Performance Monitoring . . . . .18-68
+18.3.9.3 Performance Metrics . . . . . . .18-70
+18.4 PERFORMANCE MONITORING (INTEL XEON PHI PROCESSORS) . . . . 18-71
+18.4.1 Intel Xeon Phi Processor 7200/5200/3200 Performance Monitoring . . . .18-71
+18.4.1.1 Enhancements of Performance Monitoring in the Intel Xeon Phi processor Tile . . .18-71
+18.5 PERFORMANCE MONITORING (INTEL ATOM PROCESSORS) . . . . 18-75
+18.5.1 Performance Monitoring (45 nm and 32 nm Intel Atom Processors). . . .18-75
+18.5.2 Performance Monitoring for Silvermont Microarchitecture . . . . .18-76
+18.5.2.1 Enhancements of Performance Monitoring in the Processor Core . . . .18-76
+18.5.2.2 Offcore Response Event . . . . . . .18-77
+18.5.2.3 Average Offcore Request Latency Measurement. . . . .18-80
+18.5.3 Performance Monitoring for Goldmont Microarchitecture . . . . .18-80
+18.5.3.1 Processor Event Based Sampling (PEBS) . . . . . .18-82
+18.5.3.2 Offcore Response Event . . . . . . .18-84
+18.5.3.3 Average Offcore Request Latency Measurement. . . . .18-86
+18.5.4 Performance Monitoring for Goldmont Plus Microarchitecture . . . . .18-86
+18.5.4.1 Extended PEBS. . . . . . .18-87
+18.5.5 Performance Monitoring for Tremont Microarchitecture . . . . .18-87
+18.5.5.1 Adaptive PEBS . . . . . . .18-88
+18.5.5.2 PEBS output to Intel Processor Trace . . . . . .18-88
+18.5.5.3 Precise Distribution Support on Fixed Counter 0 . . . . .18-90
+18.5.5.4 Compatibility Enhancements to Offcore Response MSRs. . . . .18-90
+18.6 PERFORMANCE MONITORING (LEGACY INTEL PROCESSORS) . . . . 18-92
+18.6.1 Performance Monitoring (Intel Core Solo and Intel Core Duo Processors) . . . .18-92
+18.6.2 Performance Monitoring (Processors Based on Intel Core Microarchitecture) . . .18-93
+18.6.2.1 Fixed-function Performance Counters . . . . . .18-94
+18.6.2.2 Global Counter Control Facilities . . . . . .18-95
+18.6.2.3 At-Retirement Events . . . . . . .18-96
+18.6.2.4 Processor Event Based Sampling (PEBS) . . . . . .18-97
+18.6.3 Performance Monitoring (Processors Based on Intel NetBurst Microarchitecture) . . .18-99
+18.6.3.1 ESCR MSRs . . . . . . 18-102
+18.6.3.2 Performance Counters . . . . . . 18-103
+18.6.3.3 CCCR MSRs . . . . . . 18-105
+18.6.3.4 Debug Store (DS) Mechanism . . . . . 18-106
+18.6.3.5 Programming the Performance Counters for Non-Retirement Events. . . 18-106
+18.6.3.6 At-Retirement Counting. . . . . . 18-112
+18.6.3.7 Tagging Mechanism for Replay_event . . . . . 18-114
+18.6.3.8 Processor Event-Based Sampling (PEBS) . . . . . 18-114
+18.6.3.9 Operating System Implications . . . . . 18-115
+18.6.4 Performance Monitoring and Intel Hyper-Threading Technology in Processors Based on Intel NetBurst Microarchitecture. . . . . . 18-116
+18.6.4.1 ESCR MSRs . . . . . . 18-116
+18.6.4.2 CCCR MSRs . . . . . . 18-117
+18.6.4.3 IA32_PEBS_ENABLE MSR . . . . . 18-118
+18.6.4.4 Performance Monitoring Events . . . . . 18-119
+18.6.4.5 Counting Clocks on systems with Intel Hyper-Threading Technology in Processors Based on Intel NetBurst Microarchitecture. . . . . . 18-120
+18.6.5 Performance Monitoring and Dual-Core Technology . . . . 18-121
+18.6.6 Performance Monitoring on 64-bit Intel Xeon Processor MP with Up to 8-MByte L3 Cache. . 18-121
+18.6.7 Performance Monitoring on L3 and Caching Bus Controller Sub-Systems . . . 18-124
+18.6.7.1 Overview of Performance Monitoring with L3/Caching Bus Controller . . . 18-126
+18.6.7.2 GBSQ Event Interface. . . . . . 18-126
+18.6.7.3 GSNPQ Event Interface . . . . . . 18-128
+18.6.7.4 FSB Event Interface . . . . . . 18-129
+18.6.7.5 Common Event Control Interface . . . . . 18-130
+18.6.8 Performance Monitoring (P6 Family Processor) . . . . 18-130
+18.6.8.1 PerfEvtSel0 and PerfEvtSel1 MSRs . . . . . 18-131
+18.6.8.2 PerfCtr0 and PerfCtr1 MSRs . . . . . 18-132
+18.6.8.3 Starting and Stopping the Performance-Monitoring Counters . . . 18-132
+18.6.8.4 Event and Time-Stamp Monitoring Software . . . . 18-132
+18.6.8.5 Monitoring Counter Overflow. . . . . 18-133
+18.6.9 Performance Monitoring (Pentium Processors) . . . . 18-133
+18.6.9.1 Control and Event Select Register (CESR) . . . . . 18-134
+18.6.9.2 Use of the Performance-Monitoring Pins . . . . . 18-134
+18.6.9.3 Events Counted . . . . . . 18-135
+18.7 COUNTING CLOCKS . . . . . . 18-135
+18.7.1 Non-Halted Reference Clockticks . . . . . 18-136
+18.7.2 Cycle Counting and Opportunistic Processor Operation. . . . 18-136
+18.7.3 Determining the Processor Base Frequency . . . . . 18-137
+18.7.3.1 For Intel Processors Based on Microarchitecture Code Name Sandy Bridge, Ivy Bridge, Haswell and Broadwell . . . . . . 18-137
+18.7.3.2 For Intel Processors Based on Microarchitecture Code Name Nehalem . . . 18-137
+18.7.3.3 For Intel Atom Processors Based on the Silvermont Microarchitecture (Including Intel Processors Based on Airmont Microarchitecture). . . . . 18-137
+18.7.3.4 For Intel Core 2 Processor Family and for Intel Xeon Processors Based on Intel Core Microarchitecture . 18-138
+18.8 IA32_PERF_CAPABILITIES MSR ENUMERATION. . . . . 18-138
+18.8.1 Filtering of SMM Handler Overhead . . . . . 18-139
+18.9 PEBS FACILITY. . . . . . . 18-139
+18.9.1 Extended PEBS . . . . . . 18-139
+18.9.2 Adaptive PEBS . . . . . . 18-141
+18.9.2.1 Adaptive_Record Counter Control . . . . . 18-142
+18.9.2.2 PEBS Record Format. . . . . . 18-142
+18.9.2.3 MSR_PEBS_DATA_CFG. . . . . . 18-145
+18.9.2.4 PEBS Record Examples. . . . . . 18-147
+18.9.3 Precise Distribution of Instructions Retired (PDIR) Facility. . . . 18-148
+18.9.4 Reduced Skid PEBS . . . . . . 18-148
+CHAPTER 19
+PERFORMANCE MONITORING EVENTS
+19.1 ARCHITECTURAL PERFORMANCE MONITORING EVENTS . . . . 19-2
+19.2 PERFORMANCE MONITORING EVENTS FOR INTEL XEON PROCESSOR SCALABLE FAMILY. . 19-3
+19.3 PERFORMANCE MONITORING EVENTS FOR FUTURE INTEL CORE PROCESSORS . . . 19-25
+19.4 PERFORMANCE MONITORING EVENTS FOR 6TH GENERATION, 7TH GENERATION AND 8TH GENERATION INTEL CORE PROCESSORS. . . . . . . 19-42
+19.5 PERFORMANCE MONITORING EVENTS FOR INTEL XEON PHI PROCESSOR 3200, 5200, 7200 SERIES AND INTEL XEON PHI PROCESSOR 7215, 7285, 7295 SERIES. . . . 19-52
+19.6 PERFORMANCE MONITORING EVENTS FOR THE INTEL CORE M AND 5TH GENERATION INTEL CORE PROCESSORS. . . . . . . 19-57
+19.7 PERFORMANCE MONITORING EVENTS FOR THE 4TH GENERATION INTEL CORE PROCESSORS. . 19-64
+19.7.1 Performance Monitoring Events in the Processor Core of Intel Xeon Processor E5 v3 Family . . .19-76
+19.8 PERFORMANCE MONITORING EVENTS FOR 3RD GENERATION INTEL CORE PROCESSORS . . 19-77
+19.8.1 Performance Monitoring Events in the Processor Core of Intel Xeon Processor E5 v2 Family and Intel Xeon Processor E7 v2 Family . . . . . . .19-85
+19.9 PERFORMANCE MONITORING EVENTS FOR 2ND GENERATION INTEL CORE I7-2XXX, INTEL CORE I5-2XXX, INTEL CORE I3-2XXX PROCESSOR SERIES . . . . . 19-86
+19.10 PERFORMANCE MONITORING EVENTS FOR INTEL CORE I7 PROCESSOR FAMILY AND INTEL XEON PROCESSOR FAMILY . . . . . . 19-100
+19.11 PERFORMANCE MONITORING EVENTS FOR PROCESSORS BASED ON INTEL MICROARCHITECTURE CODE NAME WESTMERE. . . . . . . 19-128
+19.12 PERFORMANCE MONITORING EVENTS FOR INTEL XEON PROCESSOR 5200, 5400 SERIES AND INTEL CORE2 EXTREME PROCESSORS QX 9000 SERIES . . . . . 19-160
+19.13 PERFORMANCE MONITORING EVENTS FOR INTEL XEON PROCESSOR 3000, 3200, 5100, 5300 SERIES AND INTEL CORE2 DUO PROCESSORS . . . . . 19-160
+19.14 PERFORMANCE MONITORING EVENTS FOR PROCESSORS BASED ON THE GOLDMONT PLUS MICROARCHITECTURE . 19-186
+19.15 PERFORMANCE MONITORING EVENTS FOR PROCESSORS BASED ON THE GOLDMONT MICROARCHITECTURE . 19-187
+19.16 PERFORMANCE MONITORING EVENTS FOR PROCESSORS BASED ON THE SILVERMONT MICROARCHITECTURE . 19-194
+19.16.1 Performance Monitoring Events for Processors Based on the Airmont Microarchitecture . . 19-199
+19.17 PERFORMANCE MONITORING EVENTS FOR 45 NM AND 32 NM INTEL ATOM PROCESSORS . . 19-199
+19.18 PERFORMANCE MONITORING EVENTS FOR INTEL CORE SOLO AND INTEL CORE DUO PROCESSORS . 19-213
+19.19 PENTIUM 4 AND INTEL XEON PROCESSOR PERFORMANCE MONITORING EVENTS. . 19-218
+19.20 PERFORMANCE MONITORING EVENTS FOR INTEL PENTIUM M PROCESSORS . . . 19-247
+19.21 P6 FAMILY PROCESSOR PERFORMANCE MONITORING EVENTS. . . . 19-249
+19.22 PENTIUM PROCESSOR PERFORMANCE MONITORING EVENTS . . . . 19-258
+CHAPTER 20
+8086 EMULATION
+20.1 REAL-ADDRESS MODE . . . . . . 20-1
+20.1.1 Address Translation in Real-Address Mode. . . . . 20-2
+20.1.2 Registers Supported in Real-Address Mode . . . . . 20-3
+20.1.3 Instructions Supported in Real-Address Mode . . . . . 20-3
+20.1.4 Interrupt and Exception Handling. . . . . 20-4
+20.2 VIRTUAL-8086 MODE. . . . . . 20-5
+20.2.1 Enabling Virtual-8086 Mode . . . . . . 20-6
+20.2.2 Structure of a Virtual-8086 Task . . . . . 20-7
+20.2.3 Paging of Virtual-8086 Tasks . . . . . . 20-7
+20.2.4 Protection within a Virtual-8086 Task . . . . . 20-8
+20.2.5 Entering Virtual-8086 Mode . . . . . . 20-8
+20.2.6 Leaving Virtual-8086 Mode . . . . . . 20-9
+20.2.7 Sensitive Instructions. . . . . . .20-10
+20.2.8 Virtual-8086 Mode I/O . . . . . . .20-10
+20.2.8.1 I/O-Port-Mapped I/O . . . . . . .20-11
+20.2.8.2 Memory-Mapped I/O . . . . . . .20-11
+20.2.8.3 Special I/O Buffers. . . . . . .20-11
+20.3 INTERRUPT AND EXCEPTION HANDLING IN VIRTUAL-8086 MODE. . . . 20-11
+20.3.1 Class 1！Hardware Interrupt and Exception Handling in Virtual-8086 Mode. . . .20-12
+20.3.1.1 Handling an Interrupt or Exception Through a Protected-Mode Trap or Interrupt Gate. . .20-12
+20.3.1.2 Handling an Interrupt or Exception With an 8086 Program Interrupt or Exception Handler . . .20-14
+20.3.1.3 Handling an Interrupt or Exception Through a Task Gate . . . . .20-14
+20.3.2 Class 2！Maskable Hardware Interrupt Handling in Virtual-8086 Mode Using the Virtual Interrupt Mechanism . .20-15
+20.3.3 Class 3！Software Interrupt Handling in Virtual-8086 Mode . . . . .20-16
+20.3.3.1 Method 1: Software Interrupt Handling . . . . . .20-18
+20.3.3.2 Methods 2 and 3: Software Interrupt Handling . . . . .20-18
+20.3.3.3 Method 4: Software Interrupt Handling . . . . . .20-19
+20.3.3.4 Method 5: Software Interrupt Handling . . . . . .20-19
+20.3.3.5 Method 6: Software Interrupt Handling . . . . . .20-19
+20.4 PROTECTED-MODE VIRTUAL INTERRUPTS . . . . . 20-20
+CHAPTER 21
+MIXING 16-BIT AND 32-BIT CODE
+21.1 DEFINING 16-BIT AND 32-BIT PROGRAM MODULES . . . . 21-1
+21.2 MIXING 16-BIT AND 32-BIT OPERATIONS WITHIN A CODE SEGMENT. . . 21-2
+21.3 SHARING DATA AMONG MIXED-SIZE CODE SEGMENTS . . . . 21-3
+21.4 TRANSFERRING CONTROL AMONG MIXED-SIZE CODE SEGMENTS. . . . 21-3
+21.4.1 Code-Segment Pointer Size . . . . . . 21-4
+21.4.2 Stack Management for Control Transfer . . . . . 21-4
+21.4.2.1 Controlling the Operand-Size Attribute For a Call . . . . 21-5
+21.4.2.2 Passing Parameters With a Gate. . . . . 21-6
+21.4.3 Interrupt Control Transfers. . . . . . 21-6
+21.4.4 Parameter Translation . . . . . . 21-6
+21.4.5 Writing Interface Procedures . . . . . . 21-6
+CHAPTER 22
+ARCHITECTURE COMPATIBILITY
+22.1 PROCESSOR FAMILIES AND CATEGORIES . . . . . 22-1
+22.2 RESERVED BITS . . . . . . . 22-2
+22.3 ENABLING NEW FUNCTIONS AND MODES . . . . . 22-2
+22.4 DETECTING THE PRESENCE OF NEW FEATURES THROUGH SOFTWARE . . . 22-2
+22.5 INTEL MMX TECHNOLOGY . . . . . . 22-2
+22.6 STREAMING SIMD EXTENSIONS (SSE) . . . . . 22-3
+22.7 STREAMING SIMD EXTENSIONS 2 (SSE2) . . . . . 22-3
+22.8 STREAMING SIMD EXTENSIONS 3 (SSE3) . . . . . 22-3
+22.9 ADDITIONAL STREAMING SIMD EXTENSIONS . . . . . 22-3
+22.10 INTEL HYPER-THREADING TECHNOLOGY. . . . . 22-3
+22.11 MULTI-CORE TECHNOLOGY. . . . . . 22-4
+22.12 SPECIFIC FEATURES OF DUAL-CORE PROCESSOR . . . . . 22-4
+22.13 NEW INSTRUCTIONS IN THE PENTIUM AND LATER IA-32 PROCESSORS . . . 22-4
+22.13.1 Instructions Added Prior to the Pentium Processor . . . . 22-4
+22.14 OBSOLETE INSTRUCTIONS . . . . . . 22-5
+22.15 UNDEFINED OPCODES. . . . . . 22-5
+22.16 NEW FLAGS IN THE EFLAGS REGISTER . . . . . 22-6
+22.16.1 Using EFLAGS Flags to Distinguish Between 32-Bit IA-32 Processors . . . 22-6
+22.17 STACK OPERATIONS AND USER SOFTWARE. . . . . 22-7
+22.17.1 PUSH SP . . . . . . . 22-7
+22.17.2 EFLAGS Pushed on the Stack . . . . . . 22-7
+22.18 X87 FPU . . . . . . . 22-7
+22.18.1 Control Register CR0 Flags . . . . . . 22-7
+22.18.2 x87 FPU Status Word . . . . . . 22-8
+22.18.2.1 Condition Code Flags (C0 through C3) . . . . . 22-8
+22.18.2.2 Stack Fault Flag . . . . . . 22-8
+22.18.3 x87 FPU Control Word . . . . . . 22-8
+22.18.4 x87 FPU Tag Word. . . . . . 22-9
+22.18.5 Data Types . . . . . . . 22-9
+22.18.5.1 NaNs. . . . . . . 22-9
+22.18.5.2 Pseudo-zero, Pseudo-NaN, Pseudo-infinity, and Unnormal Formats . . . 22-9
+22.18.6 Floating-Point Exceptions . . . . . . 22-9
+22.18.6.1 Denormal Operand Exception (#D) . . . . . .22-10
+22.18.6.2 Numeric Overflow Exception (#O) . . . . . .22-10
+22.18.6.3 Numeric Underflow Exception (#U) . . . . . .22-10
+22.18.6.4 Exception Precedence . . . . . . .22-10
+22.18.6.5 CS and EIP For FPU Exceptions . . . . . .22-10
+22.18.6.6 FPU Error Signals . . . . . . .22-11
+22.18.6.7 Assertion of the FERR# Pin . . . . . .22-11
+22.18.6.8 Invalid Operation Exception On Denormals . . . . . .22-11
+22.18.6.9 Alignment Check Exceptions (#AC) . . . . . .22-11
+22.18.6.10 Segment Not Present Exception During FLDENV . . . . .22-11
+22.18.6.11 Device Not Available Exception (#NM) . . . . . .22-12
+22.18.6.12 Coprocessor Segment Overrun Exception. . . . . .22-12
+22.18.6.13 General Protection Exception (#GP) . . . . . .22-12
+22.18.6.14 Floating-Point Error Exception (#MF) . . . . . .22-12
+22.18.7 Changes to Floating-Point Instructions. . . . . .22-12
+22.18.7.1 FDIV, FPREM, and FSQRT Instructions . . . . . .22-12
+22.18.7.2 FSCALE Instruction . . . . . . .22-12
+22.18.7.3 FPREM1 Instruction . . . . . . .22-12
+22.18.7.4 FPREM Instruction. . . . . . .22-13
+22.18.7.5 FUCOM, FUCOMP, and FUCOMPP Instructions . . . . .22-13
+22.18.7.6 FPTAN Instruction. . . . . . .22-13
+22.18.7.7 Stack Overflow. . . . . . .22-13
+22.18.7.8 FSIN, FCOS, and FSINCOS Instructions . . . . . .22-13
+22.18.7.9 FPATAN Instruction . . . . . . .22-13
+22.18.7.10 F2XM1 Instruction. . . . . . .22-13
+22.18.7.11 FLD Instruction. . . . . . .22-13
+22.18.7.12 FXTRACT Instruction . . . . . . .22-14
+22.18.7.13 Load Constant Instructions. . . . . .22-14
+22.18.7.14 FXAM Instruction. . . . . . .22-14
+22.18.7.15 FSAVE and FSTENV Instructions . . . . . .22-14
+22.18.8 Transcendental Instructions. . . . . . .22-14
+22.18.9 Obsolete Instructions and Undefined Opcodes . . . . .22-15
+22.18.10 WAIT/FWAIT Prefix Differences . . . . . .22-15
+22.18.11 Operands Split Across Segments and/or Pages . . . . .22-15
+22.18.12 FPU Instruction Synchronization. . . . . .22-15
+22.19 SERIALIZING INSTRUCTIONS . . . . . . 22-16
+22.20 FPU AND MATH COPROCESSOR INITIALIZATION. . . . . 22-16
+22.20.1 Intel 387 and Intel 287 Math Coprocessor Initialization. . . . .22-16
+22.20.2 Intel486 SX Processor and Intel 487 SX Math Coprocessor Initialization . . . .22-16
+22.21 CONTROL REGISTERS . . . . . . 22-17
+22.22 MEMORY MANAGEMENT FACILITIES . . . . . 22-19
+22.22.1 New Memory Management Control Flags . . . . . .22-19
+22.22.1.1 Physical Memory Addressing Extension. . . . . .22-19
+22.22.1.2 Global Pages . . . . . . .22-19
+22.22.1.3 Larger Page Sizes . . . . . . .22-19
+22.22.2 CD and NW Cache Control Flags . . . . . .22-19
+22.22.3 Descriptor Types and Contents. . . . . .22-19
+22.22.4 Changes in Segment Descriptor Loads . . . . . .22-20
+22.23 DEBUG FACILITIES . . . . . . 22-20
+22.23.1 Differences in Debug Register DR6 . . . . . .22-20
+22.23.2 Differences in Debug Register DR7 . . . . . .22-20
+22.23.3 Debug Registers DR4 and DR5 . . . . . .22-20
+22.24 RECOGNITION OF BREAKPOINTS . . . . . 22-20
+22.25 EXCEPTIONS AND/OR EXCEPTION CONDITIONS . . . . . 22-21
+22.25.1 Machine-Check Architecture. . . . . . .22-22
+22.25.2 Priority of Exceptions. . . . . . .22-22
+22.25.3 Exception Conditions of Legacy SIMD Instructions Operating on MMX Registers. . . .22-22
+22.26 INTERRUPTS . . . . . . . 22-27
+22.26.1 Interrupt Propagation Delay. . . . . . .22-27
+22.26.2 NMI Interrupts. . . . . . .22-27
+22.26.3 IDT Limit . . . . . . . .22-27
+22.27 ADVANCED PROGRAMMABLE INTERRUPT CONTROLLER (APIC) . . . . 22-27
+22.27.1 Software Visible Differences Between the Local APIC and the 82489DX . . . .22-28
+22.27.2 New Features Incorporated in the Local APIC for the P6 Family and Pentium Processors . . .22-28
+22.27.3 New Features Incorporated in the Local APIC of the Pentium 4 and Intel Xeon Processors. . .22-28
+22.28 TASK SWITCHING AND TSS. . . . . . 22-28
+22.28.1 P6 Family and Pentium Processor TSS . . . . . .22-29
+22.28.2 TSS Selector Writes . . . . . . .22-29
+22.28.3 Order of Reads/Writes to the TSS . . . . . .22-29
+22.28.4 Using A 16-Bit TSS with 32-Bit Constructs. . . . . .22-29
+22.28.5 Differences in I/O Map Base Addresses . . . . . .22-29
+22.29 CACHE MANAGEMENT . . . . . . 22-30
+22.29.1 Self-Modifying Code with Cache Enabled . . . . . .22-30
+22.29.2 Disabling the L3 Cache . . . . . . .22-31
+22.30 PAGING . . . . . . . 22-31
+22.30.1 Large Pages . . . . . . . .22-31
+22.30.2 PCD and PWT Flags . . . . . . .22-31
+22.30.3 Enabling and Disabling Paging . . . . . .22-32
+22.31 STACK OPERATIONS AND SUPERVISOR SOFTWARE . . . . 22-32
+22.31.1 Selector Pushes and Pops . . . . . . .22-32
+22.31.2 Error Code Pushes . . . . . . .22-32
+22.31.3 Fault Handling Effects on the Stack. . . . . .22-33
+22.31.4 Interlevel RET/IRET From a 16-Bit Interrupt or Call Gate . . . . .22-33
+22.32 MIXING 16- AND 32-BIT SEGMENTS . . . . . 22-33
+22.33 SEGMENT AND ADDRESS WRAPAROUND . . . . . 22-33
+22.33.1 Segment Wraparound. . . . . . .22-34
+22.34 STORE BUFFERS AND MEMORY ORDERING . . . . . 22-34
+22.35 BUS LOCKING . . . . . . . 22-35
+22.36 BUS HOLD . . . . . . . 22-35
+22.37 MODEL-SPECIFIC EXTENSIONS TO THE IA-32 . . . . . 22-35
+22.37.1 Model-Specific Registers . . . . . . .22-36
+22.37.2 RDMSR and WRMSR Instructions. . . . . .22-36
+22.37.3 Memory Type Range Registers . . . . . .22-36
+22.37.4 Machine-Check Exception and Architecture. . . . . .22-36
+22.37.5 Performance-Monitoring Counters . . . . . .22-37
+22.38 TWO WAYS TO RUN INTEL 286 PROCESSOR TASKS . . . . 22-37
+22.39 INITIAL STATE OF PENTIUM, PENTIUM PRO AND PENTIUM 4 PROCESSORS . . . 22-37
+CHAPTER 23
+INTRODUCTION TO VIRTUAL MACHINE EXTENSIONS
+23.1 OVERVIEW . . . . . . . 23-1
+23.2 VIRTUAL MACHINE ARCHITECTURE . . . . . 23-1
+23.3 INTRODUCTION TO VMX OPERATION . . . . . 23-1
+23.4 LIFE CYCLE OF VMM SOFTWARE . . . . . . 23-2
+23.5 VIRTUAL-MACHINE CONTROL STRUCTURE . . . . . 23-2
+23.6 DISCOVERING SUPPORT FOR VMX . . . . . 23-2
+23.7 ENABLING AND ENTERING VMX OPERATION . . . . . 23-3
+23.8 RESTRICTIONS ON VMX OPERATION. . . . . 23-3
+CHAPTER 24
+VIRTUAL MACHINE CONTROL STRUCTURES
+24.1 OVERVIEW . . . . . . . 24-1
+24.2 FORMAT OF THE VMCS REGION. . . . . . 24-2
+24.3 ORGANIZATION OF VMCS DATA . . . . . . 24-3
+24.4 GUEST-STATE AREA . . . . . . 24-4
+24.4.1 Guest Register State. . . . . . 24-4
+24.4.2 Guest Non-Register State . . . . . . 24-6
+24.5 HOST-STATE AREA . . . . . . 24-8
+24.6 VM-EXECUTION CONTROL FIELDS . . . . . 24-9
+24.6.1 Pin-Based VM-Execution Controls. . . . . 24-9
+24.6.2 Processor-Based VM-Execution Controls . . . . . 24-9
+24.6.3 Exception Bitmap . . . . . . .24-12
+24.6.4 I/O-Bitmap Addresses . . . . . . .24-12
+24.6.5 Time-Stamp Counter Offset and Multiplier . . . . . .24-12
+24.6.6 Guest/Host Masks and Read Shadows for CR0 and CR4 . . . . .24-13
+24.6.7 CR3-Target Controls . . . . . . .24-13
+24.6.8 Controls for APIC Virtualization. . . . . .24-13
+24.6.9 MSR-Bitmap Address. . . . . . .24-14
+24.6.10 Executive-VMCS Pointer . . . . . . .24-15
+24.6.11 Extended-Page-Table Pointer (EPTP) . . . . . .24-15
+24.6.12 Virtual-Processor Identifier (VPID) . . . . . .24-16
+24.6.13 Controls for PAUSE-Loop Exiting . . . . . .24-16
+24.6.14 VM-Function Controls . . . . . . .24-16
+24.6.15 VMCS Shadowing Bitmap Addresses . . . . . .24-16
+24.6.16 ENCLS-Exiting Bitmap. . . . . . .24-16
+24.6.17 ENCLV-Exiting Bitmap . . . . . . .24-17
+24.6.18 Control Field for Page-Modification Logging . . . . . .24-17
+24.6.19 Controls for Virtualization Exceptions . . . . . .24-17
+24.6.20 XSS-Exiting Bitmap . . . . . . .24-17
+24.6.21 Sub-Page-Permission-Table Pointer (SPPTP) . . . . . .24-17
+24.7 VM-EXIT CONTROL FIELDS . . . . . . 24-18
+24.7.1 VM-Exit Controls . . . . . . .24-18
+24.7.2 VM-Exit Controls for MSRs . . . . . . .24-19
+24.8 VM-ENTRY CONTROL FIELDS . . . . . . 24-19
+24.8.1 VM-Entry Controls . . . . . . .24-20
+24.8.2 VM-Entry Controls for MSRs. . . . . . .24-21
+24.8.3 VM-Entry Controls for Event Injection . . . . . .24-21
+24.9 VM-EXIT INFORMATION FIELDS. . . . . . 24-22
+24.9.1 Basic VM-Exit Information. . . . . . .24-22
+24.9.2 Information for VM Exits Due to Vectored Events . . . . .24-23
+24.9.3 Information for VM Exits That Occur During Event Delivery . . . . .24-24
+24.9.4 Information for VM Exits Due to Instruction Execution. . . . .24-24
+24.9.5 VM-Instruction Error Field. . . . . . .24-25
+24.10 VMCS TYPES: ORDINARY AND SHADOW . . . . . 24-25
+24.11 SOFTWARE USE OF THE VMCS AND RELATED STRUCTURES . . . . 24-25
+24.11.1 Software Use of Virtual-Machine Control Structures. . . . .24-25
+24.11.2 VMREAD, VMWRITE, and Encodings of VMCS Fields . . . . .24-26
+24.11.3 Initializing a VMCS . . . . . . .24-28
+24.11.4 Software Access to Related Structures . . . . . .24-28
+24.11.5 VMXON Region . . . . . . .24-29
+CHAPTER 25
+VMX NON-ROOT OPERATION
+25.1 INSTRUCTIONS THAT CAUSE VM EXITS . . . . . 25-1
+25.1.1 Relative Priority of Faults and VM Exits. . . . . 25-1
+25.1.2 Instructions That Cause VM Exits Unconditionally . . . . 25-2
+25.1.3 Instructions That Cause VM Exits Conditionally. . . . . 25-2
+25.2 OTHER CAUSES OF VM EXITS . . . . . . 25-5
+25.3 CHANGES TO INSTRUCTION BEHAVIOR IN VMX NON-ROOT OPERATION . . . 25-6
+25.4 OTHER CHANGES IN VMX NON-ROOT OPERATION. . . . 25-11
+25.4.1 Event Blocking . . . . . . .25-11
+25.4.2 Treatment of Task Switches . . . . . . .25-12
+25.5 FEATURES SPECIFIC TO VMX NON-ROOT OPERATION . . . . 25-12
+25.5.1 VMX-Preemption Timer . . . . . . .25-13
+25.5.2 Monitor Trap Flag . . . . . . .25-13
+25.5.3 Translation of Guest-Physical Addresses Using EPT . . . . .25-14
+25.5.3.1 Guest-Physical Address Translation for Intel PT: Details. . . . .25-14
+25.5.3.2 Trace-Address Pre-Translation (TAPT). . . . . .25-14
+25.5.4 APIC Virtualization. . . . . . .25-15
+25.5.5 VM Functions . . . . . . .25-15
+25.5.5.1 Enabling VM Functions. . . . . . .25-15
+25.5.5.2 General Operation of the VMFUNC Instruction . . . . .25-16
+25.5.5.3 EPTP Switching . . . . . . .25-16
+25.5.6 Virtualization Exceptions . . . . . . .25-17
+25.5.6.1 Convertible EPT Violations . . . . . .25-18
+25.5.6.2 Virtualization-Exception Information . . . . . .25-18
+25.5.6.3 Delivery of Virtualization Exceptions . . . . . .25-19
+25.6 UNRESTRICTED GUESTS . . . . . . 25-19
+CHAPTER 26
+VM ENTRIES
+26.1 BASIC VM-ENTRY CHECKS. . . . . . 26-2
+26.2 CHECKS ON VMX CONTROLS AND HOST-STATE AREA . . . . 26-2
+26.2.1 Checks on VMX Controls . . . . . . 26-2
+26.2.1.1 VM-Execution Control Fields . . . . . 26-2
+26.2.1.2 VM-Exit Control Fields . . . . . . 26-5
+26.2.1.3 VM-Entry Control Fields . . . . . . 26-6
+26.2.2 Checks on Host Control Registers and MSRs. . . . . 26-7
+26.2.3 Checks on Host Segment and Descriptor-Table Registers . . . . 26-7
+26.2.4 Checks Related to Address-Space Size . . . . . 26-7
+26.3 CHECKING AND LOADING GUEST STATE. . . . . 26-8
+26.3.1 Checks on the Guest State Area . . . . . 26-8
+26.3.1.1 Checks on Guest Control Registers, Debug Registers, and MSRs . . . 26-8
+26.3.1.2 Checks on Guest Segment Registers . . . . . 26-9
+26.3.1.3 Checks on Guest Descriptor-Table Registers . . . . .26-12
+26.3.1.4 Checks on Guest RIP and RFLAGS. . . . . .26-12
+26.3.1.5 Checks on Guest Non-Register State. . . . . .26-12
+26.3.1.6 Checks on Guest Page-Directory-Pointer-Table Entries . . . . .26-14
+26.3.2 Loading Guest State . . . . . . .26-15
+26.3.2.1 Loading Guest Control Registers, Debug Registers, and MSRs . . . .26-15
+26.3.2.2 Loading Guest Segment Registers and Descriptor-Table Registers. . . .26-16
+26.3.2.3 Loading Guest RIP, RSP, and RFLAGS . . . . . .26-17
+26.3.2.4 Loading Page-Directory-Pointer-Table Entries . . . . .26-17
+26.3.2.5 Updating Non-Register State . . . . . .26-17
+26.3.3 Clearing Address-Range Monitoring . . . . . .26-17
+26.4 LOADING MSRS . . . . . . . 26-18
+26.5 TRACE-ADDRESS PRE-TRANSLATION (TAPT). . . . . 26-18
+26.6 EVENT INJECTION. . . . . . 26-18
+26.6.1 Vectored-Event Injection. . . . . . .26-19
+26.6.1.1 Details of Vectored-Event Injection . . . . . .26-19
+26.6.1.2 VM Exits During Event Injection . . . . . .26-20
+26.6.1.3 Event Injection for VM Entries to Real-Address Mode . . . . .26-21
+26.6.2 Injection of Pending MTF VM Exits . . . . . .26-21
+26.7 SPECIAL FEATURES OF VM ENTRY. . . . . 26-21
+26.7.1 Interruptibility State . . . . . . .26-22
+26.7.2 Activity State . . . . . . .26-22
+26.7.3 Delivery of Pending Debug Exceptions after VM Entry . . . . .26-23
+26.7.4 VMX-Preemption Timer . . . . . . .26-24
+26.7.5 Interrupt-Window Exiting and Virtual-Interrupt Delivery . . . . .26-24
+26.7.6 NMI-Window Exiting . . . . . . .26-24
+26.7.7 VM Exits Induced by the TPR Threshold. . . . . .26-24
+26.7.8 Pending MTF VM Exits . . . . . . .26-25
+26.7.9 VM Entries and Advanced Debugging Features . . . . .26-25
+26.8 VM-ENTRY FAILURES DURING OR AFTER LOADING GUEST STATE . . . . 26-25
+26.9 MACHINE-CHECK EVENTS DURING VM ENTRY . . . . . 26-26
+CHAPTER 27
+VM EXITS
+27.1 ARCHITECTURAL STATE BEFORE A VM EXIT . . . . . 27-1
+27.2 RECORDING VM-EXIT INFORMATION AND UPDATING VM-ENTRY CONTROL FIELDS . . . 27-4
+27.2.1 Basic VM-Exit Information. . . . . . 27-4
+27.2.2 Information for VM Exits Due to Vectored Events . . . . .27-11
+27.2.3 Information About NMI Unblocking Due to IRET. . . . .27-12
+27.2.4 Information for VM Exits During Event Delivery . . . . .27-12
+27.2.5 Information for VM Exits Due to Instruction Execution . . . . .27-14
+27.3 SAVING GUEST STATE . . . . . . 27-21
+27.3.1 Saving Control Registers, Debug Registers, and MSRs. . . . .27-22
+27.3.2 Saving Segment Registers and Descriptor-Table Registers . . . . .27-22
+27.3.3 Saving RIP, RSP, and RFLAGS . . . . . . .27-22
+27.3.4 Saving Non-Register State . . . . . . .27-24
+27.4 SAVING MSRS . . . . . . . 27-26
+27.5 LOADING HOST STATE . . . . . . 27-26
+27.5.1 Loading Host Control Registers, Debug Registers, MSRs . . . . .27-27
+27.5.2 Loading Host Segment and Descriptor-Table Registers . . . . .27-28
+27.5.3 Loading Host RIP, RSP, and RFLAGS. . . . . .27-29
+27.5.4 Checking and Loading Host Page-Directory-Pointer-Table Entries . . . .27-29
+27.5.5 Updating Non-Register State . . . . . . .27-29
+27.5.6 Clearing Address-Range Monitoring . . . . . .27-30
+27.6 LOADING MSRS . . . . . . . 27-30
+27.7 VMX ABORTS. . . . . . . 27-30
+27.8 MACHINE-CHECK EVENTS DURING VM EXIT . . . . . 27-31
+CHAPTER 28
+VMX SUPPORT FOR ADDRESS TRANSLATION
+28.1 VIRTUAL PROCESSOR IDENTIFIERS (VPIDS) . . . . . 28-1
+28.2 THE EXTENDED PAGE TABLE MECHANISM (EPT) . . . . . 28-1
+28.2.1 EPT Overview. . . . . . . 28-1
+28.2.2 EPT Translation Mechanism . . . . . . 28-3
+28.2.3 EPT-Induced VM Exits . . . . . . 28-9
+28.2.3.1 EPT Misconfigurations . . . . . . .28-10
+28.2.3.2 EPT Violations. . . . . . .28-10
+28.2.3.3 Prioritization of EPT Misconfigurations and EPT Violations. . . . .28-12
+28.2.4 Sub-Page Write Permissions . . . . . . .28-13
+28.2.4.1 Write Accesses That Are Eligible for Sub-Page Write Permissions . . . .28-14
+28.2.4.2 Determining an Access¨s Sub-Page Write Permission . . . . .28-14
+28.2.5 Accessed and Dirty Flags for EPT. . . . . .28-15
+28.2.6 Page-Modification Logging . . . . . . .28-16
+28.2.7 EPT and Memory Typing . . . . . . .28-16
+28.2.7.1 Memory Type Used for Accessing EPT Paging Structures . . . . .28-16
+28.2.7.2 Memory Type Used for Translated Guest-Physical Addresses . . . .28-16
+28.3 CACHING TRANSLATION INFORMATION. . . . . 28-17
+28.3.1 Information That May Be Cached . . . . . .28-17
+28.3.2 Creating and Using Cached Translation Information. . . . .28-18
+28.3.3 Invalidating Cached Translation Information. . . . . .28-19
+28.3.3.1 Operations that Invalidate Cached Mappings . . . . .28-19
+28.3.3.2 Operations that Need Not Invalidate Cached Mappings . . . . .28-20
+28.3.3.3 Guidelines for Use of the INVVPID Instruction . . . . .28-21
+28.3.3.4 Guidelines for Use of the INVEPT Instruction. . . . .28-22
+CHAPTER 29
+APIC VIRTUALIZATION AND VIRTUAL INTERRUPTS
+29.1 VIRTUAL APIC STATE . . . . . . 29-1
+29.1.1 Virtualized APIC Registers . . . . . . 29-1
+29.1.2 TPR Virtualization . . . . . . 29-2
+29.1.3 PPR Virtualization . . . . . . 29-2
+29.1.4 EOI Virtualization . . . . . . 29-3
+29.1.5 Self-IPI Virtualization . . . . . . 29-3
+29.2 EVALUATION AND DELIVERY OF VIRTUAL INTERRUPTS . . . . 29-3
+29.2.1 Evaluation of Pending Virtual Interrupts . . . . . 29-3
+29.2.2 Virtual-Interrupt Delivery . . . . . . 29-4
+29.3 VIRTUALIZING CR8-BASED TPR ACCESSES . . . . . 29-5
+29.4 VIRTUALIZING MEMORY-MAPPED APIC ACCESSES . . . . . 29-5
+29.4.1 Priority of APIC-Access VM Exits . . . . . 29-6
+29.4.2 Virtualizing Reads from the APIC-Access Page . . . . . 29-6
+29.4.3 Virtualizing Writes to the APIC-Access Page. . . . . 29-7
+29.4.3.1 Determining Whether a Write Access is Virtualized . . . . 29-7
+29.4.3.2 APIC-Write Emulation . . . . . . 29-8
+29.4.3.3 APIC-Write VM Exits . . . . . . 29-9
+29.4.4 Instruction-Specific Considerations . . . . . 29-9
+29.4.5 Issues Pertaining to Page Size and TLB Management . . . . .29-10
+29.4.6 APIC Accesses Not Directly Resulting From Linear Addresses . . . . .29-11
+29.4.6.1 Guest-Physical Accesses to the APIC-Access Page. . . . .29-11
+29.4.6.2 Physical Accesses to the APIC-Access Page . . . . .29-11
+29.5 VIRTUALIZING MSR-BASED APIC ACCESSES . . . . . 29-12
+29.6 POSTED-INTERRUPT PROCESSING. . . . . 29-13
+CHAPTER 30
+VMX INSTRUCTION REFERENCE
+30.1 OVERVIEW . . . . . . . 30-1
+30.2 CONVENTIONS . . . . . . . 30-2
+30.3 VMX INSTRUCTIONS . . . . . . 30-2
+INVEPT！ Invalidate Translations Derived from EPT. . . . 30-3
+INVVPID！ Invalidate Translations Based on VPID. . . . 30-6
+VMCALL！Call to VM Monitor . . . . . . 30-9
+VMCLEAR！Clear Virtual-Machine Control Structure. . . . .30-11
+VMFUNC！Invoke VM function. . . . . .30-13
+VMLAUNCH/VMRESUME！Launch/Resume Virtual Machine. . . . .30-14
+VMPTRLD！Load Pointer to Virtual-Machine Control Structure . . . . .30-17
+VMPTRST！Store Pointer to Virtual-Machine Control Structure. . . . .30-19
+VMREAD！Read Field from Virtual-Machine Control Structure . . . . .30-21
+VMRESUME！Resume Virtual Machine . . . . . .30-23
+VMWRITE！Write Field to Virtual-Machine Control Structure. . . . .30-24
+VMXOFF！Leave VMX Operation . . . . . .30-26
+VMXON！Enter VMX Operation . . . . . .30-28
+30.4 VM INSTRUCTION ERROR NUMBERS . . . . . 30-31
+CHAPTER 31
+VIRTUAL-MACHINE MONITOR PROGRAMMING CONSIDERATIONS
+31.1 VMX SYSTEM PROGRAMMING OVERVIEW . . . . . 31-1
+31.2 SUPPORTING PROCESSOR OPERATING MODES IN GUEST ENVIRONMENTS . . . 31-1
+31.2.1 Using Unrestricted Guest Mode. . . . . . 31-1
+31.3 MANAGING VMCS REGIONS AND POINTERS. . . . . 31-2
+31.4 USING VMX INSTRUCTIONS. . . . . . 31-2
+31.5 VMM SETUP & TEAR DOWN . . . . . . 31-4
+31.5.1 Algorithms for Determining VMX Capabilities . . . . . 31-5
+31.6 PREPARATION AND LAUNCHING A VIRTUAL MACHINE . . . . 31-6
+31.7 HANDLING OF VM EXITS . . . . . . 31-7
+31.7.1 Handling VM Exits Due to Exceptions . . . . . 31-8
+31.7.1.1 Reflecting Exceptions to Guest Software . . . . . 31-8
+31.7.1.2 Resuming Guest Software after Handling an Exception . . . . 31-9
+31.8 MULTI-PROCESSOR CONSIDERATIONS . . . . . 31-10
+31.8.1 Initialization . . . . . . . .31-11
+31.8.2 Moving a VMCS Between Processors . . . . . .31-11
+31.8.3 Paired Index-Data Registers. . . . . . .31-11
+31.8.4 External Data Structures. . . . . . .31-11
+31.8.5 CPUID Emulation. . . . . . .31-12
+31.9 32-BIT AND 64-BIT GUEST ENVIRONMENTS. . . . . 31-12
+31.9.1 Operating Modes of Guest Environments. . . . . .31-12
+31.9.2 Handling Widths of VMCS Fields . . . . . .31-12
+31.9.2.1 Natural-Width VMCS Fields . . . . . .31-13
+31.9.2.2 64-Bit VMCS Fields . . . . . . .31-13
+31.9.3 IA-32e Mode Hosts . . . . . . .31-13
+31.9.4 IA-32e Mode Guests . . . . . . .31-13
+31.9.5 32-Bit Guests . . . . . . .31-14
+31.10 HANDLING MODEL SPECIFIC REGISTERS. . . . . 31-14
+31.10.1 Using VM-Execution Controls . . . . . . .31-14
+31.10.2 Using VM-Exit Controls for MSRs . . . . . .31-15
+31.10.3 Using VM-Entry Controls for MSRs . . . . . .31-15
+31.10.4 Handling Special-Case MSRs and Instructions . . . . . .31-15
+31.10.4.1 Handling IA32_EFER MSR . . . . . . .31-16
+31.10.4.2 Handling the SYSENTER and SYSEXIT Instructions. . . . .31-16
+31.10.4.3 Handling the SYSCALL and SYSRET Instructions . . . . .31-16
+31.10.4.4 Handling the SWAPGS Instruction. . . . . .31-16
+31.10.4.5 Implementation Specific Behavior on Writing to Certain MSRs . . . .31-16
+31.10.5 Handling Accesses to Reserved MSR Addresses . . . . .31-17
+31.11 HANDLING ACCESSES TO CONTROL REGISTERS . . . . . 31-17
+31.12 PERFORMANCE CONSIDERATIONS . . . . . 31-17
+31.13 USE OF THE VMX-PREEMPTION TIMER. . . . . 31-17
+CHAPTER 32
+VIRTUALIZATION OF SYSTEM RESOURCES
+32.1 OVERVIEW . . . . . . . 32-1
+32.2 VIRTUALIZATION SUPPORT FOR DEBUGGING FACILITIES . . . . 32-1
+32.2.1 Debug Exceptions . . . . . . 32-1
+32.3 MEMORY VIRTUALIZATION. . . . . . 32-2
+32.3.1 Processor Operating Modes & Memory Virtualization . . . . 32-2
+32.3.2 Guest & Host Physical Address Spaces. . . . . 32-2
+32.3.3 Virtualizing Virtual Memory by Brute Force . . . . . 32-3
+32.3.4 Alternate Approach to Memory Virtualization . . . . . 32-3
+32.3.5 Details of Virtual TLB Operation. . . . . 32-4
+32.3.5.1 Initialization of Virtual TLB. . . . . . 32-5
+32.3.5.2 Response to Page Faults. . . . . . 32-5
+32.3.5.3 Response to Uses of INVLPG. . . . . 32-7
+32.3.5.4 Response to CR3 Writes . . . . . . 32-8
+32.4 MICROCODE UPDATE FACILITY . . . . . . 32-8
+32.4.1 Early Load of Microcode Updates . . . . . 32-8
+32.4.2 Late Load of Microcode Updates . . . . . 32-8
+CHAPTER 33
+HANDLING BOUNDARY CONDITIONS IN A VIRTUAL MACHINE MONITOR
+33.1 OVERVIEW . . . . . . . 33-1
+33.2 INTERRUPT HANDLING IN VMX OPERATION. . . . . 33-1
+33.3 EXTERNAL INTERRUPT VIRTUALIZATION. . . . . 33-2
+33.3.1 Virtualization of Interrupt Vector Space . . . . . 33-3
+33.3.2 Control of Platform Interrupts. . . . . . 33-4
+33.3.2.1 PIC Virtualization . . . . . . 33-4
+33.3.2.2 xAPIC Virtualization . . . . . . 33-5
+33.3.2.3 Local APIC Virtualization . . . . . . 33-5
+33.3.2.4 I/O APIC Virtualization . . . . . . 33-6
+33.3.2.5 Virtualization of Message Signaled Interrupts . . . . 33-6
+33.3.3 Examples of Handling of External Interrupts . . . . . 33-6
+33.3.3.1 Guest Setup. . . . . . 33-6
+33.3.3.2 Processor Treatment of External Interrupt . . . . . 33-6
+33.3.3.3 Processing of External Interrupts by VMM . . . . . 33-7
+33.3.3.4 Generation of Virtual Interrupt Events by VMM . . . . 33-7
+33.4 ERROR HANDLING BY VMM . . . . . . 33-8
+33.4.1 VM-Exit Failures . . . . . . 33-8
+33.4.2 Machine-Check Considerations . . . . . . 33-8
+33.4.3 MCA Error Handling Guidelines for VMM. . . . . 33-9
+33.4.3.1 VMM Error Handling Strategies. . . . . .33-10
+33.4.3.2 Basic VMM MCA error recovery handling . . . . . .33-10
+33.4.3.3 Implementation Considerations for the Basic Model . . . . .33-10
+33.4.3.4 MCA Virtualization. . . . . . .33-10
+33.4.3.5 Implementation Considerations for the MCA Virtualization Model. . . .33-11
+33.5 HANDLING ACTIVITY STATES BY VMM. . . . . 33-11
+CHAPTER 34
+SYSTEM MANAGEMENT MODE
+34.1 SYSTEM MANAGEMENT MODE OVERVIEW. . . . . 34-1
+34.1.1 System Management Mode and VMX Operation . . . . . 34-1
+34.2 SYSTEM MANAGEMENT INTERRUPT (SMI). . . . . 34-2
+34.3 SWITCHING BETWEEN SMM AND THE OTHER PROCESSOR OPERATING MODES. . . 34-2
+34.3.1 Entering SMM . . . . . . . 34-2
+34.3.2 Exiting From SMM . . . . . . 34-3
+34.4 SMRAM . . . . . . . 34-3
+34.4.1 SMRAM State Save Map. . . . . . 34-4
+34.4.1.1 SMRAM State Save Map and Intel 64 Architecture. . . . 34-6
+34.4.2 SMRAM Caching . . . . . . 34-8
+34.4.2.1 System Management Range Registers (SMRR) . . . . 34-9
+34.5 SMI HANDLER EXECUTION ENVIRONMENT . . . . . 34-9
+34.5.1 Initial SMM Execution Environment . . . . . 34-9
+34.5.2 SMI Handler Operating Mode Switching . . . . . .34-10
+34.6 EXCEPTIONS AND INTERRUPTS WITHIN SMM . . . . . 34-10
+34.7 MANAGING SYNCHRONOUS AND ASYNCHRONOUS SYSTEM MANAGEMENT INTERRUPTS. . 34-11
+34.7.1 I/O State Implementation . . . . . . .34-12
+34.8 NMI HANDLING WHILE IN SMM. . . . . . 34-13
+34.9 SMM REVISION IDENTIFIER . . . . . . 34-13
+34.10 AUTO HALT RESTART . . . . . . 34-13
+34.10.1 Executing the HLT Instruction in SMM . . . . . .34-14
+34.11 SMBASE RELOCATION. . . . . . 34-14
+34.12 I/O INSTRUCTION RESTART . . . . . . 34-15
+34.12.1 Back-to-Back SMI Interrupts When I/O Instruction Restart Is Being Used . . . .34-16
+34.13 SMM MULTIPLE-PROCESSOR CONSIDERATIONS. . . . . 34-16
+34.14 DEFAULT TREATMENT OF SMIS AND SMM WITH VMX OPERATION AND SMX OPERATION . . 34-16
+34.14.1 Default Treatment of SMI Delivery. . . . . .34-16
+34.14.2 Default Treatment of RSM . . . . . . .34-17
+34.14.3 Protection of CR4.VMXE in SMM . . . . . .34-18
+34.14.4 VMXOFF and SMI Unblocking . . . . . . .34-18
+34.15 DUAL-MONITOR TREATMENT OF SMIs AND SMM . . . . . 34-19
+34.15.1 Dual-Monitor Treatment Overview. . . . . .34-19
+34.15.2 SMM VM Exits . . . . . . .34-19
+34.15.2.1 Architectural State Before a VM Exit . . . . . .34-20
+34.15.2.2 Updating the Current-VMCS and Executive-VMCS Pointers . . . . .34-20
+34.15.2.3 Recording VM-Exit Information . . . . . .34-20
+34.15.2.4 Saving Guest State . . . . . . .34-21
+34.15.2.5 Updating State . . . . . . .34-21
+34.15.3 Operation of the SMM-Transfer Monitor . . . . . .34-21
+34.15.4 VM Entries that Return from SMM . . . . . .34-22
+34.15.4.1 Checks on the Executive-VMCS Pointer Field . . . . .34-22
+34.15.4.2 Checks on VM-Execution Control Fields . . . . . .34-22
+34.15.4.3 Checks on VM-Entry Control Fields. . . . . .34-23
+34.15.4.4 Checks on the Guest State Area . . . . . .34-23
+34.15.4.5 Loading Guest State . . . . . . .34-23
+34.15.4.6 VMX-Preemption Timer . . . . . . .34-23
+34.15.4.7 Updating the Current-VMCS and SMM-Transfer VMCS Pointers . . . .34-23
+34.15.4.8 VM Exits Induced by VM Entry. . . . . .34-24
+34.15.4.9 SMI Blocking. . . . . . .34-24
+34.15.4.10 Failures of VM Entries That Return from SMM. . . . .34-24
+34.15.5 Enabling the Dual-Monitor Treatment . . . . . .34-24
+34.15.6 Activating the Dual-Monitor Treatment . . . . . .34-26
+34.15.6.1 Initial Checks . . . . . . .34-26
+34.15.6.2 Updating the Current-VMCS and Executive-VMCS Pointers . . . . .34-27
+34.15.6.3 Saving Guest State . . . . . . .34-27
+34.15.6.4 Saving MSRs . . . . . . .34-27
+34.15.6.5 Loading Host State . . . . . . .34-27
+34.15.6.6 Loading MSRs . . . . . . .34-29
+34.15.7 Deactivating the Dual-Monitor Treatment . . . . . .34-29
+34.16 SMI AND PROCESSOR EXTENDED STATE MANAGEMENT . . . . 34-29
+34.17 MODEL-SPECIFIC SYSTEM MANAGEMENT ENHANCEMENT . . . . 34-29
+34.17.1 SMM Handler Code Access Control . . . . . .34-30
+34.17.2 SMI Delivery Delay Reporting. . . . . . .34-30
+34.17.3 Blocked SMI Reporting . . . . . . .34-30
+CHAPTER 35
+INTEL PROCESSOR TRACE
+35.1 OVERVIEW . . . . . . . 35-1
+35.1.1 Features and Capabilities. . . . . . 35-1
+35.1.1.1 Packet Summary . . . . . . 35-1
+35.2 INTEL PROCESSOR TRACE OPERATIONAL MODEL . . . . . 35-2
+35.2.1 Change of Flow Instruction (COFI) Tracing. . . . . 35-2
+35.2.1.1 Direct Transfer COFI . . . . . . 35-3
+35.2.1.2 Indirect Transfer COFI . . . . . . 35-3
+35.2.1.3 Far Transfer COFI. . . . . . 35-4
+35.2.2 Software Trace Instrumentation with PTWRITE . . . . . 35-4
+35.2.3 Power Event Tracing. . . . . . 35-4
+35.2.4 Trace Filtering. . . . . . . 35-4
+35.2.4.1 Filtering by Current Privilege Level (CPL). . . . . 35-5
+35.2.4.2 Filtering by CR3 . . . . . . 35-5
+35.2.4.3 Filtering by IP . . . . . . 35-5
+35.2.5 Packet Generation Enable Controls . . . . . 35-7
+35.2.5.1 Packet Enable (PacketEn) . . . . . . 35-7
+35.2.5.2 Trigger Enable (TriggerEn) . . . . . . 35-7
+35.2.5.3 Context Enable (ContextEn). . . . . . 35-7
+35.2.5.4 Branch Enable (BranchEn). . . . . . 35-8
+35.2.5.5 Filter Enable (FilterEn) . . . . . . 35-8
+35.2.6 Trace Output. . . . . . . 35-8
+35.2.6.1 Single Range Output. . . . . . 35-8
+35.2.6.2 Table of Physical Addresses (ToPA) . . . . . 35-9
+Single Output Region ToPA Implementation. . . . . 35-11
+ToPA Table Entry Format . . . . . . 35-11
+ToPA STOP . . . . . . . 35-12
+ToPA PMI . . . . . . . 35-12
+ToPA PMI and Single Output Region ToPA Implementation. . . . 35-13
+ToPA PMI and XSAVES/XRSTORS State Handling. . . . 35-13
+ToPA Errors . . . . . . . 35-14
+35.2.6.3 Trace Transport Subsystem. . . . . .35-15
+35.2.6.4 Restricted Memory Access . . . . . .35-15
+Modifications to Restricted Memory Regions . . . . . 35-15
+35.2.7 Enabling and Configuration MSRs . . . . . .35-15
+35.2.7.1 General Considerations . . . . . . .35-15
+35.2.7.2 IA32_RTIT_CTL MSR. . . . . . .35-16
+35.2.7.3 Enabling and Disabling Packet Generation with TraceEn . . . . .35-19
+Disabling Packet Generation. . . . . . 35-19
+Other Writes to IA32_RTIT_CTL . . . . . 35-19
+35.2.7.4 IA32_RTIT_STATUS MSR . . . . . . .35-20
+35.2.7.5 IA32_RTIT_ADDRn_A and IA32_RTIT_ADDRn_B MSRs . . . . .35-21
+35.2.7.6 IA32_RTIT_CR3_MATCH MSR . . . . . .35-21
+35.2.7.7 IA32_RTIT_OUTPUT_BASE MSR. . . . . .35-21
+35.2.7.8 IA32_RTIT_OUTPUT_MASK_PTRS MSR. . . . . .35-22
+35.2.8 Interaction of Intel Processor Trace and Other Processor Features . . . .35-23
+35.2.8.1 Intel Transactional Synchronization Extensions (Intel TSX) . . . .35-23
+35.2.8.2 TSX and IP Filtering . . . . . . .35-24
+35.2.8.3 System Management Mode (SMM) . . . . . .35-24
+35.2.8.4 Virtual-Machine Extensions (VMX). . . . . .35-24
+35.2.8.5 Intel Software Guard Extensions (Intel SGX) . . . . .35-24
+35.2.8.6 SENTER/ENTERACCS and ACM . . . . . .35-25
+35.2.8.7 Intel Memory Protection Extensions (Intel MPX) . . . . .35-25
+35.3 CONFIGURATION AND PROGRAMMING GUIDELINE . . . . 35-25
+35.3.1 Detection of Intel Processor Trace and Capability Enumeration. . . . .35-25
+35.3.1.1 Packet Decoding of RIP versus LIP. . . . . .35-29
+35.3.1.2 Model Specific Capability Restrictions. . . . . .35-29
+35.3.2 Enabling and Configuration of Trace Packet Generation. . . . .35-29
+35.3.2.1 Enabling Packet Generation . . . . . .35-29
+35.3.2.2 Disabling Packet Generation . . . . . .35-30
+35.3.3 Flushing Trace Output . . . . . . .35-30
+35.3.4 Warm Reset. . . . . . . .35-30
+35.3.5 Context Switch Consideration . . . . . .35-30
+35.3.5.1 Manual Trace Configuration Context Switch. . . . .35-30
+35.3.5.2 Trace Configuration Context Switch Using XSAVES/XRSTORS . . . .35-31
+35.3.6 Cycle-Accurate Mode . . . . . . .35-31
+35.3.6.1 Cycle Counter . . . . . . .35-32
+35.3.6.2 Cycle Packet Semantics . . . . . . .35-32
+35.3.6.3 Cycle Thresholds . . . . . . .35-33
+35.3.7 Decoder Synchronization (PSB+) . . . . . .35-33
+35.3.8 Internal Buffer Overflow. . . . . . .35-34
+35.3.8.1 Overflow Impact on Enables . . . . . .35-34
+35.3.8.2 Overflow Impact on Timing Packets . . . . . .35-35
+35.3.9 Operational Errors . . . . . . .35-35
+35.4 TRACE PACKETS AND DATA TYPES. . . . . 35-35
+35.4.1 Packet Relationships and Ordering . . . . . .35-35
+35.4.1.1 Packet Blocks . . . . . . .35-36
+Decoder Implications. . . . . . 35-36
+35.4.2 Packet Definitions . . . . . . .35-37
+35.4.2.1 Taken/Not-taken (TNT) Packet . . . . . .35-38
+35.4.2.2 Target IP (TIP) Packet. . . . . . .35-39
+IP Compression . . . . . . .35-39
+Indirect Transfer Compression for Returns (RET) . . . . .35-40
+35.4.2.3 Deferred TIPs . . . . . . .35-41
+35.4.2.4 Packet Generation Enable (TIP.PGE) Packet . . . . .35-42
+35.4.2.5 Packet Generation Disable (TIP.PGD) Packet . . . . .35-43
+35.4.2.6 Flow Update (FUP) Packet. . . . . . .35-44
+FUP IP Payload . . . . . . .35-45
+35.4.2.7 Paging Information (PIP) Packet . . . . . .35-46
+35.4.2.8 MODE Packets . . . . . . .35-47
+MODE.Exec Packet . . . . . . .35-47
+MODE.TSX Packet. . . . . . .35-48
+35.4.2.9 TraceStop Packet. . . . . . .35-49
+35.4.2.10 Core:Bus Ratio (CBR) Packet. . . . . .35-49
+35.4.2.11 Timestamp Counter (TSC) Packet . . . . . .35-50
+35.4.2.12 Mini Time Counter (MTC) Packet . . . . . .35-51
+35.4.2.13 TSC/MTC Alignment (TMA) Packet . . . . . .35-52
+35.4.2.14 Cycle Count (CYC) Packet. . . . . . .35-53
+35.4.2.15 VMCS Packet . . . . . . .35-54
+35.4.2.16 Overflow (OVF) Packet. . . . . . .35-55
+35.4.2.17 Packet Stream Boundary (PSB) Packet . . . . . .35-55
+35.4.2.18 PSBEND Packet. . . . . . .35-56
+35.4.2.19 Maintenance (MNT) Packet . . . . . .35-57
+35.4.2.20 PAD Packet . . . . . . .35-57
+35.4.2.21 PTWRITE (PTW) Packet . . . . . . .35-58
+35.4.2.22 Execution Stop (EXSTOP) Packet . . . . . .35-59
+35.4.2.23 MWAIT Packet . . . . . . .35-60
+35.4.2.24 Power Entry (PWRE) Packet . . . . . .35-61
+35.4.2.25 Power Exit (PWRX) Packet . . . . . .35-62
+35.4.2.26 Block Begin Packet (BBP). . . . . . .35-63
+35.4.2.27 Block Item Packet (BIP) . . . . . . .35-64
+BIP State Value Encodings . . . . . . .35-64
+35.4.2.28 Block End Packet (BEP). . . . . . .35-69
+35.5 TRACING IN VMX OPERATION . . . . . . 35-69
+35.5.1 VMX-Specific Packets and VMCS Controls . . . . . .35-70
+35.5.2 Managing Trace Packet Generation Across VMX Transitions. . . . .35-71
+35.5.2.1 System-Wide Tracing . . . . . . .35-71
+35.5.2.2 Host-Only Tracing . . . . . . .35-72
+35.5.2.3 Guest-Only Tracing . . . . . . .35-72
+35.5.2.4 Virtualization of Guest Output Packet Streams . . . . .35-72
+35.5.2.5 Emulation of Intel PT Traced State . . . . . .35-72
+35.5.2.6 TSC Scaling. . . . . . .35-73
+35.5.2.7 Failed VM Entry . . . . . . .35-73
+35.5.2.8 VMX Abort . . . . . . .35-73
+35.6 TRACING AND SMM TRANSFER MONITOR (STM) . . . . . 35-73
+35.7 PACKET GENERATION SCENARIOS . . . . . 35-73
+35.8 SOFTWARE CONSIDERATIONS . . . . . . 35-83
+35.8.1 Tracing SMM Code . . . . . . .35-83
+35.8.2 Cooperative Transition of Multiple Trace Collection Agents. . . . .35-83
+35.8.3 Tracking Time . . . . . . .35-83
+35.8.3.1 Time Domain Relationships. . . . . .35-84
+35.8.3.2 Estimating TSC within Intel PT. . . . . .35-84
+35.8.3.3 VMX TSC Manipulation . . . . . . .35-85
+35.8.3.4 Calculating Frequency with Intel PT. . . . . .35-85
+CHAPTER 36
+INTRODUCTION TO INTEL SOFTWARE GUARD EXTENSIONS
+36.1 OVERVIEW . . . . . . . 37-1
+36.2 ENCLAVE INTERACTION AND PROTECTION. . . . . 37-1
+36.3 ENCLAVE LIFE CYCLE. . . . . . 37-2
+36.4 DATA STRUCTURES AND ENCLAVE OPERATION . . . . . 37-2
+36.5 ENCLAVE PAGE CACHE. . . . . . 37-2
+36.5.1 Enclave Page Cache Map (EPCM). . . . . 37-3
+36.6 ENCLAVE INSTRUCTIONS AND INTEL SGX . . . . . 37-3
+36.7 DISCOVERING SUPPORT FOR INTEL SGX AND ENABLING ENCLAVE INSTRUCTIONS . . . 37-4
+36.7.1 Intel SGX Opt-In Configuration. . . . . . 37-5
+36.7.2 Intel SGX Resource Enumeration Leaves . . . . . 37-5
+CHAPTER 37
+ENCLAVE ACCESS CONTROL AND DATA STRUCTURES
+37.1 OVERVIEW OF ENCLAVE EXECUTION ENVIRONMENT . . . . 38-1
+37.2 TERMINOLOGY . . . . . . . 38-1
+37.3 ACCESS-CONTROL REQUIREMENTS . . . . . 38-1
+37.4 SEGMENT-BASED ACCESS CONTROL . . . . . 38-2
+37.5 PAGE-BASED ACCESS CONTROL . . . . . . 38-2
+37.5.1 Access-control for Accesses that Originate from non-SGX Instructions . . . 38-2
+37.5.2 Memory Accesses that Split across ELRANGE . . . . . 38-2
+37.5.3 Implicit vs. Explicit Accesses. . . . . . 38-2
+37.5.3.1 Explicit Accesses . . . . . . 38-3
+37.5.3.2 Implicit Accesses . . . . . . 38-3
+37.6 INTEL SGX DATA STRUCTURES OVERVIEW. . . . . 38-4
+37.7 SGX ENCLAVE CONTROL STRUCTURE (SECS) . . . . . 38-4
+37.7.1 ATTRIBUTES . . . . . . . 38-5
+37.7.2 SECS.MISCSELECT Field . . . . . . 38-6
+37.8 THREAD CONTROL STRUCTURE (TCS) . . . . . 38-6
+37.8.1 TCS.FLAGS . . . . . . . 38-7
+37.8.2 State Save Area Offset (OSSA) . . . . . . 38-7
+37.8.3 Current State Save Area Frame (CSSA) . . . . . 38-7
+37.8.4 Number of State Save Area Frames (NSSA) . . . . . 38-7
+37.9 STATE SAVE AREA (SSA) FRAME . . . . . . 38-7
+37.9.1 GPRSGX Region . . . . . . 38-8
+37.9.1.1 EXITINFO . . . . . . . 38-9
+37.9.1.2 VECTOR Field Definition . . . . . . 38-9
+37.9.2 MISC Region. . . . . . . 38-9
+37.9.2.1 EXINFO Structure . . . . . . .38-10
+37.9.2.2 Page Fault Error Code . . . . . . .38-10
+37.10 PAGE INFORMATION (PAGEINFO) . . . . . 38-11
+37.11 SECURITY INFORMATION (SECINFO) . . . . . 38-11
+37.11.1 SECINFO.FLAGS. . . . . . .38-11
+37.11.2 PAGE_TYPE Field Definition . . . . . . .38-12
+37.12 PAGING CRYPTO METADATA (PCMD) . . . . . 38-12
+37.13 ENCLAVE SIGNATURE STRUCTURE (SIGSTRUCT) . . . . . 38-12
+37.14 EINIT TOKEN STRUCTURE (EINITTOKEN) . . . . . 38-13
+37.15 REPORT (REPORT). . . . . . 38-14
+37.15.1 REPORTDATA . . . . . . .38-15
+37.16 REPORT TARGET INFO (TARGETINFO) . . . . . 38-15
+37.17 KEY REQUEST (KEYREQUEST) . . . . . . 38-15
+37.17.1 KEY REQUEST KeyNames . . . . . . .38-16
+37.17.2 Key Request Policy Structure . . . . . .38-16
+37.18 VERSION ARRAY (VA). . . . . . 38-16
+37.19 ENCLAVE PAGE CACHE MAP (EPCM) . . . . . 38-17
+37.20 READ INFO (RDINFO). . . . . . 38-17
+37.20.1 RDINFO Status Structure . . . . . . .38-18
+37.20.2 RDINFO Flags Structure. . . . . . .38-18
+CHAPTER 38
+ENCLAVE OPERATION
+38.1 CONSTRUCTING AN ENCLAVE . . . . . . 39-1
+38.1.1 ECREATE. . . . . . . 39-2
+38.1.2 EADD and EEXTEND Interaction . . . . . 39-2
+38.1.3 EINIT Interaction . . . . . . 39-2
+38.1.4 Intel SGX Launch Control Configuration . . . . . 39-3
+38.2 ENCLAVE ENTRY AND EXITING . . . . . . 39-3
+38.2.1 Controlled Entry and Exit. . . . . . 39-3
+38.2.2 Asynchronous Enclave Exit (AEX) . . . . . 39-4
+38.2.3 Resuming Execution after AEX . . . . . . 39-4
+38.2.3.1 ERESUME Interaction . . . . . . 39-5
+38.3 CALLING ENCLAVE PROCEDURES . . . . . . 39-5
+38.3.1 Calling Convention . . . . . . 39-5
+38.3.2 Register Preservation. . . . . . 39-5
+38.3.3 Returning to Caller. . . . . . 39-5
+38.4 INTEL SGX KEY AND ATTESTATION . . . . . 39-5
+38.4.1 Enclave Measurement and Identification . . . . . 39-5
+38.4.1.1 MRENCLAVE. . . . . . 39-6
+38.4.1.2 MRSIGNER. . . . . . . 39-6
+38.4.1.3 CONFIGID. . . . . . . 39-7
+38.4.2 Security Version Numbers (SVN). . . . . 39-7
+38.4.2.1 Enclave Security Version. . . . . . 39-7
+38.4.2.2 Hardware Security Version. . . . . . 39-7
+38.4.2.3 CONFIGID Security Version . . . . . . 39-7
+38.4.3 Keys . . . . . . . 39-7
+38.4.3.1 Sealing Enclave Data. . . . . . 39-8
+38.4.3.2 Using REPORTs for Local Attestation . . . . . 39-8
+38.5 EPC AND MANAGEMENT OF EPC PAGES . . . . . 39-9
+38.5.1 EPC Implementation . . . . . . 39-9
+38.5.2 OS Management of EPC Pages. . . . . . 39-9
+38.5.2.1 Enhancement to Managing EPC Pages . . . . . .39-10
+38.5.3 Eviction of Enclave Pages . . . . . . .39-10
+38.5.4 Loading an Enclave Page . . . . . . .39-10
+38.5.5 Eviction of an SECS Page . . . . . . .39-11
+38.5.6 Eviction of a Version Array Page . . . . . .39-11
+38.5.7 Allocating a Regular Page . . . . . . .39-11
+38.5.8 Allocating a TCS Page . . . . . . .39-12
+38.5.9 Trimming a Page. . . . . . .39-12
+38.5.10 Restricting the EPCM Permissions of a Page. . . . . .39-12
+38.5.11 Extending the EPCM Permissions of a Page . . . . . .39-13
+38.5.12 VMM Oversubscription of EPC . . . . . .39-13
+38.6 CHANGES TO INSTRUCTION BEHAVIOR INSIDE AN ENCLAVE . . . . 39-14
+38.6.1 Illegal Instructions . . . . . . .39-14
+38.6.2 RDRAND and RDSEED Instructions . . . . . .39-15
+38.6.3 PAUSE Instruction . . . . . . .39-15
+38.6.4 Executions of INT1 and INT3 Inside an Enclave . . . . .39-15
+38.6.5 INVD Handling when Enclaves Are Enabled. . . . . .39-15
+CHAPTER 39
+ENCLAVE EXITING EVENTS
+39.1 COMPATIBLE SWITCH TO THE EXITING STACK OF AEX. . . . 40-1
+39.2 STATE SAVING BY AEX. . . . . . 40-2
+39.3 SYNTHETIC STATE ON ASYNCHRONOUS ENCLAVE EXIT . . . . 40-3
+39.3.1 Processor Synthetic State on Asynchronous Enclave Exit . . . . 40-3
+39.3.2 Synthetic State for Extended Features . . . . . 40-3
+39.3.3 Synthetic State for MISC Features . . . . . 40-4
+39.4 AEX FLOW. . . . . . . 40-4
+39.4.1 AEX Operational Detail . . . . . . 40-5
+CHAPTER 40
+SGX INSTRUCTION REFERENCES
+40.1 INTEL SGX INSTRUCTION SYNTAX AND OPERATION . . . . 41-1
+40.1.1 ENCLS Register Usage Summary. . . . . 41-1
+40.1.2 ENCLU Register Usage Summary . . . . . 41-2
+40.1.3 ENCLV Register Usage Summary . . . . . 41-2
+40.1.4 Information and Error Codes. . . . . . 41-2
+40.1.5 Internal CREGs. . . . . . . 41-3
+40.1.6 Concurrent Operation Restrictions. . . . . 41-4
+40.1.6.1 Concurrency Tables of Intel SGX Instructions . . . . 41-4
+40.2 INTEL SGX INSTRUCTION REFERENCE. . . . . 41-8
+ENCLS！Execute an Enclave System Function of Specified Leaf Number . . . 41-9
+ENCLU！Execute an Enclave User Function of Specified Leaf Number . . . 41-11
+ENCLV！Execute an Enclave VMM Function of Specified Leaf Number . . . 41-14
+40.3 INTEL SGX SYSTEM LEAF FUNCTION REFERENCE . . . . 41-16
+EADD！Add a Page to an Uninitialized Enclave . . . . . 41-17
+EAUG！Add a Page to an Initialized Enclave . . . . . 41-22
+EBLOCK！Mark a page in EPC as Blocked . . . . . 41-25
+ECREATE！Create an SECS page in the Enclave Page Cache . . . . 41-28
+EDBGRD！Read From a Debug Enclave. . . . . 41-33
+EDBGWR！Write to a Debug Enclave . . . . . 41-37
+EEXTEND！Extend Uninitialized Enclave Measurement by 256 Bytes. . . 41-40
+EINIT！Initialize an Enclave for Execution . . . . . 41-43
+ELDB/ELDU/ELDBC/ELBUC！Load an EPC Page and Mark its State . . . 41-50
+EMODPR！Restrict the Permissions of an EPC Page . . . . 41-56
+EMODT！Change the Type of an EPC Page . . . . . 41-59
+EPA！Add Version Array . . . . . . 41-62
+ERDINFO！Read Type and Status Information About an EPC Page . . . 41-64
+EREMOVE！Remove a page from the EPC . . . . . 41-68
+ETRACK！Activates EBLOCK Checks . . . . . 41-72
+ETRACKC！Activates EBLOCK Checks . . . . . 41-75
+EWB！Invalidate an EPC Page and Write out to Main Memory . . . . 41-79
+40.4 INTEL SGX USER LEAF FUNCTION REFERENCE. . . . . 41-84
+EACCEPT！Accept Changes to an EPC Page . . . . . 41-85
+EACCEPTCOPY！Initialize a Pending Page . . . . . 41-89
+EENTER！Enters an Enclave. . . . . . 41-93
+EEXIT！Exits an Enclave . . . . . . .41-101
+EGETKEY！Retrieves a Cryptographic Key . . . . . .41-104
+EMODPE！Extend an EPC Page Permissions . . . . . .41-113
+EREPORT！Create a Cryptographic Report of the Enclave. . . . .41-116
+ERESUME！Re-Enters an Enclave . . . . . .41-120
+40.5 INTEL SGX VIRTUALIZATION LEAF FUNCTION REFERENCE . . . . 41-128
+EDECVIRTCHILD！Decrement VIRTCHILDCNT in SECS . . . . .41-129
+EINCVIRTCHILD！Increment VIRTCHILDCNT in SECS . . . . .41-133
+ESETCONTEXT！Set the ENCLAVECONTEXT Field in SECS . . . . .41-136
+CHAPTER 41
+INTEL SGX INTERACTIONS WITH IA32 AND INTEL 64 ARCHITECTURE
+41.1 INTEL SGX AVAILABILITY IN VARIOUS PROCESSOR MODES. . . . 42-1
+41.2 IA32_FEATURE_CONTROL . . . . . . 42-1
+41.2.1 Availability of Intel SGX . . . . . . 42-1
+41.2.2 Intel SGX Launch Control Configuration . . . . . 42-1
+41.3 INTERACTIONS WITH SEGMENTATION . . . . . 42-1
+41.3.1 Scope of Interaction . . . . . . 42-1
+41.3.2 Interactions of Intel SGX Instructions with Segment, Operand, and Addressing Prefixes . . 42-2
+41.3.3 Interaction of Intel SGX Instructions with Segmentation . . . . 42-2
+41.3.4 Interactions of Enclave Execution with Segmentation . . . . 42-2
+41.4 INTERACTIONS WITH PAGING . . . . . . 42-2
+41.5 INTERACTIONS WITH VMX . . . . . . 42-3
+41.5.1 VMM Controls to Configure Guest Support of Intel SGX . . . . 42-3
+41.5.2 Interactions with the Extended Page Table Mechanism (EPT) . . . . 42-3
+41.5.3 Interactions with APIC Virtualization. . . . . 42-4
+41.5.4 Interactions with VT and SGX concurrency. . . . . 42-4
+41.5.5 Virtual Child Tracking . . . . . . 42-5
+41.5.6 Handling EPCM Entry Lock Conflicts . . . . . 42-5
+41.5.7 Context Tracking . . . . . . 42-6
+41.6 INTEL SGX INTERACTIONS WITH ARCHITECTURALLY-VISIBLE EVENTS. . . 42-6
+41.7 INTERACTIONS WITH THE PROCESSOR EXTENDED STATE AND MISCELLANEOUS STATE . . 42-6
+41.7.1 Requirements and Architecture Overview . . . . . 42-6
+41.7.2 Relevant Fields in Various Data Structures. . . . . 42-7
+41.7.2.1 SECS.ATTRIBUTES.XFRM. . . . . . 42-7
+41.7.2.2 SECS.SSAFRAMESIZE . . . . . . 42-8
+41.7.2.3 XSAVE Area in SSA . . . . . . 42-8
+41.7.2.4 MISC Area in SSA . . . . . . 42-8
+41.7.2.5 SIGSTRUCT Fields. . . . . . 42-8
+41.7.2.6 REPORT.ATTRIBUTES.XFRM and REPORT.MISCSELECT. . . . 42-9
+41.7.2.7 KEYREQUEST. . . . . . 42-9
+41.7.3 Processor Extended States and ENCLS[ECREATE] . . . . 42-9
+41.7.4 Processor Extended States and ENCLU[EENTER] . . . . 42-9
+41.7.4.1 Fault Checking. . . . . . 42-9
+41.7.4.2 State Loading . . . . . . 42-9
+41.7.5 Processor Extended States and AEX. . . . . .42-10
+41.7.5.1 State Saving . . . . . . .42-10
+41.7.5.2 State Synthesis . . . . . . .42-10
+41.7.6 Processor Extended States and ENCLU[ERESUME]. . . . .42-10
+41.7.6.1 Fault Checking. . . . . . .42-10
+41.7.6.2 State Loading . . . . . . .42-10
+41.7.7 Processor Extended States and ENCLU[EEXIT] . . . . .42-10
+41.7.8 Processor Extended States and ENCLU[EREPORT]. . . . .42-11
+41.7.9 Processor Extended States and ENCLU[EGETKEY] . . . . .42-11
+41.8 INTERACTIONS WITH SMM . . . . . . 42-11
+41.8.1 Availability of Intel SGX instructions in SMM . . . . . .42-11
+41.8.2 SMI while Inside an Enclave. . . . . . .42-11
+41.8.3 SMRAM Synthetic State of AEX Triggered by SMI. . . . .42-11
+41.9 INTERACTIONS OF INIT, SIPI, AND WAIT-FOR-SIPI WITH INTEL SGX. . . 42-12
+41.10 INTERACTIONS WITH DMA . . . . . . 42-12
+41.11 INTERACTIONS WITH TXT . . . . . . 42-12
+41.11.1 Enclaves Created Prior to Execution of GETSEC. . . . .42-12
+41.11.2 Interaction of GETSEC with Intel SGX . . . . . .42-12
+41.11.3 Interactions with Authenticated Code Modules (ACMs) . . . . .42-13
+41.12 INTERACTIONS WITH CACHING OF LINEAR-ADDRESS TRANSLATIONS . . . 42-13
+41.13 INTERACTIONS WITH INTEL TRANSACTIONAL SYNCHRONIZATION EXTENSIONS (INTEL TSX) . . 42-13
+41.13.1 HLE and RTM Debug . . . . . . .42-14
+41.14 INTEL SGX INTERACTIONS WITH S STATES . . . . . 42-14
+41.15 INTEL SGX INTERACTIONS WITH MACHINE CHECK ARCHITECTURE (MCA). . . 42-14
+41.15.1 Interactions with MCA Events . . . . . .42-14
+41.15.2 Machine Check Enables (IA32_MCi_CTL). . . . . .42-14
+41.15.3 CR4.MCE . . . . . . . .42-14
+41.16 INTEL SGX INTERACTIONS WITH PROTECTED MODE VIRTUAL INTERRUPTS . . . 42-15
+41.17 INTEL SGX INTERACTION WITH PROTECTION KEYS . . . . 42-15
+CHAPTER 42
+ENCLAVE CODE DEBUG AND PROFILING
+42.1 CONFIGURATION AND CONTROLS . . . . . 43-1
+42.1.1 Debug Enclave vs. Production Enclave . . . . . 43-1
+42.1.2 Tool-Chain Opt-in . . . . . . 43-1
+42.2 SINGLE STEP DEBUG . . . . . . 43-1
+42.2.1 Single Stepping ENCLS Instruction Leafs . . . . . 43-1
+42.2.2 Single Stepping ENCLU Instruction Leafs . . . . . 43-1
+42.2.3 Single-Stepping Enclave Entry with Opt-out Entry . . . . 43-2
+42.2.3.1 Single Stepping without AEX . . . . . 43-2
+42.2.3.2 Single Step Preempted by AEX Due to Non-SMI Event . . . . 43-2
+42.2.4 RFLAGS.TF Treatment on AEX. . . . . . 43-3
+42.2.5 Restriction on Setting of TF after an Opt-Out Entry . . . . 43-3
+42.2.6 Trampoline Code Considerations. . . . . 43-3
+42.3 CODE AND DATA BREAKPOINTS . . . . . . 43-3
+42.3.1 Breakpoint Suppression . . . . . . 43-3
+42.3.2 Reporting of Instruction Breakpoint on Next Instruction on a Debug Trap. . . 43-4
+42.3.3 RF Treatment on AEX. . . . . . 43-4
+42.3.4 Breakpoint Matching in Intel SGX Instruction Flows . . . . 43-4
+42.4 CONSIDERATION OF THE INT1 AND INT3 INSTRUCTIONS . . . . 43-4
+42.4.1 Behavior of INT1 and INT3 Inside an Enclave . . . . . 43-4
+42.4.2 Debugger Considerations. . . . . . 43-4
+42.4.3 VMM Considerations . . . . . . 43-5
+42.5 BRANCH TRACING . . . . . . 43-5
+42.5.1 BTF Treatment . . . . . . 43-5
+42.5.2 LBR Treatment . . . . . . 43-5
+42.5.2.1 LBR Stack on Opt-in Entry . . . . . . 43-5
+42.5.2.2 LBR Stack on Opt-out Entry . . . . . . 43-6
+42.5.2.3 Mispredict Bit, Record Type, and Filtering . . . . . 43-7
+42.6 INTERACTION WITH PERFORMANCE MONITORING. . . . . 43-7
+42.6.1 IA32_PERF_GLOBAL_STATUS Enhancement . . . . . 43-7
+42.6.2 Performance Monitoring with Opt-in Entry . . . . . 43-7
+42.6.3 Performance Monitoring with Opt-out Entry . . . . . 43-8
+42.6.4 Enclave Exit and Performance Monitoring. . . . . 43-8
+42.6.5 PEBS Record Generation on Intel SGX Instructions. . . . 43-8
+42.6.6 Exception-Handling on PEBS/BTS Loads/Stores after AEX . . . . 43-8
+42.6.6.1 Other Interactions with Performance Monitoring . . . . 43-9

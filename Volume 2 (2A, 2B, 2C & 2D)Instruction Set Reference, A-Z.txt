@@ -1,0 +1,814 @@
+CHAPTER 1
+ABOUT THIS MANUAL
+1.1 INTEL 64 AND IA-32 PROCESSORS COVERED IN THIS MANUAL . . . . 1-1
+1.2 OVERVIEW OF VOLUME 2A, 2B, 2C AND 2D: INSTRUCTION SET REFERENCE. . . . 1-4
+1.3 NOTATIONAL CONVENTIONS . . . . . . 1-5
+1.3.1 Bit and Byte Order . . . . . .1-5
+1.3.2 Reserved Bits and Software Compatibility . . . . .1-5
+1.3.3 Instruction Operands. . . . . . .1-5
+1.3.4 Hexadecimal and Binary Numbers . . . . .1-6
+1.3.5 Segmented Addressing . . . . . .1-6
+1.3.6 Exceptions . . . . . . .1-6
+1.3.7 A New Syntax for CPUID, CR, and MSR Values . . . . .1-7
+1.4 RELATED LITERATURE . . . . . . 1-7
+CHAPTER 2
+INSTRUCTION FORMAT
+2.1 INSTRUCTION FORMAT FOR PROTECTED MODE, REAL-ADDRESS MODE, AND VIRTUAL-8086 MODE. . . 2-1
+2.1.1 Instruction Prefixes. . . . . . .2-1
+2.1.2 Opcodes. . . . . . . .2-3
+2.1.3 ModR/M and SIB Bytes . . . . . .2-3
+2.1.4 Displacement and Immediate Bytes . . . . .2-3
+2.1.5 Addressing-Mode Encoding of ModR/M and SIB Bytes. . . . .2-4
+2.2 IA-32E MODE . . . . . . . 2-7
+2.2.1 REX Prefixes . . . . . . .2-8
+2.2.1.1 Encoding . . . . . . .2-8
+2.2.1.2 More on REX Prefix Fields. . . . . . .2-8
+2.2.1.3 Displacement . . . . . . 2-11
+2.2.1.4 Direct Memory-Offset MOVs . . . . . 2-11
+2.2.1.5 Immediates . . . . . . 2-11
+2.2.1.6 RIP-Relative Addressing. . . . . . . 2-12
+2.2.1.7 Default 64-Bit Operand Size. . . . . . 2-12
+2.2.2 Additional Encodings for Control and Debug Registers . . . . 2-12
+2.3 INTEL ADVANCED VECTOR EXTENSIONS (INTEL AVX) . . . . 2-13
+2.3.1 Instruction Format . . . . . . 2-13
+2.3.2 VEX and the LOCK prefix . . . . . . 2-13
+2.3.3 VEX and the 66H, F2H, and F3H prefixes . . . . . 2-13
+2.3.4 VEX and the REX prefix . . . . . . 2-13
+2.3.5 The VEX Prefix . . . . . . 2-14
+2.3.5.1 VEX Byte 0, bits[7:0] . . . . . . 2-15
+2.3.5.2 VEX Byte 1, bit [7] - ¡®R¡¯. . . . . . . 2-15
+2.3.5.3 3-byte VEX byte 1, bit[6] - ¡®X¡¯ . . . . . 2-16
+2.3.5.4 3-byte VEX byte 1, bit[5] - ¡®B¡¯ . . . . . 2-16
+2.3.5.5 3-byte VEX byte 2, bit[7] - ¡®W¡¯ . . . . . 2-16
+2.3.5.6 2-byte VEX Byte 1, bits[6:3] and 3-byte VEX Byte 2, bits [6:3]- ¡®vvvv¡¯ the Source or Dest Register Specifier. . 2-16
+2.3.6 Instruction Operand Encoding and VEX.vvvv, ModR/M . . . . 2-17
+2.3.6.1 3-byte VEX byte 1, bits[4:0] - ¡°m-mmmm¡±. . . . . . 2-18
+2.3.6.2 2-byte VEX byte 1, bit[2], and 3-byte VEX byte 2, bit [2]- ¡°L¡± . . . . 2-18
+2.3.6.3 2-byte VEX byte 1, bits[1:0], and 3-byte VEX byte 2, bits [1:0]- ¡°pp¡±. . . . 2-18
+2.3.7 The Opcode Byte . . . . . . 2-19
+2.3.8 The MODRM, SIB, and Displacement Bytes . . . . . 2-19
+2.3.9 The Third Source Operand (Immediate Byte) . . . . . 2-19
+2.3.10 AVX Instructions and the Upper 128-bits of YMM registers . . . . 2-19
+2.3.10.1 Vector Length Transition and Programming Considerations . . . . 2-19
+2.3.11 AVX Instruction Length . . . . . . 2-20
+2.3.12 Vector SIB (VSIB) Memory Addressing . . . . . 2-20
+2.3.12.1 64-bit Mode VSIB Memory Addressing . . . . . 2-21
+2.4 AVX AND SSE INSTRUCTION EXCEPTION SPECIFICATION. . . . . 2-21
+2.4.1 Exceptions Type 1 (Aligned memory reference) . . . . . 2-26
+2.4.2 Exceptions Type 2 (>=16 Byte Memory Reference, Unaligned) . . . . 2-27
+2.4.3 Exceptions Type 3 (<16 Byte memory argument) . . . . 2-28
+2.4.4 Exceptions Type 4 (>=16 Byte mem arg no alignment, no floating-point exceptions) . . 2-29
+2.4.5 Exceptions Type 5 (<16 Byte mem arg and no FP exceptions). . . . . 2-30
+2.4.6 Exceptions Type 6 (VEX-Encoded Instructions Without Legacy SSE Analogues) . . . 2-31
+2.4.7 Exceptions Type 7 (No FP exceptions, no memory arg) . . . . 2-32
+2.4.8 Exceptions Type 8 (AVX and no memory argument) . . . . 2-32
+2.4.9 Exceptions Type 11 (VEX-only, mem arg no AC, floating-point exceptions) . . . 2-33
+2.4.10 Exceptions Type 12 (VEX-only, VSIB mem arg, no AC, no floating-point exceptions) . . 2-34
+2.5 VEX ENCODING SUPPORT FOR GPR INSTRUCTIONS. . . . . 2-34
+2.5.1 Exceptions Type 13 (VEX-Encoded GPR Instructions) . . . . 2-35
+2.6 INTEL AVX-512 ENCODING . . . . . . 2-35
+2.6.1 Instruction Format and EVEX . . . . . . 2-36
+2.6.2 Register Specifier Encoding and EVEX . . . . . 2-38
+2.6.3 Opmask Register Encoding . . . . . . 2-38
+2.6.4 Masking Support in EVEX. . . . . . . 2-39
+2.6.5 Compressed Displacement (disp8*N) Support in EVEX . . . . 2-39
+2.6.6 EVEX Encoding of Broadcast/Rounding/SAE Support. . . . . 2-41
+2.6.7 Embedded Broadcast Support in EVEX . . . . . 2-41
+2.6.8 Static Rounding Support in EVEX . . . . . 2-41
+2.6.9 SAE Support in EVEX. . . . . . . 2-41
+2.6.10 Vector Length Orthogonality . . . . . . 2-41
+2.6.11 #UD Equations for EVEX . . . . . . 2-42
+2.6.11.1 State Dependent #UD . . . . . . 2-42
+2.6.11.2 Opcode Independent #UD . . . . . . 2-42
+2.6.11.3 Opcode Dependent #UD . . . . . . 2-43
+2.6.12 Device Not Available . . . . . . 2-44
+2.6.13 Scalar Instructions . . . . . . 2-44
+2.7 EXCEPTION CLASSIFICATIONS OF EVEX-ENCODED INSTRUCTIONS. . . . . 2-44
+2.7.1 Exceptions Type E1 and E1NF of EVEX-Encoded Instructions . . . . 2-47
+2.7.2 Exceptions Type E2 of EVEX-Encoded Instructions . . . . 2-49
+2.7.3 Exceptions Type E3 and E3NF of EVEX-Encoded Instructions . . . . 2-50
+2.7.4 Exceptions Type E4 and E4NF of EVEX-Encoded Instructions . . . . 2-52
+2.7.5 Exceptions Type E5 and E5NF. . . . . . . 2-54
+2.7.6 Exceptions Type E6 and E6NF. . . . . . . 2-56
+2.7.7 Exceptions Type E7NM . . . . . . 2-58
+2.7.8 Exceptions Type E9 and E9NF. . . . . . . 2-59
+2.7.9 Exceptions Type E10 and E10NF . . . . . 2-61
+2.7.10 Exception Type E11 (EVEX-only, mem arg no AC, floating-point exceptions) . . . 2-63
+2.7.11 Exception Type E12 and E12NP (VSIB mem arg, no AC, no floating-point exceptions). . . 2-64
+2.8 EXCEPTION CLASSIFICATIONS OF OPMASK INSTRUCTIONS. . . . . 2-66
+CHAPTER 3
+INSTRUCTION SET REFERENCE, A-L
+3.1 INTERPRETING THE INSTRUCTION REFERENCE PAGES. . . . . 3-1
+3.1.1 Instruction Format . . . . . .3-1
+3.1.1.1 Opcode Column in the Instruction Summary Table (Instructions without VEX Prefix). . .3-2
+3.1.1.2 Opcode Column in the Instruction Summary Table (Instructions with VEX prefix) . . .3-3
+3.1.1.3 Instruction Column in the Opcode Summary Table . . . .3-5
+3.1.1.4 Operand Encoding Column in the Instruction Summary Table . . . .3-8
+3.1.1.5 64/32-bit Mode Column in the Instruction Summary Table . . . .3-8
+3.1.1.6 CPUID Support Column in the Instruction Summary Table . . . .3-9
+3.1.1.7 Description Column in the Instruction Summary Table . . . .3-9
+3.1.1.8 Description Section . . . . . .3-9
+3.1.1.9 Operation Section . . . . . . 3-9
+3.1.1.10 Intel C/C++ Compiler Intrinsics Equivalents Section . . . .3-12
+3.1.1.11 Flags Affected Section. . . . . . .3-14
+3.1.1.12 FPU Flags Affected Section . . . . . .3-14
+3.1.1.13 Protected Mode Exceptions Section . . . . .3-14
+3.1.1.14 Real-Address Mode Exceptions Section . . . . .3-15
+3.1.1.15 Virtual-8086 Mode Exceptions Section . . . . .3-15
+3.1.1.16 Floating-Point Exceptions Section . . . . .3-16
+3.1.1.17 SIMD Floating-Point Exceptions Section. . . . . .3-16
+3.1.1.18 Compatibility Mode Exceptions Section . . . . .3-16
+3.1.1.19 64-Bit Mode Exceptions Section. . . . . .3-16
+3.2 INSTRUCTIONS (A-L) . . . . . . 3-17
+AAA¡ªASCII Adjust After Addition . . . . . 3-18
+AAD¡ªASCII Adjust AX Before Division . . . . . 3-20
+AAM¡ªASCII Adjust AX After Multiply . . . . . 3-22
+AAS¡ªASCII Adjust AL After Subtraction . . . . . 3-24
+ADC¡ªAdd with Carry . . . . . . 3-26
+ADCX ¡ª Unsigned Integer Addition of Two Operands with Carry Flag . . . 3-29
+ADD¡ªAdd. . . . . . . . 3-31
+ADDPD¡ªAdd Packed Double-Precision Floating-Point Values. . . . . 3-33
+ADDPS¡ªAdd Packed Single-Precision Floating-Point Values. . . . . 3-36
+ADDSD¡ªAdd Scalar Double-Precision Floating-Point Values. . . . . 3-39
+ADDSS¡ªAdd Scalar Single-Precision Floating-Point Values . . . . 3-41
+ADDSUBPD¡ªPacked Double-FP Add/Subtract . . . . . 3-43
+ADDSUBPS¡ªPacked Single-FP Add/Subtract . . . . . 3-45
+ADOX ¡ª Unsigned Integer Addition of Two Operands with Overflow Flag . . . 3-48
+AESDEC¡ªPerform One Round of an AES Decryption Flow. . . . . 3-50
+AESDECLAST¡ªPerform Last Round of an AES Decryption Flow . . . . 3-52
+AESENC¡ªPerform One Round of an AES Encryption Flow. . . . . 3-54
+AESENCLAST¡ªPerform Last Round of an AES Encryption Flow . . . . 3-56
+AESIMC¡ªPerform the AES InvMixColumn Transformation. . . . . 3-58
+AESKEYGENASSIST¡ªAES Round Key Generation Assist. . . . . 3-59
+AND¡ªLogical AND . . . . . . 3-61
+ANDN ¡ª Logical AND NOT . . . . . . 3-63
+ANDPD¡ªBitwise Logical AND of Packed Double Precision Floating-Point Values. . . . 3-64
+ANDPS¡ªBitwise Logical AND of Packed Single Precision Floating-Point Values. . . . 3-67
+ANDNPD¡ªBitwise Logical AND NOT of Packed Double Precision Floating-Point Values . . 3-70
+ANDNPS¡ªBitwise Logical AND NOT of Packed Single Precision Floating-Point Values . . 3-73
+ARPL¡ªAdjust RPL Field of Segment Selector . . . . . 3-76
+BEXTR ¡ª Bit Field Extract . . . . . . 3-78
+BLENDPD ¡ª Blend Packed Double Precision Floating-Point Values. . . . 3-79
+BLENDPS ¡ª Blend Packed Single Precision Floating-Point Values. . . . 3-81
+BLENDVPD ¡ª Variable Blend Packed Double Precision Floating-Point Values. . . . 3-83
+BLENDVPS ¡ª Variable Blend Packed Single Precision Floating-Point Values . . . 3-85
+BLSI ¡ª Extract Lowest Set Isolated Bit . . . . . 3-88
+BLSMSK ¡ª Get Mask Up to Lowest Set Bit . . . . . 3-89
+BLSR ¡ª Reset Lowest Set Bit . . . . . . 3-90
+BNDCL¡ªCheck Lower Bound . . . . . . 3-91
+BNDCU/BNDCN¡ªCheck Upper Bound . . . . . 3-93
+BNDLDX¡ªLoad Extended Bounds Using Address Translation . . . . 3-95
+BNDMK¡ªMake Bounds. . . . . . . 3-98
+BNDMOV¡ªMove Bounds . . . . . . 3-100
+BNDSTX¡ªStore Extended Bounds Using Address Translation. . . . . 3-103
+BOUND¡ªCheck Array Index Against Bounds . . . . . 3-106
+BSF¡ªBit Scan Forward . . . . . . 3-108
+BSR¡ªBit Scan Reverse . . . . . . 3-110
+BSWAP¡ªByte Swap . . . . . . 3-112
+BT¡ªBit Test . . . . . . . 3-113
+BTC¡ªBit Test and Complement . . . . . 3-115
+BTR¡ªBit Test and Reset . . . . . .3-117
+BTS¡ªBit Test and Set . . . . . .3-119
+BZHI ¡ª Zero High Bits Starting with Specified Bit Position . . . .3-121
+CALL¡ªCall Procedure . . . . . .3-122
+CBW/CWDE/CDQE¡ªConvert Byte to Word/Convert Word to Doubleword/Convert Doubleword to Quadword .3-136
+CLAC¡ªClear AC Flag in EFLAGS Register . . . . .3-137
+CLC¡ªClear Carry Flag . . . . . .3-138
+CLD¡ªClear Direction Flag. . . . . . .3-139
+CLDEMOTE¡ªCache Line Demote . . . . .3-140
+CLFLUSH¡ªFlush Cache Line . . . . . .3-142
+CLFLUSHOPT¡ªFlush Cache Line Optimized. . . . . .3-144
+CLI ¡ª Clear Interrupt Flag . . . . . .3-146
+CLTS¡ªClear Task-Switched Flag in CR0 . . . . .3-148
+CLWB¡ªCache Line Write Back . . . . . .3-149
+CMC¡ªComplement Carry Flag . . . . . .3-151
+CMOVcc¡ªConditional Move. . . . . . .3-152
+CMP¡ªCompare Two Operands. . . . . .3-156
+CMPPD¡ªCompare Packed Double-Precision Floating-Point Values . . .3-158
+CMPPS¡ªCompare Packed Single-Precision Floating-Point Values . . .3-165
+CMPS/CMPSB/CMPSW/CMPSD/CMPSQ¡ªCompare String Operands . . .3-172
+CMPSD¡ªCompare Scalar Double-Precision Floating-Point Value . . . .3-176
+CMPSS¡ªCompare Scalar Single-Precision Floating-Point Value . . . .3-180
+CMPXCHG¡ªCompare and Exchange. . . . . .3-184
+CMPXCHG8B/CMPXCHG16B¡ªCompare and Exchange Bytes . . . .3-186
+COMISD¡ªCompare Scalar Ordered Double-Precision Floating-Point Values and Set EFLAGS . .3-189
+COMISS¡ªCompare Scalar Ordered Single-Precision Floating-Point Values and Set EFLAGS . .3-191
+CPUID¡ªCPU Identification . . . . . .3-193
+CRC32 ¡ª Accumulate CRC32 Value . . . . .3-232
+CVTDQ2PD¡ªConvert Packed Doubleword Integers to Packed Double-Precision Floating-Point Values .3-235
+CVTDQ2PS¡ªConvert Packed Doubleword Integers to Packed Single-Precision Floating-Point Values .3-239
+CVTPD2DQ¡ªConvert Packed Double-Precision Floating-Point Values to Packed Doubleword Integers .3-242
+CVTPD2PI¡ªConvert Packed Double-Precision FP Values to Packed Dword Integers . .3-246
+CVTPD2PS¡ªConvert Packed Double-Precision Floating-Point Values to Packed Single-Precision Floating-Point Values . . . . . . .3-247
+CVTPI2PD¡ªConvert Packed Dword Integers to Packed Double-Precision FP Values . .3-251
+CVTPI2PS¡ªConvert Packed Dword Integers to Packed Single-Precision FP Values. . .3-252
+CVTPS2DQ¡ªConvert Packed Single-Precision Floating-Point Values to Packed Signed Doubleword Integer Values .3-253
+CVTPS2PD¡ªConvert Packed Single-Precision Floating-Point Values to Packed Double-Precision Floating-Point Values . . . . . . .3-256
+CVTPS2PI¡ªConvert Packed Single-Precision FP Values to Packed Dword Integers. . .3-259
+CVTSD2SI¡ªConvert Scalar Double-Precision Floating-Point Value to Doubleword Integer . .3-260
+CVTSD2SS¡ªConvert Scalar Double-Precision Floating-Point Value to Scalar Single-Precision Floating-Point Value. .3-262
+CVTSI2SD¡ªConvert Doubleword Integer to Scalar Double-Precision Floating-Point Value . .3-264
+CVTSI2SS¡ªConvert Doubleword Integer to Scalar Single-Precision Floating-Point Value . .3-266
+CVTSS2SD¡ªConvert Scalar Single-Precision Floating-Point Value to Scalar Double-Precision Floating-Point Value. .3-268
+CVTSS2SI¡ªConvert Scalar Single-Precision Floating-Point Value to Doubleword Integer . .3-270
+CVTTPD2DQ¡ªConvert with Truncation Packed Double-Precision Floating-Point Values to Packed Doubleword Integers . . . . . . .3-272
+CVTTPD2PI¡ªConvert with Truncation Packed Double-Precision FP Values to Packed Dword Integers .3-276
+CVTTPS2DQ¡ªConvert with Truncation Packed Single-Precision Floating-Point Values to Packed Signed Doubleword Integer Values. . . . . . .3-277
+CVTTPS2PI¡ªConvert with Truncation Packed Single-Precision FP Values to Packed Dword Integers .3-280
+CVTTSD2SI¡ªConvert with Truncation Scalar Double-Precision Floating-Point Value to Signed Integer .3-281
+CVTTSS2SI¡ªConvert with Truncation Scalar Single-Precision Floating-Point Value to Integer . .3-283
+CWD/CDQ/CQO¡ªConvert Word to Doubleword/Convert Doubleword to Quadword. . .3-285
+DAA¡ªDecimal Adjust AL after Addition . . . . .3-286
+DAS¡ªDecimal Adjust AL after Subtraction . . . . .3-288
+DEC¡ªDecrement by 1. . . . . . .3-290
+DIV¡ªUnsigned Divide . . . . . .3-292
+DIVPD¡ªDivide Packed Double-Precision Floating-Point Values . . . . 3-295
+DIVPS¡ªDivide Packed Single-Precision Floating-Point Values . . . . 3-298
+DIVSD¡ªDivide Scalar Double-Precision Floating-Point Value . . . . 3-301
+DIVSS¡ªDivide Scalar Single-Precision Floating-Point Values. . . . . 3-303
+DPPD ¡ª Dot Product of Packed Double Precision Floating-Point Values. . . . 3-305
+DPPS ¡ª Dot Product of Packed Single Precision Floating-Point Values . . . 3-307
+EMMS¡ªEmpty MMX Technology State . . . . . 3-310
+ENTER¡ªMake Stack Frame for Procedure Parameters. . . . . 3-311
+EXTRACTPS¡ªExtract Packed Floating-Point Values . . . . 3-314
+F2XM1¡ªCompute 2x¨C1. . . . . . . 3-316
+FABS¡ªAbsolute Value . . . . . . 3-318
+FADD/FADDP/FIADD¡ªAdd . . . . . . 3-319
+FBLD¡ªLoad Binary Coded Decimal. . . . . . 3-322
+FBSTP¡ªStore BCD Integer and Pop. . . . . . 3-324
+FCHS¡ªChange Sign . . . . . . 3-326
+FCLEX/FNCLEX¡ªClear Exceptions . . . . . 3-328
+FCMOVcc¡ªFloating-Point Conditional Move . . . . . 3-330
+FCOM/FCOMP/FCOMPP¡ªCompare Floating Point Values . . . . 3-332
+FCOMI/FCOMIP/ FUCOMI/FUCOMIP¡ªCompare Floating Point Values and Set EFLAGS . . 3-335
+FCOS¡ª Cosine. . . . . . . 3-338
+FDECSTP¡ªDecrement Stack-Top Pointer . . . . . 3-340
+FDIV/FDIVP/FIDIV¡ªDivide. . . . . . . 3-341
+FDIVR/FDIVRP/FIDIVR¡ªReverse Divide . . . . . 3-344
+FFREE¡ªFree Floating-Point Register . . . . . 3-347
+FICOM/FICOMP¡ªCompare Integer . . . . . 3-348
+FILD¡ªLoad Integer . . . . . . 3-350
+FINCSTP¡ªIncrement Stack-Top Pointer. . . . . . 3-352
+FINIT/FNINIT¡ªInitialize Floating-Point Unit. . . . . . 3-353
+FIST/FISTP¡ªStore Integer . . . . . . 3-355
+FISTTP¡ªStore Integer with Truncation . . . . . 3-358
+FLD¡ªLoad Floating Point Value . . . . . 3-360
+FLD1/FLDL2T/FLDL2E/FLDPI/FLDLG2/FLDLN2/FLDZ¡ªLoad Constant . . . 3-362
+FLDCW¡ªLoad x87 FPU Control Word . . . . . 3-364
+FLDENV¡ªLoad x87 FPU Environment . . . . . 3-366
+FMUL/FMULP/FIMUL¡ªMultiply . . . . . 3-368
+FNOP¡ªNo Operation . . . . . . 3-371
+FPATAN¡ªPartial Arctangent . . . . . . 3-372
+FPREM¡ªPartial Remainder . . . . . . 3-374
+FPREM1¡ªPartial Remainder . . . . . . 3-376
+FPTAN¡ªPartial Tangent . . . . . . 3-378
+FRNDINT¡ªRound to Integer. . . . . . . 3-380
+FRSTOR¡ªRestore x87 FPU State . . . . . 3-381
+FSAVE/FNSAVE¡ªStore x87 FPU State . . . . . 3-383
+FSCALE¡ªScale . . . . . . 3-386
+FSIN¡ªSine . . . . . . . 3-388
+FSINCOS¡ªSine and Cosine . . . . . . 3-390
+FSQRT¡ªSquare Root . . . . . . 3-392
+FST/FSTP¡ªStore Floating Point Value . . . . . 3-394
+FSTCW/FNSTCW¡ªStore x87 FPU Control Word . . . . 3-396
+FSTENV/FNSTENV¡ªStore x87 FPU Environment . . . . 3-398
+FSTSW/FNSTSW¡ªStore x87 FPU Status Word . . . . . 3-400
+FSUB/FSUBP/FISUB¡ªSubtract . . . . . 3-402
+FSUBR/FSUBRP/FISUBR¡ªReverse Subtract. . . . . . 3-405
+FTST¡ªTEST. . . . . . . . 3-408
+FUCOM/FUCOMP/FUCOMPP¡ªUnordered Compare Floating Point Values . . . 3-410
+FXAM¡ªExamine Floating-Point. . . . . . 3-413
+FXCH¡ªExchange Register Contents . . . . . 3-415
+FXRSTOR¡ªRestore x87 FPU, MMX, XMM, and MXCSR State . . . . 3-417
+FXSAVE¡ªSave x87 FPU, MMX Technology, and SSE State . . . . 3-420
+FXTRACT¡ªExtract Exponent and Significand. . . . . .3-428
+FYL2X¡ªCompute y * log2x. . . . . . .3-430
+FYL2XP1¡ªCompute y * log2(x +1) . . . . .3-432
+GF2P8AFFINEINVQB ¡ª Galois Field Affine Transformation Inverse . . .3-434
+GF2P8AFFINEQB ¡ª Galois Field Affine Transformation . . . .3-436
+GF2P8MULB ¡ª Galois Field Multiply Bytes. . . . . .3-437
+HADDPD¡ªPacked Double-FP Horizontal Add . . . . .3-438
+HADDPS¡ªPacked Single-FP Horizontal Add . . . . .3-441
+HLT¡ªHalt . . . . . . .3-444
+HSUBPD¡ªPacked Double-FP Horizontal Subtract . . . .3-445
+HSUBPS¡ªPacked Single-FP Horizontal Subtract . . . .3-448
+IDIV¡ªSigned Divide . . . . . .3-451
+IMUL¡ªSigned Multiply. . . . . . .3-454
+IN¡ªInput from Port . . . . . .3-458
+INC¡ªIncrement by 1 . . . . . .3-460
+INS/INSB/INSW/INSD¡ªInput from Port to String . . . .3-462
+INSERTPS¡ªInsert Scalar Single-Precision Floating-Point Value . . . .3-465
+INT n/INTO/INT3/INT1¡ªCall to Interrupt Procedure. . . . .3-468
+INVD¡ªInvalidate Internal Caches . . . . .3-481
+INVLPG¡ªInvalidate TLB Entries. . . . . .3-483
+INVPCID¡ªInvalidate Process-Context Identifier. . . . .3-485
+IRET/IRETD¡ªInterrupt Return . . . . . .3-488
+Jcc¡ªJump if Condition Is Met. . . . . . .3-495
+JMP¡ªJump. . . . . . . .3-500
+KADDW/KADDB/KADDQ/KADDD¡ªADD Two Masks. . . . .3-508
+KANDW/KANDB/KANDQ/KANDD¡ªBitwise Logical AND Masks . . . .3-509
+KANDNW/KANDNB/KANDNQ/KANDND¡ªBitwise Logical AND NOT Masks . . .3-510
+KMOVW/KMOVB/KMOVQ/KMOVD¡ªMove from and to Mask Registers . . .3-511
+KNOTW/KNOTB/KNOTQ/KNOTD¡ªNOT Mask Register. . . . .3-513
+KORW/KORB/KORQ/KORD¡ªBitwise Logical OR Masks . . . .3-514
+KORTESTW/KORTESTB/KORTESTQ/KORTESTD¡ªOR Masks And Set Flags . . .3-515
+KSHIFTLW/KSHIFTLB/KSHIFTLQ/KSHIFTLD¡ªShift Left Mask Registers . . .3-517
+KSHIFTRW/KSHIFTRB/KSHIFTRQ/KSHIFTRD¡ªShift Right Mask Registers . . .3-519
+KTESTW/KTESTB/KTESTQ/KTESTD¡ªPacked Bit Test Masks and Set Flags. . . .3-521
+KUNPCKBW/KUNPCKWD/KUNPCKDQ¡ªUnpack for Mask Registers . . .3-523
+KXNORW/KXNORB/KXNORQ/KXNORD¡ªBitwise Logical XNOR Masks . . .3-524
+KXORW/KXORB/KXORQ/KXORD¡ªBitwise Logical XOR Masks . . . .3-525
+LAHF¡ªLoad Status Flags into AH Register . . . . .3-526
+LAR¡ªLoad Access Rights Byte . . . . .3-527
+LDDQU¡ªLoad Unaligned Integer 128 Bits . . . . .3-530
+LDMXCSR¡ªLoad MXCSR Register. . . . . .3-532
+LDS/LES/LFS/LGS/LSS¡ªLoad Far Pointer. . . . . .3-533
+LEA¡ªLoad Effective Address. . . . . . .3-537
+LEAVE¡ªHigh Level Procedure Exit. . . . . .3-539
+LFENCE¡ªLoad Fence. . . . . . .3-541
+LGDT/LIDT¡ªLoad Global/Interrupt Descriptor Table Register . . . .3-542
+LLDT¡ªLoad Local Descriptor Table Register. . . . . .3-545
+LMSW¡ªLoad Machine Status Word . . . . .3-547
+LOCK¡ªAssert LOCK# Signal Prefix. . . . . .3-549
+LODS/LODSB/LODSW/LODSD/LODSQ¡ªLoad String. . . . .3-551
+LOOP/LOOPcc¡ªLoop According to ECX Counter . . . .3-554
+LSL¡ªLoad Segment Limit . . . . . .3-556
+LTR¡ªLoad Task Register. . . . . . .3-559
+LZCNT¡ª Count the Number of Leading Zero Bits . . . .3-561
+CHAPTER 4
+INSTRUCTION SET REFERENCE, M-U
+4.1 IMM8 CONTROL BYTE OPERATION FOR PCMPESTRI / PCMPESTRM / PCMPISTRI / PCMPISTRM . . 4-1
+4.1.1 General Description . . . . . .4-1
+4.1.2 Source Data Format . . . . . .4-2
+4.1.3 Aggregation Operation . . . . . .4-2
+4.1.4 Polarity . . . . . . .4-3
+4.1.5 Output Selection . . . . . .4-4
+4.1.6 Valid/Invalid Override of Comparisons . . . . .4-4
+4.1.7 Summary of Im8 Control byte . . . . . .4-5
+4.1.8 Diagram Comparison and Aggregation Process . . . . .4-6
+4.2 COMMON TRANSFORMATION AND PRIMITIVE FUNCTIONS FOR SHA1XXX AND SHA256XXX . . 4-6
+4.3 INSTRUCTIONS (M-U) . . . . . . 4-7
+MASKMOVDQU¡ªStore Selected Bytes of Double Quadword . . . .4-8
+MASKMOVQ¡ªStore Selected Bytes of Quadword . . . . 4-10
+MAXPD¡ªMaximum of Packed Double-Precision Floating-Point Values . . . 4-12
+MAXPS¡ªMaximum of Packed Single-Precision Floating-Point Values . . . 4-15
+MAXSD¡ªReturn Maximum Scalar Double-Precision Floating-Point Value . . . 4-18
+MAXSS¡ªReturn Maximum Scalar Single-Precision Floating-Point Value . . . 4-20
+MFENCE¡ªMemory Fence. . . . . . . 4-22
+MINPD¡ªMinimum of Packed Double-Precision Floating-Point Values. . . . 4-23
+MINPS¡ªMinimum of Packed Single-Precision Floating-Point Values. . . . 4-26
+MINSD¡ªReturn Minimum Scalar Double-Precision Floating-Point Value . . . 4-29
+MINSS¡ªReturn Minimum Scalar Single-Precision Floating-Point Value . . . 4-31
+MONITOR¡ªSet Up Monitor Address . . . . . 4-33
+MOV¡ªMove . . . . . . . 4-35
+MOV¡ªMove to/from Control Registers. . . . . . 4-40
+MOV¡ªMove to/from Debug Registers . . . . . 4-43
+MOVAPD¡ªMove Aligned Packed Double-Precision Floating-Point Values. . . . 4-45
+MOVAPS¡ªMove Aligned Packed Single-Precision Floating-Point Values. . . . 4-49
+MOVBE¡ªMove Data After Swapping Bytes . . . . . 4-53
+MOVD/MOVQ¡ªMove Doubleword/Move Quadword. . . . . 4-55
+MOVDDUP¡ªReplicate Double FP Values . . . . . 4-59
+MOVDIRI¡ªMove Doubleword as Direct Store . . . . . 4-62
+MOVDIR64B¡ªMove 64 Bytes as Direct Store . . . . . 4-64
+MOVDQA,VMOVDQA32/64¡ªMove Aligned Packed Integer Values . . . 4-66
+MOVDQU,VMOVDQU8/16/32/64¡ªMove Unaligned Packed Integer Values. . . . 4-71
+MOVDQ2Q¡ªMove Quadword from XMM to MMX Technology Register. . . . 4-79
+MOVHLPS¡ªMove Packed Single-Precision Floating-Point Values High to Low . . . 4-80
+MOVHPD¡ªMove High Packed Double-Precision Floating-Point Value . . . 4-82
+MOVHPS¡ªMove High Packed Single-Precision Floating-Point Values . . . 4-84
+MOVLHPS¡ªMove Packed Single-Precision Floating-Point Values Low to High . . . 4-86
+MOVLPD¡ªMove Low Packed Double-Precision Floating-Point Value . . . 4-88
+MOVLPS¡ªMove Low Packed Single-Precision Floating-Point Values . . . 4-90
+MOVMSKPD¡ªExtract Packed Double-Precision Floating-Point Sign Mask. . . . 4-92
+MOVMSKPS¡ªExtract Packed Single-Precision Floating-Point Sign Mask. . . . 4-94
+MOVNTDQA¡ªLoad Double Quadword Non-Temporal Aligned Hint . . . 4-96
+MOVNTDQ¡ªStore Packed Integers Using Non-Temporal Hint . . . . 4-98
+MOVNTI¡ªStore Doubleword Using Non-Temporal Hint . . . . 4-100
+MOVNTPD¡ªStore Packed Double-Precision Floating-Point Values Using Non-Temporal Hint . . 4-102
+MOVNTPS¡ªStore Packed Single-Precision Floating-Point Values Using Non-Temporal Hint . . 4-104
+MOVNTQ¡ªStore of Quadword Using Non-Temporal Hint. . . . . 4-106
+MOVQ¡ªMove Quadword . . . . . . 4-107
+MOVQ2DQ¡ªMove Quadword from MMX Technology to XMM Register. . . . 4-110
+MOVS/MOVSB/MOVSW/MOVSD/MOVSQ¡ªMove Data from String to String. . . . 4-111
+MOVSD¡ªMove or Merge Scalar Double-Precision Floating-Point Value. . . . 4-115
+MOVSHDUP¡ªReplicate Single FP Values . . . . . 4-118
+MOVSLDUP¡ªReplicate Single FP Values . . . . . 4-121
+MOVSS¡ªMove or Merge Scalar Single-Precision Floating-Point Value . . . 4-124
+MOVSX/MOVSXD¡ªMove with Sign-Extension . . . . . 4-128
+MOVUPD¡ªMove Unaligned Packed Double-Precision Floating-Point Values . . . 4-130
+MOVUPS¡ªMove Unaligned Packed Single-Precision Floating-Point Values . . . 4-134
+MOVZX¡ªMove with Zero-Extend. . . . . . 4-138
+MPSADBW ¡ª Compute Multiple Packed Sums of Absolute Difference . . .4-140
+MUL¡ªUnsigned Multiply. . . . . . .4-148
+MULPD¡ªMultiply Packed Double-Precision Floating-Point Values . . .4-150
+MULPS¡ªMultiply Packed Single-Precision Floating-Point Values . . . .4-153
+MULSD¡ªMultiply Scalar Double-Precision Floating-Point Value . . . .4-156
+MULSS¡ªMultiply Scalar Single-Precision Floating-Point Values . . . .4-158
+MULX ¡ª Unsigned Multiply Without Affecting Flags. . . . .4-160
+MWAIT¡ªMonitor Wait . . . . . .4-162
+NEG¡ªTwo's Complement Negation . . . . .4-165
+NOP¡ªNo Operation . . . . . .4-167
+NOT¡ªOne's Complement Negation . . . . .4-168
+OR¡ªLogical Inclusive OR . . . . . .4-170
+ORPD¡ªBitwise Logical OR of Packed Double Precision Floating-Point Values. . . .4-172
+ORPS¡ªBitwise Logical OR of Packed Single Precision Floating-Point Values . . .4-175
+OUT¡ªOutput to Port. . . . . . .4-178
+OUTS/OUTSB/OUTSW/OUTSD¡ªOutput String to Port. . . . .4-180
+PABSB/PABSW/PABSD/PABSQ ¡ª Packed Absolute Value . . . .4-184
+PACKSSWB/PACKSSDW¡ªPack with Signed Saturation . . . .4-190
+PACKUSDW¡ªPack with Unsigned Saturation . . . . .4-198
+PACKUSWB¡ªPack with Unsigned Saturation . . . . .4-203
+PADDB/PADDW/PADDD/PADDQ¡ªAdd Packed Integers . . . .4-208
+PADDSB/PADDSW¡ªAdd Packed Signed Integers with Signed Saturation . . .4-215
+PADDUSB/PADDUSW¡ªAdd Packed Unsigned Integers with Unsigned Saturation . . .4-219
+PALIGNR ¡ª Packed Align Right . . . . .4-223
+PAND¡ªLogical AND . . . . . .4-227
+PANDN¡ªLogical AND NOT. . . . . . .4-230
+PAUSE¡ªSpin Loop Hint . . . . . .4-233
+PAVGB/PAVGW¡ªAverage Packed Integers. . . . . .4-234
+PBLENDVB ¡ª Variable Blend Packed Bytes. . . . . .4-238
+PBLENDW ¡ª Blend Packed Words. . . . . .4-242
+PCLMULQDQ ¡ª Carry-Less Multiplication Quadword . . . .4-245
+PCMPEQB/PCMPEQW/PCMPEQD¡ª Compare Packed Data for Equal . . .4-248
+PCMPEQQ ¡ª Compare Packed Qword Data for Equal . . . .4-254
+PCMPESTRI ¡ª Packed Compare Explicit Length Strings, Return Index . . .4-257
+PCMPESTRM ¡ª Packed Compare Explicit Length Strings, Return Mask . . .4-259
+PCMPGTB/PCMPGTW/PCMPGTD¡ªCompare Packed Signed Integers for Greater Than . .4-261
+PCMPGTQ ¡ª Compare Packed Data for Greater Than . . . .4-267
+PCMPISTRI ¡ª Packed Compare Implicit Length Strings, Return Index . . .4-270
+PCMPISTRM ¡ª Packed Compare Implicit Length Strings, Return Mask . . .4-272
+PDEP ¡ª Parallel Bits Deposit . . . . . .4-274
+PEXT ¡ª Parallel Bits Extract. . . . . . .4-276
+PEXTRB/PEXTRD/PEXTRQ ¡ª Extract Byte/Dword/Qword . . . .4-278
+PEXTRW¡ªExtract Word. . . . . . .4-281
+PHADDW/PHADDD ¡ª Packed Horizontal Add . . . . .4-284
+PHADDSW ¡ª Packed Horizontal Add and Saturate. . . . .4-288
+PHMINPOSUW ¡ª Packed Horizontal Word Minimum. . . . .4-290
+PHSUBW/PHSUBD ¡ª Packed Horizontal Subtract . . . .4-292
+PHSUBSW ¡ª Packed Horizontal Subtract and Saturate. . . . .4-295
+PINSRB/PINSRD/PINSRQ ¡ª Insert Byte/Dword/Qword . . . .4-297
+PINSRW¡ªInsert Word . . . . . .4-300
+PMADDUBSW ¡ª Multiply and Add Packed Signed and Unsigned Bytes . . .4-302
+PMADDWD¡ªMultiply and Add Packed Integers . . . . .4-305
+PMAXSB/PMAXSW/PMAXSD/PMAXSQ¡ªMaximum of Packed Signed Integers . . .4-308
+PMAXUB/PMAXUW¡ªMaximum of Packed Unsigned Integers . . . .4-315
+PMAXUD/PMAXUQ¡ªMaximum of Packed Unsigned Integers . . . .4-320
+PMINSB/PMINSW¡ªMinimum of Packed Signed Integers . . . .4-324
+PMINSD/PMINSQ¡ªMinimum of Packed Signed Integers . . . .4-329
+PMINUB/PMINUW¡ªMinimum of Packed Unsigned Integers . . . .4-333
+PMINUD/PMINUQ¡ªMinimum of Packed Unsigned Integers. . . . .4-338
+PMOVMSKB¡ªMove Byte Mask . . . . . 4-342
+PMOVSX¡ªPacked Move with Sign Extend . . . . . 4-344
+PMOVZX¡ªPacked Move with Zero Extend . . . . . 4-353
+PMULDQ¡ªMultiply Packed Doubleword Integers . . . . 4-362
+PMULHRSW ¡ª Packed Multiply High with Round and Scale . . . . 4-365
+PMULHUW¡ªMultiply Packed Unsigned Integers and Store High Result. . . . 4-369
+PMULHW¡ªMultiply Packed Signed Integers and Store High Result . . . 4-373
+PMULLD/PMULLQ¡ªMultiply Packed Integers and Store Low Result. . . . 4-377
+PMULLW¡ªMultiply Packed Signed Integers and Store Low Result . . . 4-381
+PMULUDQ¡ªMultiply Packed Unsigned Doubleword Integers . . . . 4-385
+POP¡ªPop a Value from the Stack . . . . . 4-388
+POPA/POPAD¡ªPop All General-Purpose Registers . . . . 4-393
+POPCNT ¡ª Return the Count of Number of Bits Set to 1. . . . . 4-395
+POPF/POPFD/POPFQ¡ªPop Stack into EFLAGS Register . . . . 4-397
+POR¡ªBitwise Logical OR. . . . . . . 4-401
+PREFETCHh¡ªPrefetch Data Into Caches . . . . . 4-404
+PREFETCHW¡ªPrefetch Data into Caches in Anticipation of a Write . . . 4-406
+PSADBW¡ªCompute Sum of Absolute Differences . . . . 4-408
+PSHUFB ¡ª Packed Shuffle Bytes . . . . . 4-412
+PSHUFD¡ªShuffle Packed Doublewords . . . . . 4-416
+PSHUFHW¡ªShuffle Packed High Words. . . . . . 4-420
+PSHUFLW¡ªShuffle Packed Low Words . . . . . 4-423
+PSHUFW¡ªShuffle Packed Words . . . . . 4-426
+PSIGNB/PSIGNW/PSIGND ¡ª Packed SIGN . . . . . 4-427
+PSLLDQ¡ªShift Double Quadword Left Logical . . . . . 4-431
+PSLLW/PSLLD/PSLLQ¡ªShift Packed Data Left Logical . . . . 4-433
+PSRAW/PSRAD/PSRAQ¡ªShift Packed Data Right Arithmetic . . . . 4-445
+PSRLDQ¡ªShift Double Quadword Right Logical . . . . 4-455
+PSRLW/PSRLD/PSRLQ¡ªShift Packed Data Right Logical . . . . 4-457
+PSUBB/PSUBW/PSUBD¡ªSubtract Packed Integers . . . . 4-469
+PSUBQ¡ªSubtract Packed Quadword Integers . . . . . 4-476
+PSUBSB/PSUBSW¡ªSubtract Packed Signed Integers with Signed Saturation. . . . 4-479
+PSUBUSB/PSUBUSW¡ªSubtract Packed Unsigned Integers with Unsigned Saturation. . . 4-483
+PTEST- Logical Compare . . . . . . 4-487
+PTWRITE - Write Data to a Processor Trace Packet . . . . 4-489
+PUNPCKHBW/PUNPCKHWD/PUNPCKHDQ/PUNPCKHQDQ¡ª Unpack High Data. . . . 4-491
+PUNPCKLBW/PUNPCKLWD/PUNPCKLDQ/PUNPCKLQDQ¡ªUnpack Low Data . . . 4-501
+PUSH¡ªPush Word, Doubleword or Quadword Onto the Stack . . . . 4-511
+PUSHA/PUSHAD¡ªPush All General-Purpose Registers. . . . . 4-514
+PUSHF/PUSHFD/PUSHFQ¡ªPush EFLAGS Register onto the Stack . . . 4-516
+PXOR¡ªLogical Exclusive OR. . . . . . . 4-518
+RCL/RCR/ROL/ROR¡ªRotate . . . . . . 4-521
+RCPPS¡ªCompute Reciprocals of Packed Single-Precision Floating-Point Values . . . 4-526
+RCPSS¡ªCompute Reciprocal of Scalar Single-Precision Floating-Point Values . . . 4-528
+RDFSBASE/RDGSBASE¡ªRead FS/GS Segment Base . . . . 4-530
+RDMSR¡ªRead from Model Specific Register. . . . . . 4-532
+RDPID¡ªRead Processor ID . . . . . . 4-534
+RDPKRU¡ªRead Protection Key Rights for User Pages . . . . 4-535
+RDPMC¡ªRead Performance-Monitoring Counters . . . . 4-537
+RDRAND¡ªRead Random Number. . . . . . 4-539
+RDSEED¡ªRead Random SEED . . . . . . 4-541
+RDTSC¡ªRead Time-Stamp Counter . . . . . 4-543
+RDTSCP¡ªRead Time-Stamp Counter and Processor ID. . . . . 4-545
+REP/REPE/REPZ/REPNE/REPNZ¡ªRepeat String Operation Prefix . . . 4-547
+RET¡ªReturn from Procedure . . . . . . 4-551
+RORX ¡ª Rotate Right Logical Without Affecting Flags . . . . 4-561
+ROUNDPD ¡ª Round Packed Double Precision Floating-Point Values . . . 4-562
+ROUNDPS ¡ª Round Packed Single Precision Floating-Point Values . . . 4-565
+ROUNDSD ¡ª Round Scalar Double Precision Floating-Point Values . . . 4-568
+ROUNDSS ¡ª Round Scalar Single Precision Floating-Point Values. . . .4-570
+RSM¡ªResume from System Management Mode . . . .4-572
+RSQRTPS¡ªCompute Reciprocals of Square Roots of Packed Single-Precision Floating-Point Values .4-574
+RSQRTSS¡ªCompute Reciprocal of Square Root of Scalar Single-Precision Floating-Point Value . .4-576
+SAHF¡ªStore AH into Flags . . . . . .4-578
+SAL/SAR/SHL/SHR¡ªShift . . . . . .4-580
+SARX/SHLX/SHRX ¡ª Shift Without Affecting Flags . . . .4-585
+SBB¡ªInteger Subtraction with Borrow. . . . . .4-587
+SCAS/SCASB/SCASW/SCASD¡ªScan String . . . . .4-590
+SETcc¡ªSet Byte on Condition . . . . . .4-594
+SFENCE¡ªStore Fence. . . . . . .4-597
+SGDT¡ªStore Global Descriptor Table Register . . . . .4-598
+SHA1RNDS4¡ªPerform Four Rounds of SHA1 Operation . . . .4-600
+SHA1NEXTE¡ªCalculate SHA1 State Variable E after Four Rounds . . .4-602
+SHA1MSG1¡ªPerform an Intermediate Calculation for the Next Four SHA1 Message Dwords . .4-603
+SHA1MSG2¡ªPerform a Final Calculation for the Next Four SHA1 Message Dwords. . .4-604
+SHA256RNDS2¡ªPerform Two Rounds of SHA256 Operation . . . .4-605
+SHA256MSG1¡ªPerform an Intermediate Calculation for the Next Four SHA256 Message Dwords .4-607
+SHA256MSG2¡ªPerform a Final Calculation for the Next Four SHA256 Message Dwords . .4-608
+SHLD¡ªDouble Precision Shift Left . . . . .4-609
+SHRD¡ªDouble Precision Shift Right. . . . . .4-612
+SHUFPD¡ªPacked Interleave Shuffle of Pairs of Double-Precision Floating-Point Values . .4-615
+SHUFPS¡ªPacked Interleave Shuffle of Quadruplets of Single-Precision Floating-Point Values. . .4-620
+SIDT¡ªStore Interrupt Descriptor Table Register. . . . .4-624
+SLDT¡ªStore Local Descriptor Table Register . . . . .4-626
+SMSW¡ªStore Machine Status Word. . . . . .4-628
+SQRTPD¡ªSquare Root of Double-Precision Floating-Point Values . . .4-630
+SQRTPS¡ªSquare Root of Single-Precision Floating-Point Values . . .4-633
+SQRTSD¡ªCompute Square Root of Scalar Double-Precision Floating-Point Value . . .4-636
+SQRTSS¡ªCompute Square Root of Scalar Single-Precision Value . . .4-638
+STAC¡ªSet AC Flag in EFLAGS Register. . . . . .4-640
+STC¡ªSet Carry Flag. . . . . . .4-641
+STD¡ªSet Direction Flag . . . . . .4-642
+STI¡ªSet Interrupt Flag. . . . . . .4-643
+STMXCSR¡ªStore MXCSR Register State . . . . .4-645
+STOS/STOSB/STOSW/STOSD/STOSQ¡ªStore String . . . .4-646
+STR¡ªStore Task Register . . . . . .4-650
+SUB¡ªSubtract. . . . . . .4-652
+SUBPD¡ªSubtract Packed Double-Precision Floating-Point Values. . . .4-654
+SUBPS¡ªSubtract Packed Single-Precision Floating-Point Values. . . .4-657
+SUBSD¡ªSubtract Scalar Double-Precision Floating-Point Value. . . . .4-660
+SUBSS¡ªSubtract Scalar Single-Precision Floating-Point Value . . . .4-662
+SWAPGS¡ªSwap GS Base Register . . . . .4-664
+SYSCALL¡ªFast System Call . . . . . .4-666
+SYSENTER¡ªFast System Call. . . . . . .4-668
+SYSEXIT¡ªFast Return from Fast System Call. . . . . .4-671
+SYSRET¡ªReturn From Fast System Call. . . . . .4-674
+TEST¡ªLogical Compare . . . . . .4-677
+TPAUSE¡ªTimed PAUSE . . . . . .4-679
+TZCNT ¡ª Count the Number of Trailing Zero Bits. . . . .4-681
+UCOMISD¡ªUnordered Compare Scalar Double-Precision Floating-Point Values and Set EFLAGS . .4-683
+UCOMISS¡ªUnordered Compare Scalar Single-Precision Floating-Point Values and Set EFLAGS . .4-685
+UD¡ªUndefined Instruction . . . . . .4-687
+UMONITOR¡ªUser Level Set Up Monitor Address . . . .4-688
+UMWAIT¡ªUser Level Monitor Wait . . . . .4-690
+UNPCKHPD¡ªUnpack and Interleave High Packed Double-Precision Floating-Point Values . .4-692
+UNPCKHPS¡ªUnpack and Interleave High Packed Single-Precision Floating-Point Values . .4-696
+UNPCKLPD¡ªUnpack and Interleave Low Packed Double-Precision Floating-Point Values. . .4-700
+UNPCKLPS¡ªUnpack and Interleave Low Packed Single-Precision Floating-Point Values . .4-704
+
+CHAPTER 5
+INSTRUCTION SET REFERENCE, V-Z
+5.1 TERNARY BIT VECTOR LOGIC TABLE. . . . . . 5-1
+5.2 INSTRUCTIONS (V-Z). . . . . . . 5-4
+VALIGND/VALIGNQ¡ªAlign Doubleword/Quadword Vectors . . . .5-5
+VBLENDMPD/VBLENDMPS¡ªBlend Float64/Float32 Vectors Using an OpMask Control . .5-9
+VBROADCAST¡ªLoad with Broadcast Floating-Point Data . . . . 5-12
+VCOMPRESSPD¡ªStore Sparse Packed Double-Precision Floating-Point Values into Dense Memory. . 5-20
+VCOMPRESSPS¡ªStore Sparse Packed Single-Precision Floating-Point Values into Dense Memory. . . 5-22
+VCVTPD2QQ¡ªConvert Packed Double-Precision Floating-Point Values to Packed Quadword Integers . 5-24
+VCVTPD2UDQ¡ªConvert Packed Double-Precision Floating-Point Values to Packed Unsigned Doubleword Integers . 5-27
+VCVTPD2UQQ¡ªConvert Packed Double-Precision Floating-Point Values to Packed Unsigned Quadword Integers . 5-30
+VCVTPH2PS¡ªConvert 16-bit FP values to Single-Precision FP values . . . 5-33
+VCVTPS2PH¡ªConvert Single-Precision FP value to 16-bit FP value . . . 5-36
+VCVTPS2UDQ¡ªConvert Packed Single-Precision Floating-Point Values to Packed Unsigned Doubleword Integer Values . . . . . . . 5-40
+VCVTPS2QQ¡ªConvert Packed Single Precision Floating-Point Values to Packed Singed Quadword Integer Values . 5-43
+VCVTPS2UQQ¡ªConvert Packed Single Precision Floating-Point Values to Packed Unsigned Quadword Integer Values . . . . . . . 5-46
+VCVTQQ2PD¡ªConvert Packed Quadword Integers to Packed Double-Precision Floating-Point Values . 5-49
+VCVTQQ2PS¡ªConvert Packed Quadword Integers to Packed Single-Precision Floating-Point Values . 5-51
+VCVTSD2USI¡ªConvert Scalar Double-Precision Floating-Point Value to Unsigned Doubleword Integer . 5-53
+VCVTSS2USI¡ªConvert Scalar Single-Precision Floating-Point Value to Unsigned Doubleword Integer . 5-54
+VCVTTPD2QQ¡ªConvert with Truncation Packed Double-Precision Floating-Point Values to Packed Quadword Integers. . . . . . . . 5-56
+VCVTTPD2UDQ¡ªConvert with Truncation Packed Double-Precision Floating-Point Values to Packed Unsigned Doubleword Integers . . . . . . 5-58
+VCVTTPD2UQQ¡ªConvert with Truncation Packed Double-Precision Floating-Point Values to Packed Unsigned Quadword Integers . . . . . . 5-61
+VCVTTPS2UDQ¡ªConvert with Truncation Packed Single-Precision Floating-Point Values to Packed Unsigned Doubleword Integer Values . . . . . . 5-63
+VCVTTPS2QQ¡ªConvert with Truncation Packed Single Precision Floating-Point Values to Packed Singed Quadword Integer Values. . . . . . . 5-65
+VCVTTPS2UQQ¡ªConvert with Truncation Packed Single Precision Floating-Point Values to Packed Unsigned Quadword Integer Values . . . . . . 5-67
+VCVTTSD2USI¡ªConvert with Truncation Scalar Double-Precision Floating-Point Value to Unsigned Integer . 5-69
+VCVTTSS2USI¡ªConvert with Truncation Scalar Single-Precision Floating-Point Value to Unsigned Integer . 5-70
+VCVTUDQ2PD¡ªConvert Packed Unsigned Doubleword Integers to Packed Double-Precision Floating-Point Values . 5-72
+VCVTUDQ2PS¡ªConvert Packed Unsigned Doubleword Integers to Packed Single-Precision Floating-Point Values . 5-74
+VCVTUQQ2PD¡ªConvert Packed Unsigned Quadword Integers to Packed Double-Precision Floating-Point Values . 5-76
+VCVTUQQ2PS¡ªConvert Packed Unsigned Quadword Integers to Packed Single-Precision Floating-Point Values . 5-78
+VCVTUSI2SD¡ªConvert Unsigned Integer to Scalar Double-Precision Floating-Point Value . . 5-80
+VCVTUSI2SS¡ªConvert Unsigned Integer to Scalar Single-Precision Floating-Point Value. . . 5-82
+VDBPSADBW¡ªDouble Block Packed Sum-Absolute-Differences (SAD) on Unsigned Bytes . . 5-84
+VEXPANDPD¡ªLoad Sparse Packed Double-Precision Floating-Point Values from Dense Memory . . 5-88
+VEXPANDPS¡ªLoad Sparse Packed Single-Precision Floating-Point Values from Dense Memory . . 5-90
+VERR/VERW¡ªVerify a Segment for Reading or Writing . . . . 5-92
+VEXTRACTF128/VEXTRACTF32x4/VEXTRACTF64x2/VEXTRACTF32x8/VEXTRACTF64x4¡ªExtract Packed Floating-Point Values . . . . . . 5-94
+VEXTRACTI128/VEXTRACTI32x4/VEXTRACTI64x2/VEXTRACTI32x8/VEXTRACTI64x4¡ªExtract packed Integer Values . . . . . . . 5-100
+VFIXUPIMMPD¡ªFix Up Special Packed Float64 Values. . . . . 5-106
+VFIXUPIMMPS¡ªFix Up Special Packed Float32 Values . . . . 5-110
+VFIXUPIMMSD¡ªFix Up Special Scalar Float64 Value . . . . 5-114
+VFIXUPIMMSS¡ªFix Up Special Scalar Float32 Value . . . . 5-117
+VFMADD132PD/VFMADD213PD/VFMADD231PD¡ªFused Multiply-Add of Packed Double-Precision Floating-Point Values . . . . . . . 5-120
+VFMADD132PS/VFMADD213PS/VFMADD231PS¡ªFused Multiply-Add of Packed Single-Precision Floating-Point Values . . . . . . . 5-127
+VFMADD132SD/VFMADD213SD/VFMADD231SD¡ªFused Multiply-Add of Scalar Double-Precision Floating-Point Values . . . . . . .5-134
+VFMADD132SS/VFMADD213SS/VFMADD231SS¡ªFused Multiply-Add of Scalar Single-Precision Floating-Point Values . . . . . . .5-137
+VFMADDSUB132PD/VFMADDSUB213PD/VFMADDSUB231PD¡ªFused Multiply-Alternating Add/Subtract of Packed Double-Precision Floating-Point Values . . . . .5-140
+VFMADDSUB132PS/VFMADDSUB213PS/VFMADDSUB231PS¡ªFused Multiply-Alternating Add/Subtract of Packed Single-Precision Floating-Point Values . . . . .5-150
+VFMSUBADD132PD/VFMSUBADD213PD/VFMSUBADD231PD¡ªFused Multiply-Alternating Subtract/Add of Packed Double-Precision Floating-Point Values . . . . .5-159
+VFMSUBADD132PS/VFMSUBADD213PS/VFMSUBADD231PS¡ªFused Multiply-Alternating Subtract/Add of Packed Single-Precision Floating-Point Values . . . . .5-169
+VFMSUB132PD/VFMSUB213PD/VFMSUB231PD¡ªFused Multiply-Subtract of Packed Double-Precision Floating-Point Values . . . . . . .5-179
+VFMSUB132PS/VFMSUB213PS/VFMSUB231PS¡ªFused Multiply-Subtract of Packed Single-Precision Floating-Point Values . . . . . . .5-186
+VFMSUB132SD/VFMSUB213SD/VFMSUB231SD¡ªFused Multiply-Subtract of Scalar Double-Precision Floating-Point Values . . . . . . .5-193
+VFMSUB132SS/VFMSUB213SS/VFMSUB231SS¡ªFused Multiply-Subtract of Scalar Single-Precision Floating-Point Values . . . . . . .5-196
+VFNMADD132PD/VFNMADD213PD/VFNMADD231PD¡ªFused Negative Multiply-Add of Packed Double-Precision Floating-Point Values . . . . . .5-199
+VFNMADD132PS/VFNMADD213PS/VFNMADD231PS¡ªFused Negative Multiply-Add of Packed Single-Precision Floating-Point Values . . . . . .5-206
+VFNMADD132SD/VFNMADD213SD/VFNMADD231SD¡ªFused Negative Multiply-Add of Scalar Double-Precision Floating-Point Values . . . . . .5-212
+VFNMADD132SS/VFNMADD213SS/VFNMADD231SS¡ªFused Negative Multiply-Add of Scalar Single-Precision Floating-Point Values . . . . . .5-215
+VFNMSUB132PD/VFNMSUB213PD/VFNMSUB231PD¡ªFused Negative Multiply-Subtract of Packed Double-Precision Floating-Point Values . . . . . .5-218
+VFNMSUB132PS/VFNMSUB213PS/VFNMSUB231PS¡ªFused Negative Multiply-Subtract of Packed Single-Precision Floating-Point Values . . . . . .5-224
+VFNMSUB132SD/VFNMSUB213SD/VFNMSUB231SD¡ªFused Negative Multiply-Subtract of Scalar Double-Precision Floating-Point Values . . . . . .5-230
+VFNMSUB132SS/VFNMSUB213SS/VFNMSUB231SS¡ªFused Negative Multiply-Subtract of Scalar Single-Precision Floating-Point Values . . . . . .5-233
+VFPCLASSPD¡ªTests Types Of a Packed Float64 Values . . . .5-236
+VFPCLASSPS¡ªTests Types Of a Packed Float32 Values . . . .5-239
+VFPCLASSSD¡ªTests Types Of a Scalar Float64 Values . . . .5-241
+VFPCLASSSS¡ªTests Types Of a Scalar Float32 Values . . . .5-243
+VGATHERDPD/VGATHERQPD ¡ª Gather Packed DP FP Values Using Signed Dword/Qword Indices. .5-245
+VGATHERDPS/VGATHERQPS ¡ª Gather Packed SP FP values Using Signed Dword/Qword Indices. . .5-250
+VGATHERDPS/VGATHERDPD¡ªGather Packed Single, Packed Double with Signed Dword . .5-255
+VGATHERQPS/VGATHERQPD¡ªGather Packed Single, Packed Double with Signed Qword Indices . .5-258
+VGETEXPPD¡ªConvert Exponents of Packed DP FP Values to DP FP Values . . .5-261
+VGETEXPPS¡ªConvert Exponents of Packed SP FP Values to SP FP Values . . .5-264
+VGETEXPSD¡ªConvert Exponents of Scalar DP FP Values to DP FP Value . . .5-268
+VGETEXPSS¡ªConvert Exponents of Scalar SP FP Values to SP FP Value. . . .5-270
+VGETMANTPD¡ªExtract Float64 Vector of Normalized Mantissas from Float64 Vector . .5-272
+VGETMANTPS¡ªExtract Float32 Vector of Normalized Mantissas from Float32 Vector . .5-276
+VGETMANTSD¡ªExtract Float64 of Normalized Mantissas from Float64 Scalar . . .5-279
+VGETMANTSS¡ªExtract Float32 Vector of Normalized Mantissa from Float32 Vector . .5-281
+VINSERTF128/VINSERTF32x4/VINSERTF64x2/VINSERTF32x8/VINSERTF64x4¡ªInsert Packed Floating-Point Values . . . . . . .5-283
+VINSERTI128/VINSERTI32x4/VINSERTI64x2/VINSERTI32x8/VINSERTI64x4¡ªInsert Packed Integer Values .5-287
+VMASKMOV¡ªConditional SIMD Packed Loads and Stores . . . .5-291
+VPBLENDD ¡ª Blend Packed Dwords . . . . .5-294
+VPBLENDMB/VPBLENDMW¡ªBlend Byte/Word Vectors Using an Opmask Control. . .5-296
+VPBLENDMD/VPBLENDMQ¡ªBlend Int32/Int64 Vectors Using an OpMask Control . .5-298
+VPBROADCASTB/W/D/Q¡ªLoad with Broadcast Integer Data from General Purpose Register . . 5-301
+VPBROADCAST¡ªLoad Integer and Broadcast . . . . . 5-304
+VPBROADCASTM¡ªBroadcast Mask to Vector Register . . .5-313
+VPCMPB/VPCMPUB¡ªCompare Packed Byte Values Into Mask . . . . 5-315
+VPCMPD/VPCMPUD¡ªCompare Packed Integer Values into Mask . . . 5-318
+VPCMPQ/VPCMPUQ¡ªCompare Packed Integer Values into Mask . . . 5-321
+VPCMPW/VPCMPUW¡ªCompare Packed Word Values Into Mask . . . . 5-324
+VPCOMPRESSD¡ªStore Sparse Packed Doubleword Integer Values into Dense Memory/Register . . 5-327
+VPCOMPRESSQ¡ªStore Sparse Packed Quadword Integer Values into Dense Memory/Register . . 5-329
+VPCONFLICTD/Q¡ªDetect Conflicts Within a Vector of Packed Dword/Qword Values into Dense Memory/ Register. 5-331
+VPERM2F128 ¡ª Permute Floating-Point Values . . . . 5-334
+VPERM2I128 ¡ª Permute Integer Values. . . . . . 5-336
+VPERMB¡ªPermute Packed Bytes Elements . . . . . 5-338
+VPERMD/VPERMW¡ªPermute Packed Doublewords/Words Elements . . . 5-340
+VPERMI2B¡ªFull Permute of Bytes from Two Tables Overwriting the Index. . . . 5-343
+VPERMI2W/D/Q/PS/PD¡ªFull Permute From Two Tables Overwriting the Index . . . 5-345
+VPERMILPD¡ªPermute In-Lane of Pairs of Double-Precision Floating-Point Values. . . 5-351
+VPERMILPS¡ªPermute In-Lane of Quadruples of Single-Precision Floating-Point Values. . . 5-356
+VPERMPD¡ªPermute Double-Precision Floating-Point Elements . . . . 5-361
+VPERMPS¡ªPermute Single-Precision Floating-Point Elements . . . . 5-364
+VPERMQ¡ªQwords Element Permutation. . . . . . 5-367
+VPERMT2B¡ªFull Permute of Bytes from Two Tables Overwriting a Table . . . 5-370
+VPERMT2W/D/Q/PS/PD¡ªFull Permute from Two Tables Overwriting one Table . . . 5-372
+VPEXPANDD¡ªLoad Sparse Packed Doubleword Integer Values from Dense Memory / Register . . 5-377
+VPEXPANDQ¡ªLoad Sparse Packed Quadword Integer Values from Dense Memory / Register . . 5-379
+VPGATHERDD/VPGATHERQD ¡ª Gather Packed Dword Values Using Signed Dword/Qword Indices . 5-381
+VPGATHERDD/VPGATHERDQ¡ªGather Packed Dword, Packed Qword with Signed Dword Indices . . 5-385
+VPGATHERDQ/VPGATHERQQ ¡ª Gather Packed Qword Values Using Signed Dword/Qword Indices. . 5-388
+VPGATHERQD/VPGATHERQQ¡ªGather Packed Dword, Packed Qword with Signed Qword Indices . . 5-392
+VPLZCNTD/Q¡ªCount the Number of Leading Zero Bits for Packed Dword, Packed Qword Values .5-395
+VPMADD52HUQ¡ªPacked Multiply of Unsigned 52-bit Unsigned Integers and Add High 52-bit Products to 64-bit Accumulators . . . . . . 5-398
+VPMADD52LUQ¡ªPacked Multiply of Unsigned 52-bit Integers and Add the Low 52-bit Products to Qword Accumulators. . . . . .5-400
+VPMASKMOV ¡ª Conditional SIMD Integer Packed Loads and Stores . . . 5-402
+VPMOVB2M/VPMOVW2M/VPMOVD2M/VPMOVQ2M¡ªConvert a Vector Register to a Mask . . 5-405
+VPMOVDB/VPMOVSDB/VPMOVUSDB¡ªDown Convert DWord to Byte . . . 5-408
+VPMOVDW/VPMOVSDW/VPMOVUSDW¡ªDown Convert DWord to Word . . . 5-412
+VPMOVM2B/VPMOVM2W/VPMOVM2D/VPMOVM2Q¡ªConvert a Mask Register to a Vector Register . 5-416
+VPMOVQB/VPMOVSQB/VPMOVUSQB¡ªDown Convert QWord to Byte . . . 5-419
+VPMOVQD/VPMOVSQD/VPMOVUSQD¡ªDown Convert QWord to DWord . . . 5-423
+VPMOVQW/VPMOVSQW/VPMOVUSQW¡ªDown Convert QWord to Word . . . 5-427
+VPMOVWB/VPMOVSWB/VPMOVUSWB¡ªDown Convert Word to Byte . . . 5-431
+VPMULTISHIFTQB ¨C Select Packed Unaligned Bytes from Quadword Sources . . . 5-435
+VPROLD/VPROLVD/VPROLQ/VPROLVQ¡ªBit Rotate Left . . . . 5-437
+VPRORD/VPRORVD/VPRORQ/VPRORVQ¡ªBit Rotate Right. . . . . 5-442
+VPSCATTERDD/VPSCATTERDQ/VPSCATTERQD/VPSCATTERQQ¡ªScatter Packed Dword, Packed Qword with Signed Dword, Signed Qword Indices . . . . . 5-447
+VPSLLVW/VPSLLVD/VPSLLVQ¡ªVariable Bit Shift Left Logical . . . . 5-451
+VPSRAVW/VPSRAVD/VPSRAVQ¡ªVariable Bit Shift Right Arithmetic . . . 5-456
+VPSRLVW/VPSRLVD/VPSRLVQ¡ªVariable Bit Shift Right Logical . . . 5-461
+VPTERNLOGD/VPTERNLOGQ¡ªBitwise Ternary Logic . . . . 5-466
+VPTESTMB/VPTESTMW/VPTESTMD/VPTESTMQ¡ªLogical AND and Set Mask . . . 5-469
+VPTESTNMB/W/D/Q¡ªLogical NAND and Set . . . .5-472
+VRANGEPD¡ªRange Restriction Calculation For Packed Pairs of Float64 Values . . . 5-476
+VRANGEPS¡ªRange Restriction Calculation For Packed Pairs of Float32 Values. . . . 5-481
+VRANGESD¡ªRange Restriction Calculation From a pair of Scalar Float64 Values . . . 5-485
+VRANGESS¡ªRange Restriction Calculation From a Pair of Scalar Float32 Values . . . 5-488
+VRCP14PD¡ªCompute Approximate Reciprocals of Packed Float64 Values. . . . 5-491
+VRCP14SD¡ªCompute Approximate Reciprocal of Scalar Float64 Value . . .5-493
+VRCP14PS¡ªCompute Approximate Reciprocals of Packed Float32 Values . . .5-495
+VRCP14SS¡ªCompute Approximate Reciprocal of Scalar Float32 Value . . .5-497
+VREDUCEPD¡ªPerform Reduction Transformation on Packed Float64 Values . . .5-499
+VREDUCESD¡ªPerform a Reduction Transformation on a Scalar Float64 Value . . .5-502
+VREDUCEPS¡ªPerform Reduction Transformation on Packed Float32 Values. . . .5-504
+VREDUCESS¡ªPerform a Reduction Transformation on a Scalar Float32 Value . . .5-506
+VRNDSCALEPD¡ªRound Packed Float64 Values To Include A Given Number Of Fraction Bits . .5-508
+VRNDSCALESD¡ªRound Scalar Float64 Value To Include A Given Number Of Fraction Bits . .5-512
+VRNDSCALEPS¡ªRound Packed Float32 Values To Include A Given Number Of Fraction Bits . .5-514
+VRNDSCALESS¡ªRound Scalar Float32 Value To Include A Given Number Of Fraction Bits. . .5-517
+VRSQRT14PD¡ªCompute Approximate Reciprocals of Square Roots of Packed Float64 Values. . .5-519
+VRSQRT14SD¡ªCompute Approximate Reciprocal of Square Root of Scalar Float64 Value . .5-521
+VRSQRT14PS¡ªCompute Approximate Reciprocals of Square Roots of Packed Float32 Values . .5-523
+VRSQRT14SS¡ªCompute Approximate Reciprocal of Square Root of Scalar Float32 Value . .5-525
+VSCALEFPD¡ªScale Packed Float64 Values With Float64 Values. . . .5-527
+VSCALEFSD¡ªScale Scalar Float64 Values With Float64 Values. . . . .5-530
+VSCALEFPS¡ªScale Packed Float32 Values With Float32 Values. . . .5-532
+VSCALEFSS¡ªScale Scalar Float32 Value With Float32 Value . . . .5-535
+VSCATTERDPS/VSCATTERDPD/VSCATTERQPS/VSCATTERQPD¡ªScatter Packed Single, Packed Double with Signed Dword and Qword Indices . . . . .5-537
+VSHUFF32x4/VSHUFF64x2/VSHUFI32x4/VSHUFI64x2¡ªShuffle Packed Values at 128-bit Granularity. .5-541
+VTESTPD/VTESTPS¡ªPacked Bit Test . . . . .5-546
+VZEROALL¡ªZero All YMM Registers . . . . .5-549
+VZEROUPPER¡ªZero Upper Bits of YMM Registers. . . . .5-550
+WAIT/FWAIT¡ªWait . . . . . .5-551
+WBINVD¡ªWrite Back and Invalidate Cache . . . . .5-552
+WRFSBASE/WRGSBASE¡ªWrite FS/GS Segment Base . . . .5-554
+WRMSR¡ªWrite to Model Specific Register. . . . . .5-556
+WRPKRU¡ªWrite Data to User Page Key Register . . . .5-558
+XACQUIRE/XRELEASE ¡ª Hardware Lock Elision Prefix Hints . . . .5-559
+XABORT ¡ª Transactional Abort . . . . .5-563
+XADD¡ªExchange and Add . . . . . .5-565
+XBEGIN ¡ª Transactional Begin . . . . .5-567
+XCHG¡ªExchange Register/Memory with Register . . . .5-570
+XEND ¡ª Transactional End . . . . . .5-572
+XGETBV¡ªGet Value of Extended Control Register. . . . .5-574
+XLAT/XLATB¡ªTable Look-up Translation . . . . .5-576
+XOR¡ªLogical Exclusive OR . . . . . .5-578
+XORPD¡ªBitwise Logical XOR of Packed Double Precision Floating-Point Values . . .5-580
+XORPS¡ªBitwise Logical XOR of Packed Single Precision Floating-Point Values . . .5-583
+XRSTOR¡ªRestore Processor Extended States . . . . .5-586
+XRSTORS¡ªRestore Processor Extended States Supervisor . . . .5-591
+XSAVE¡ªSave Processor Extended States. . . . . .5-595
+XSAVEC¡ªSave Processor Extended States with Compaction. . . . .5-598
+XSAVEOPT¡ªSave Processor Extended States Optimized . . . .5-601
+XSAVES¡ªSave Processor Extended States Supervisor. . . . .5-604
+XSETBV¡ªSet Extended Control Register. . . . . .5-607
+XTEST ¡ª Test If In Transactional Execution . . . . .5-609
+CHAPTER 6
+SAFER MODE EXTENSIONS REFERENCE
+6.1 OVERVIEW . . . . . . . 6-1
+6.2 SMX FUNCTIONALITY . . . . . . 6-1
+6.2.1 Detecting and Enabling SMX. . . . . . .6-1
+6.2.2 SMX Instruction Summary. . . . . . .6-2
+6.2.2.1 GETSEC[CAPABILITIES]. . . . . . .6-3
+6.2.2.2 GETSEC[ENTERACCS] . . . . . .6-3
+6.2.2.3 GETSEC[EXITAC] . . . . . .6-3
+6.2.2.4 GETSEC[SENTER] . . . . . . 6-4
+6.2.2.5 GETSEC[SEXIT] . . . . . . 6-4
+6.2.2.6 GETSEC[PARAMETERS] . . . . . . 6-4
+6.2.2.7 GETSEC[SMCTRL]. . . . . . . 6-4
+6.2.2.8 GETSEC[WAKEUP] . . . . . . 6-4
+6.2.3 Measured Environment and SMX . . . . . .6-5
+6.3 GETSEC LEAF FUNCTIONS. . . . . . . 6-5
+GETSEC[CAPABILITIES] - Report the SMX Capabilities . . . .6-7
+GETSEC[ENTERACCS] - Execute Authenticated Chipset Code . . . . 6-10
+GETSEC[EXITAC]¡ªExit Authenticated Code Execution Mode . . . . 6-18
+GETSEC[SENTER]¡ªEnter a Measured Environment . . . . 6-21
+GETSEC[SEXIT]¡ªExit Measured Environment . . . . . 6-30
+GETSEC[PARAMETERS]¡ªReport the SMX Parameters . . . . 6-33
+GETSEC[SMCTRL]¡ªSMX Mode Control . . . . . 6-37
+GETSEC[WAKEUP]¡ªWake up sleeping processors in measured environment . . . 6-40
+CHAPTER 7
+INSTRUCTION SET REFERENCE UNIQUE TO INTEL XEON PHI PROCESSORS
+PREFETCHWT1¡ªPrefetch Vector Data Into Caches with Intent to Write and T1 Hint . .6-2
+V4FMADDPS/V4FNMADDPS ¡ª Packed Single-Precision Floating-Point Fused Multiply-Add (4-iterations) .6-4
+V4FMADDSS/V4FNMADDSS ¡ªScalar Single-Precision Floating-Point Fused Multiply-Add (4-iterations) .6-6
+VEXP2PD¡ªApproximation to the Exponential 2^x of Packed Double-Precision Floating-Point Values with Less Than 2^-23 Relative Error. . . . . . .6-8
+VEXP2PS¡ªApproximation to the Exponential 2^x of Packed Single-Precision Floating-Point Values with Less Than 2^-23 Relative Error. . . . . . . 6-10
+VGATHERPF0DPS/VGATHERPF0QPS/VGATHERPF0DPD/VGATHERPF0QPD¡ªSparse Prefetch Packed SP/DP Data Values with Signed Dword, Signed Qword Indices Using T0 Hint. . . . . 6-12
+VGATHERPF1DPS/VGATHERPF1QPS/VGATHERPF1DPD/VGATHERPF1QPD¡ªSparse Prefetch Packed SP/DP Data Values with Signed Dword, Signed Qword Indices Using T1 Hint. . . . . 6-14
+VP4DPWSSDS ¡ª Dot Product of Signed Words with Dword Accumulation and Saturation (4-iterations) . 6-16
+VP4DPWSSD ¡ª Dot Product of Signed Words with Dword Accumulation (4-iterations) . . 6-18
+VRCP28PD¡ªApproximation to the Reciprocal of Packed Double-Precision Floating-Point Values with Less Than 2^-28 Relative Error. . . . . . . 6-20
+VRCP28SD¡ªApproximation to the Reciprocal of Scalar Double-Precision Floating-Point Value with Less Than 2^-28 Relative Error . . . . . . . 6-22
+VRCP28PS¡ªApproximation to the Reciprocal of Packed Single-Precision Floating-Point Values with Less Than 2^-28 Relative Error. . . . . . . 6-24
+VRCP28SS¡ªApproximation to the Reciprocal of Scalar Single-Precision Floating-Point Value with Less Than 2^-28 Relative Error . . . . . . . 6-26
+VRSQRT28PD¡ªApproximation to the Reciprocal Square Root of Packed Double-Precision Floating-Point Values with Less Than 2^-28 Relative Error . . . . . 6-28
+VRSQRT28SD¡ªApproximation to the Reciprocal Square Root of Scalar Double-Precision Floating-Point Value with Less Than 2^-28 Relative Error . . . . . 6-30
+VRSQRT28PS¡ªApproximation to the Reciprocal Square Root of Packed Single-Precision Floating-Point Values with Less Than 2^-28 Relative Error . . . . . 6-32
+VRSQRT28SS¡ªApproximation to the Reciprocal Square Root of Scalar Single-Precision Floating-Point Value with Less Than 2^-28 Relative Error . . . . . . 6-34
+VSCATTERPF0DPS/VSCATTERPF0QPS/VSCATTERPF0DPD/VSCATTERPF0QPD¡ªSparse Prefetch Packed SP/DP Data Values with Signed Dword, Signed Qword Indices Using T0 Hint with Intent to Write . . 6-36
+VSCATTERPF1DPS/VSCATTERPF1QPS/VSCATTERPF1DPD/VSCATTERPF1QPD¡ªSparse Prefetch Packed SP/DP Data Values with Signed Dword, Signed Qword Indices Using T1 Hint with Intent to Write . . 6-38

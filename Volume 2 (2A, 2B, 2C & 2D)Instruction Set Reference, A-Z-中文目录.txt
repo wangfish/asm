@@ -1,0 +1,813 @@
+第 1 章
+关于本手册
+1.1 英特尔 64 和 IA-32 处理器涵盖在此手册 . . .1-1
+1.2 卷 2A、2B、2C 和 2D 的概述： 说明设置参考 . . .1-4
+1.3 表示法约定 . . . . . .1-5
+1.3.1 位和字节顺序 . . . . .1-5
+1.3.2 保留位和软件兼容性 . . . .1-5
+1.3.3 指令操作数 . . . . . . .1-5
+1.3.4 十六进制和二进制数字 . . . . .1-6
+1.3.5 分段寻址 . . . . . .1-6
+1.3.6 例外情况 . . . . . .1-6
+1.3.7 CPUID、CR 和 MSR 值的新语法 . . . .1-7
+1.4 相关文献 . . . . . .1-7
+第 2 章
+指令格式
+2.1 用于受保护模式、实地址模式和虚拟 8086 模式的指令格式。 .2-1
+2.1.1 指令前缀 . . . . . . .2-1
+2.1.2 操作码 . . . . . . . .2-3
+2.1.3 ModR/M 和 SIB 字节 . . . . .2-3
+2.1.4 位移和即时字节 . . . .2-3
+2.1.5 ModR/M 和 SIB 字节的寻址模式编码. . . .2-4
+2.2 IA-32E 模式 . . . . . . .2-7
+2.2.1 REX 前缀 . . . . . . . .2-8
+2.2.1.1 编码 . . . . . . . .2-8
+2.2.1.2 关于 REX 前缀字段的更多功能 . . . . .2-8
+2.2.1.3 置换 . . . . . .2-11
+2.2.1.4 直接内存偏移电子城 . . .2-11
+2.2.1.5 即时 ... . . .2-11
+2.2.1.6 RIP 相对寻址. . . . .2-12
+2.2.1.7 默认 64 位操作码大小 . . . .2-12
+2.2.2 用于控制和调试寄存器的其他编码 . . .2-12
+2.3 英特尔高级扩展 （INTEL AVX） . . .2-13
+2.3.1 指令格式 . . . . . . .2-13
+2.3.2 VEX 和 LOCK 前缀 . . . . . .2-13
+2.3.3 VEX 和 66H、F2H 和 F3H 前缀 . . . .2-13
+2.3.4 VEX 和 REX 前缀 . . . . . . .2-13
+2.3.5 VEX 前缀 . . . . . . .2-14
+2.3.5.1 VEX 字节 0，位[7：0] . . . . .2-15
+2.3.5.2 VEX 字节 1，位 [7] - "R" . . . . .2-15
+2.3.5.3 3 字节 VEX 字节 1， 位 [6] - 'X' . . . . .2-16
+2.3.5.4 3 字节 VEX 字节 1， 位 [5] - 'B' . . . . .2-16
+2.3.5.5 3 字节 VEX 字节 2，位[7] - 'W' . . . .2-16
+2.3.5.6 2 字节 VEX 字节 1，位 [6：3] 和 3 字节 VEX 字节 2，位 [6：3]- "vvv" 源或 Dest 寄存器指定符。.2-16
+2.3.6 指令操作符编码和 VEX.vvvv， ModR/M . . .2-17
+2.3.6.1 3 字节 VEX 字节 1，位[4：0] - "毫米" . . . . .2-18
+2.3.6.2 2 字节 VEX 字节 1、位 [2] 和 3 字节 VEX 字节 2，位 [2]- "L" . . .2-18
+2.3.6.3 2 字节 VEX 字节 1，位 [1：0]和 3 字节 VEX 字节 2，位 [1：0]- "pp" . . .2-18
+2.3.7 操作码字节 . . . . . .2-19
+2.3.8 MODRM、SIB 和位移字节 . . .2-19
+2.3.9 第三个源操作数（即时字节） . . . .2-19
+2.3.10 AVX 指令和 YMM 寄存器的上部 128 位 . . .2-19
+2.3.10.1 矢量长度转换和编程注意事项 . . .2-19
+2.3.11 AVX 指令长度 . . . . . .2-20
+2.3.12 矢量 SIB （VSIB） 内存寻址 . . . .2-20
+2.3.12.1 64 位模式 VSIB 内存寻址 . . . .2-21
+2.4 AVX 和 SSE 指令 EXCEPTION 规范 . . . .2-21
+2.4.1 异常类型 1（对齐的内存引用） . . .2-26
+2.4.2 异常类型 2 （*16 字节内存引用，未对齐） . . .2-27
+2.4.3 异常类型 3 （#16 字节内存参数） . . . 2-28 2.4.4 例外类型 4 （#16 字节 mem arg 无对齐方式， 无浮点异常） . . 2-29
+2.4.5 异常类型 5 （#16 字节 mem arg 和没有 FP 异常）。 . . .2-30
+2.4.6 例外类型 6（VEX 编码指令，无旧 SSE 模拟） . .2-31
+2.4.7 异常类型 7（无 FP 异常，无内存 arg） . .2-32
+2.4.8 异常类型 8（AVX 和没有内存参数） . . .2-32
+2.4.9 异常类型 11 （仅限 VEX，mem arg 无交流，浮点异常） . .2-33
+2.4.10 异常类型 12（仅限 VEX，VSIB mem arg，无交流，无浮点异常）。.2-34
+2.5 VEX 编码支持 GPR 指示 . . .2-34
+2.5.1 例外类型 13（VEX 编码 GPR 说明） . . .2-35
+2.6 英特尔 AVX-512 编码 . . . . .2-35
+2.6.1 指令格式和 EVEX . . . . .2-36
+2.6.2 寄存器指定编码和EVEX . . . .2-38
+2.6.3 操作码寄存器编码 . . . . . . .2-38
+2.6.4 EVEX 中的屏蔽支持 . . . . . . .2-39
+2.6.5 压缩位移 （dis8_N） 支持在 EVEX . . . .2-39
+2.6.6 EVEX 广播/舍入/SAE 支持的 EVEX 编码 . . . .2-41
+2.6.7 EVEX 中的嵌入式广播支持 . . . . .2-41
+2.6.8 EVEX 中的静态舍入支撑 . . . . .2-41
+2.6.9 EVEX 中的 SAE 支持 . . . . . .2-41
+2.6.10 矢量长度正交性 . . . . . .2-41
+2.6.11 #UD的方程为 EVEX . . . . .2-42
+2.6.11.1 国家从属#UD . . . .2-42
+2.6.11.2 操作码独立#UD . . . . .2-42
+2.6.11.3 操作码依赖#UD . . . . .2-43
+2.6.12 设备不可用 . . . . .2-44
+2.6.13 标量指令 . . . . .2-44
+2.7 EVEX-ENCODED 的分类 ...2-44
+2.7.1 EVEX 编码指令的 E1 和 E1NF 类型异常 . . .2-47
+2.7.2 EVEX 编码指令的 E2 类例外类型 . . . .2-49
+2.7.3 EVEX 编码指令的 E3 和 E3NF 类型异常 . . .2-50
+2.7.4 EVEX 编码指令的 E4 和 E4NF 类型异常 . . .2-52
+2.7.5 例外类型 E5 和 E5NF . . . . .2-54
+2.7.6 例外类型 E6 和 E6NF . . . . .2-56
+2.7.7 例外类型 E7NM . . . . .2-58
+2.7.8 例外类型 E9 和 E9NF . . . . .2-59
+2.7.9 例外类型 E10 和 E10NF . . . .2-61
+2.7.10 异常类型 E11 （仅限 EVEX，mem arg 无交流，浮点异常） . .2-63
+2.7.11 异常类型 E12 和 E12NP（VSIB mem arg，无交流，无浮点异常）。 .2-64
+2.8 操作说明的分类 。 . .2-66
+第 3 章
+指令设置参考，A-L
+3.1 解释说明参考页 . . . .3-1
+3.1.1 指令格式 . . . . . .3-1
+3.1.1.1 指令摘要表中的操作码列（无 VEX 前缀的说明）。 .3-2
+3.1.1.2 指令摘要表中的操作码列（带有 VEX 前缀的说明） . . .3-3
+3.1.1.3 操作代码摘要表中的指令列 . . . .3-5
+3.1.1.4 指令摘要表中的操作数编码列 . . . .3-8
+3.1.1.5 64/32 位模式列在指令摘要表中 . . . .3-8
+3.1.1.6 CPUID 支持列在指令摘要表中 . . . .3-9
+3.1.1.7 说明表中的"说明"列 . . . .3-9
+3.1.1.8 描述部分 . . . . . . .3-9
+3.1.1.9 操作部分 . . . . . . .3-9
+3.1.1.10 英特尔 C/C++ 编译器内部等效部分 . . .3-12
+3.1.1.11 标志受影响的部分 . . . . .3-14
+3.1.1.12 FPU 标志受影响的部分 . . . . .3-14
+3.1.1.13 保护模式异常部分 . . . .3-14
+3.1.1.14 真实地址模式异常部分 . . . .3-15
+3.1.1.15 虚拟-8086 模式异常部分 . . . .3-15
+3.1.1.16 浮点例外部分 . . . .3-16
+3.1.1.17 SIMD 浮点例外部分 . . . .3-16
+3.1.1.18 兼容性模式异常部分 . . . .3-16
+3.1.1.19 64 位模式异常部分 . . . .3-16
+3.2 说明 （A-L） . . . . .3-17
+AAA_ASCII 在添加后进行调整 . . . .3-18
+AAD_ASCII 在部门之前调整 AX . . . .3-20
+AAM_ASCII 在乘法后调整 AX . . . .3-22
+AAS_ASCII 在减法后调整 AL . . . .3-24
+ADC _添加带携带 . . . . . .3-26
+ADCX = 未签名整数添加两个带有携带标志的操作数 。 .3-29
+ADD _ 添加 . . . . . .3-31
+ADDPD_添加打包的双精度浮点值. . .3-33
+ADDPS=添加打包的单精度浮点值. . .3-36
+ADDD_添加标量双精度浮点值. . .3-39
+ADDS_添加标卡尔单精度浮点值 . . .3-41
+ADDSUBPD_包装双FP加/减. . .3-43
+ADDSUBPS_打包单FP加/减 . . .3-45
+ADOX = 未签名整数添加两个具有溢出标志的操作数 . . .3-48
+AESDEC_执行AES解密流的一轮. . . .3-50
+AESDECLAST_执行 AES 解密流的最后一轮 . . .3-52
+AESENC =执行一轮 AES 加密流. . . .3-54
+AESENCLAST_执行 AES 加密流的最后一轮 . . .3-56
+AESIMC_执行AES InvMix列变换. . . .3-58
+AESKEYGENASSIST_AES 圆形密钥生成辅助系统 . . . .3-59
+AND _逻辑和 . . . . . .3-61
+ANDN = 逻辑性与不逻辑性。 . . .3-63
+ANDPD_按位逻辑和打包的双精度浮点值. . .3-64
+ANDPS_按位逻辑和打包的单精度浮点值. . .3-67
+ANDNPD_按位逻辑和封装双精度浮点值的"非"值。.3-70
+ANDNPS_按位逻辑和包装单精度浮点值的"非"值。.3-73
+ARPL_调整段选择器的 RPL 字段 . . . .3-76
+BEXTR = 位字段提取 . . . . . . .3-78
+BLENDPD = 混合包装的双精度浮点值 . . .3-79
+BLENDPS = 混合包装的单精度浮点值 . . .3-81
+BLENDVPD = 可变混合包装双精度浮点值 . . .3-83
+BLENDVPS = 可变混合包装单精度浮点值 . . .3-85
+BLSI = 提取最低集隔离位 . . . .3-88
+BLSMSK = 将遮罩设置为最低设置位 . . . .3-89
+BLSR = 重置最低设置位 . . . . . .3-90
+BNDCL_检查下边界 . . . . . .3-91
+BNDCU/BNDCN_检查上限 . . . .3-93
+BNDLDX _使用地址转换加载扩展边界 . . .3-95
+BNDMK _制造边界 . . . . . .3-98
+BNDMOV_移动边界 . . . . . .3-100
+BNDSTX_使用地址转换存储扩展边界. . .3-103
+BOUND _检查数组索引对边界 . . . . .3-106
+BSF_Bit 扫描转发 . . . . . . . .3-108
+BSR_位扫描反向 . . . . . . .3-110
+BSWAP_字节交换 . . . . . .3-112
+BT_Bit 测试 . . . . . . . .3-113
+BTC_Bit 测试和补充 . . . .3-115
+BTR_Bit 测试和重置 . . . . . .3-117
+BTS_Bit 测试和设置 . . . . . .3-119
+BZHI = 零高位从指定位位置开始 . . . .3-121
+CALL_呼叫过程 . . . . . .3-122
+CBW/CWDE/CDQE=将字节转换为单词/将单词转换为双字/将双字转换为四字 .3-136
+CLAC_清除电子标志寄存器中的交流标志 . . . .3-137
+CLC _清除携带标志 . . . . .3-138
+CLD _清除方向标志 . . . . . . .3-139
+CLDEMOTE_缓存行降级 . . . . .3-140
+CLFLUSH_Flush 缓存行 . . . . . . . .3-142
+CLFLUSHOPT_Flush 缓存行已优化. . . . .3-144
+CLI = 清除中断标志 . . . . .3-146
+CLTS _清除 CR0 中的任务切换标志 . . . .3-148
+CLWB_缓存行写回 . . . . . . .3-149
+CMC _补充携带标志 . . . . .3-151
+CMOVcc_条件移动. . . . . .3-152
+CMP_比较两个操作数. . . . . .3-156
+CMPPD_比较打包的双精度浮点值 . . .3-158
+CMPPS=比较打包的单精度浮点值 . . .3-165
+CMPS/CMPSB/CMPSW/CMPSD/CMPSQ_比较字符串操作数 . . .3-172
+CMPSD_比较标量双精度浮点值 . . .3-176
+CMPSS _比较标量单精度浮点值 . . .3-180
+CMPXCHG_比较和交换. . . . .3-184
+CMPXCHG8B/CMPXCHG16B_比较和交换字节 . . .3-186
+COMISD_比较Scalar排序的双精度浮点值和设置EFLAGS。.3-189
+COMIS_比较标量排序的单精度浮点值和设置电子点。.3-191
+CPUID _CPU 标识 . . . . .3-193
+CRC32 = 累积 CRC32 值 . . . . .3-232
+CVTDQ2PD _ 将打包的双字整数转换为打包的双精度浮点值 .3-235
+CVTDQ2PS_ 将打包的双字整数转换为打包的单精度浮点值 .3-239
+CVTPD2DQ = 将打包的双精度浮点值转换为打包的双字整数 .3-242
+CVTPD2PI_将包装的双精度 FP 值转换为打包的 Dword 整数 。.3-246
+CVTPD2PS_将打包的双精度浮点值转换为打包的单精度浮点值 . . . . .3-247
+CVTPI2PD_将包装的Dword整数转换为包装的双精度FP值。.3-251
+CVTPI2PS_将包装的Dword整数转换为打包的单精度FP值。 .3-252
+CVTPS2DQ = 将打包的单精度浮点值转换为打包的带符号双字整数值 .3-253
+CVTPS2PD _将打包的单精度浮点值转换为打包的双精度浮点值 . . . . .3-256
+CVTPS2PI _将打包的单精度 FP 值转换为打包的 Dword 整数。 .3-259
+CVTSD2SI_将标卡尔双精度浮点值转换为双字整数。.3-260
+CVTSD2SS— 将标卡尔双精度浮点值转换为Scalar单精度浮点值。.3-262
+CVTSI2SD_将双字整数转换为Scalar双精度浮点值。.3-264
+CVTSI2SS_将双字整数转换为Scalar单精度浮点值。.3-266
+CVTSS2SD — 将标卡尔单精度浮点值转换为Scalar双精度浮点值。.3-268
+CVTSS2SI_将Scalar单精度浮点值转换为双字整数。.3-270
+CVTTPD2DQ _使用截断打包的双精度浮点值转换为打包的双字整数 . . . . .3-272
+CVTTPD2PI — 使用截断包装双精度 FP 值转换为打包的 Dword 整数 .3-276
+CVTTPS2DQ _ 使用截断打包的单精度浮点值转换为打包的带符号双字整数值 . . . . .3-277
+CVTTPS2PI — 使用截断打包的单精度 FP 值转换为打包的 Dword 整数 .3-280
+CVTTSD2SI — 使用截断标量双精度浮点值转换为带符号的整数 .3-281
+CVTTSS2SI_使用截断标量单精度浮点值转换为整数 。.3-283
+CWD/CDQ/CQO_将单词转换为双字/将双字转换为四字。 .3-285
+DAA _十进制调整 AL 添加后 . . . . .3-286
+DAS _十进制调整 AL 后减法 . . . . . .3-288
+DEC =递减 1。. . . . . .3-290
+DIV =无符号分割 . . . . . .3-292
+DIVPD _分装双精度浮点值 . . .3-295
+DIVPS_分割打包的单精度浮点值 . . .3-298
+DIVSD _分标量双精度浮点值 . . .3-301
+DIVSS_划分标量单精度浮点值. . .3-303
+DPPD = 打包双精度浮点值的点积。 . .3-305
+DPPS = 打包单精度浮点值的点积 . . .3-307
+EMMS_空 MMX 技术状态 . . . .3-310
+ENTER_为过程参数创建堆栈框架。 . .3-311
+EXTRACTPS 提取打包的浮点值 . . .3-314
+F2XM1_计算 2x=1。. . . . . .3-316
+FABS =绝对值 . . . . . .3-318
+FADD/FADDP/FIADD_添加 . . . .3-319
+FBLD_加载二进制编码十进制. . . . .3-322
+FBSTP_存储 BCD 整数和流行. . . .3-324
+FCHS_更改符号 . . . . .3-326
+FCLEX/FNCLEX_清除例外 . . .3-328
+FCMOVcc_浮动点条件移动 . . . . .3-330
+FCOM/FCOMP/FCOMPP_比较浮点值 . . .3-332
+FCOMI/FCOMIP/FUCOMI/FUCOMIP_比较浮点值并设置电子点。.3-335
+FCOS_ 子因 . . . . . .3-338
+FDECSTP_递减堆栈-顶部指针 . . . .3-340
+FDIV/FDIVP/FIDIV_Divide. . . .3-341
+FDIVR/FDIVRP/FIDIVR_反向划分. . .3-344
+FFREE_免费浮点寄存器 . . . .3-347
+FICOM/FICOMP_比较整数 . . . . .3-348
+FILD_加载整数 . . . . . . . .3-350
+FINCSTP_增量堆栈顶指针. . . . .3-352
+FINIT/FNINIT_初始化浮点单元. . . .3-353
+FIST/FISTP_存储整数 . . . . . . .3-355
+FISTTP_存储具有截断功能的整数. . . . .3-358
+FLD =负载浮点值 . . . . . . .3-360
+FLD1/FLDL2T/FLDL2E/FLDPI/FLDLG2/FLDLN2/FLDZ_负载恒定 . .3-362
+FLDCW_加载 x87 FPU 控制字 . . . .3-364
+FLDENV_负载 x87 FPU 环境 . . . . .3-366
+FMUL/FMULP/FIMUL_乘法 . . . .3-368
+FNOP =无操作 . . . . . .3-371
+FPATAN _部分弧形 . . . . . .3-372
+FPREM_部分余数 . . . . . .3-374
+FPREM1_部分余数 . . . . . .3-376
+FPTAN _部分切线 . . . . .3-378
+FRNDINT _圆形到整数. . . . . . .3-380
+FRSTOR_恢复 x87 FPU 状态 . . . .3-381
+FSAVE/FNSAVE_存储 x87 FPU 状态 . . . .3-383
+FSCALE_Scale . . . . .3-386
+FSIN_Sine . . . . . .3-388
+FSINCOS_辛和子因 . . . . .3-390
+FSQRT_平方根 . . . . .3-392
+FST/FSTP_存储浮点值 . . . .3-394
+FSTCW/FNSTCW_存储 x87 FPU 控制字 . . .3-396
+FSTENV/FNSTENV_存储 x87 FPU 环境 . . .3-398
+FSTSW/FNSTSW_存储 x87 FPU 状态字 . . . .3-400
+FSUB/FSUBP/FISUB_减去 . . . .3-402
+FSUBR/FSUBR/FISUBR_反向减法. . .3-405
+FTST_测试. . . . . . . .3-408
+FUCOM/FUCOMP/FUCOMPP_无序比较浮点值 . . .3-410
+FXAM_检查浮点. . . . . .3-413
+FXCH_交易所注册内容 . . . . .3-415
+FXRSTOR_恢复 x87 FPU、MMX、XMM 和 MXCSR 状态 . . .3-417
+FXSAVE_保存 x87 FPU、MMX 技术和 SSE 状态 . . .3-420
+FXTRACT_提取指数和符号. . . . .3-428
+FYL2X_计算 y = 对数2x . . . . .3-430
+FYL2XP1_计算 y = log2（x +1） . . . .3-432
+GF2P8AFFINEINVQB – 加卢瓦场仿富变换逆. . .3-434
+GF2P8AFFINEQB – 加卢阿现场仿富变换 . . .3-436
+GF2P8MULB = 加卢伊场乘比字节. . . . .3-437
+HADDPD_包装双FP水平添加. . . .3-438
+HADDPS_包装单FP水平添加 . . . .3-441
+HLT _Halt . . . . . .3-444
+HSUBPD_包装双FP水平减法. . .3-445
+HSUBPS_包装单FP水平减法. . .3-448
+IDIV_签名分界 . . . .3-451
+IMUL_签名乘法. . . . . . .3-454
+IN_从端口输入 . . . . . .3-458
+INC=递增 1 . . . .3-460
+INS/INSB/INSW/INSD_从端口到字符串的输入 . . .3-462
+INSERTPS 插入标卡尔单精度浮点值 . . . .3-465
+INT n/INTO/INT3/INT1_呼叫中断过程. . .3-468
+INVD_无效内部缓存 . . . .3-481
+INVLPG_无效TLB条目. . . . .3-483
+INVPCID_无效进程上下文标识符. . . .3-485
+IRET/IRETD_中断返回 . . . . .3-488
+Jcc =如果条件满足，则跳转. . . . .3-495
+JMP_跳转. . . . . . . .3-500
+KADDW/KADDB/KADDQ/KADDD_ADD 两个面罩. . .3-508
+KANDW/KANDB/KANDQ/KANDD_按位逻辑和掩码 . . .3-509
+KANDNW/KANDNB/KANDNQ/KANDND-按逻辑而不是屏蔽.3-510
+KMOVW/KMOVB/KMOVQ/KMOVD_从和移动到掩码寄存器. .3-511
+KNOTW/KNOTB/KNOTQ/KNOTD_不屏蔽寄存器. . .3-513
+KORW/KORB/KORQ/KORD_按位逻辑或掩码 . . .3-514
+KORTESTW/KORTESTB/KORTESTQ/KORTESTD-或面具和设置标志. .3-515
+KSHIFTLW/KSHIFTLB/KSHIFTLQ/KSHIFTLD_Shift 左掩码寄存器 . .3-517
+KSHIFTRW/KSHIFTRB/KSHIFTRQ/KSHIFTRD_移位右掩码寄存器. .3-519
+KTESTW/KTESTB/KTESTQ/KTESTD_打包位测试掩码和设置标志. . .3-521
+KUNPCKBW/KUNPCKWD/KUNPCKDQ_为掩码寄存器解包. .3-523
+KXNORW/KXNORB/KXNORQ/KXNORD_按位逻辑XNOR掩码 . . .3-524
+KXORW/KXORB/KXORQ/KXORD_按位逻辑 XOR 掩码 . . .3-525
+LAHF_加载状态标志到AH寄存器 . . . . .3-526
+LAR_加载访问权限字节 . . . . .3-527
+LDDQU_加载未对齐整数 128 位 . . .3-530
+LDMXCSR_加载 MXCSR 寄存器 . . . . .3-532
+LDS/LES/LFS/LGS/LSS_加载远指针. . . .3-533
+LEA_加载有效地址. . . . . .3-537
+LEAVE _高级程序退出 . . . . .3-539
+LFENCE_负载围栏. . . . . . .3-541
+LGDT/LIDT_加载全局/中断描述符表寄存器 . . .3-542
+LLDT_加载本地描述符表寄存器. . . . .3-545
+LMSW_加载机器状态字 . . . .3-547
+LOCK [断言锁定] 信号前缀 . . . . .3-549
+LODS/LODSB/LODSW/LODSD/LODSQ_负载字符串. . .3-551
+LOOP/LOOPcc_循环根据ECX计数器 . . . .3-554
+LSL _负载段限制 . . . . . . .3-556
+LTR_加载任务寄存器 . . . . . .3-559
+LZCNT 计数前导零位的数量 . . .3-561
+第四章
+指令设置参考，M-U
+4.1 IMM8 控制 PCMPESTRI / PCMPMPRM / PCMPISTRI / PCMPISTRM 的字节操作 。.4-1
+4.1.1 一般说明 . . . . . . .4-1
+4.1.2 源数据格式 . . . . . .4-2
+4.1.3 聚合操作 . . . . . . .4-2
+4.1.4 极性 . . . . . . .4-3
+4.1.5 输出选择 . . . . . .4-4
+4.1.6 比较的有效/无效覆盖 . . . .4-4
+4.1.7 Im8 控制字节摘要 . . . . . . .4-5
+4.1.8 图表比较和聚合过程 . . . . .4-6
+4.2 SHA1XXX 和 SHA256XXX 的通用转换和原始函数。.4-6
+4.3 说明 （M-U） . . . . .4-7
+MASKMOVDQU_存储双四字的选定字节 . . . .4-8
+MASKMOVQ_存储四字形的选定字节 . . . . .4-10
+MAXPD=包装双精度浮点值的最大值. .4-12
+MAXPS=包装单精度浮点值的最大值 . . .4-15
+MAXSD=返回最大标量双精度浮点值. .4-18
+MAXSS_返回最大标量单精度浮点值. .4-20
+MFENCE_记忆围栏. . . . . .4-22
+MINPD =包装双精度浮点值的最小值. .4-23
+MINPS =包装单精度浮点值的最小值. .4-26
+MINSD_返回最小标量双精度浮点值 . .4-29
+MINSS_返回最小标量单精度浮点值 . .4-31
+MONITOR_设置监视器地址 . . . .4-33
+MOV 移动 . . . . . .4-35
+MOV_移动到/从控制寄存器. . . .4-40
+MOV_移动到/从调试寄存器 . . . . .4-43
+MOVAPD 移动移动对齐的打包双精度浮点值. . .4-45
+MOVAPS_移动对齐的打包单精度浮点值. .4-49
+MOVBE 交换字节后移动数据 . . . . .4-53
+MOVD/MOVQ=移动双字/移动四字形. . .4-55
+MOVDDUP_复制双 FP 值 . . . . .4-59
+MOVDIRI_移动双字作为直接存储 . . . .4-62
+MOVDIR64B_移动64字节作为直接存储. . .4-64
+MOVDQA，VMOVDQA32/64_移动对齐的包装整数值. .4-66
+MOVDQU，VMOVDQU8/16/32/64_移动未对齐的包装整数值. . .4-71
+MOVDQ2Q_将四字形从XMM移动到MMX技术寄存器. . .4-79
+MOVHLPS_移动包装的单精度浮点值高到低 . . .4-80
+MOVHPD_移动高包装双精度浮点值. .4-82
+MOVHPS =移动高包装的单精度浮点值. .4-84
+MOVLHPS =移动包装的单精度浮点值从低到高 . . .4-86
+MOVLPD_移动低包装双精度浮点值. .4-88
+MOVLPS =移动低包装的单精度浮点值 . .4-90
+MOVMSKPD_提取包装的双精度浮点符号掩码. . .4-92
+MOVMSKPS_提取包装的单精度浮点符号掩码. .4-94
+MOVNTDQA_加载双四字非时态对齐提示. . .4-96
+MOVNTDQ_存储包装整数使用非时态提示 . . .4-98
+MOVNTI_使用非时态提示存储双字. . .4-100
+MOVNTPD_使用非时态提示存储打包的双精度浮点值。.4-102
+MOVNTPS_使用非时态提示存储打包的单精度浮点值。.4-104
+MOVNTQ_使用非时态提示存储四字形. . .4-106
+MOVQ_移动四字形 . . . . .4-107
+MOVQ2DQ_将四字形从MMX技术移动到XMM寄存器. .4-110
+MOVS/MOVSB/MOVSW/MOVSD/MOVSQ_将数据从字符串移动到字符串. .4-111
+MOVSD_移动或合并标量双精度浮点值. .4-115
+MOVSHDUP_复制单个 FP 值 . . . . .4-118
+MOVSLDUP_复制单个 FP 值 . . . . .4-121
+MOVSS_移动或合并Scalar单精度浮点值. .4-124
+MOVSX/MOVSXD_移动与符号扩展 . . . .4-128
+MOVUPD_移动未对齐的打包双精度浮点值 . .4-130
+MOVUPS_移动未对齐的打包单精度浮点值 . .4-134
+MOVZX_移动与零延伸. . . . .4-138
+MPSADBW = 计算多个打包的绝对差异总和 . . .4-140
+MUL =无符号乘法. . . . . . . .4-148
+MULPD_乘包装双精度浮点值 . . .4-150
+MULPS_乘包装单精度浮点值 . . . .4-153
+MULSD_乘法标量双精度浮点值 . . .4-156
+MULSS_乘法标卡尔单精度浮点值 . . .4-158
+MULX = 无符号乘法不会影响标志. . .4-160
+MWAIT_监视器等待 . . . . .4-162
+NEG_二的补充否定 . . . . .4-165
+NOP =无操作 . . . . . .4-167
+NOT_一个人的补品否定. . . .4-168
+OR_逻辑包容性或 . . . .4-170
+ORPD_按位逻辑OR的打包双精度浮点值。 .4-172
+ORPS_按位逻辑OR的打包单精度浮点值 . . .4-175
+OUT 输出到端口 . . . . . .4-178
+OUTS/OUTSB/OUTSW/OUTSD_输出字符串到端口. . .4-180
+PABSB/PABSW/PABSD/PABSQ = 包装绝对值 . . .4-184
+PACKSSWB/PACKSSDW 带签名饱和度的包。 . .4-190
+PACKUSDW_带无符号饱和度的包装 . . . . . .4-198
+PACKUSWB_带无符号饱和度的包装 . . . . .4-203
+PADDB/PADDW/PADD/PADDQ_添加包装整数 . . .4-208
+PADDSB/PADDSW _添加带符号饱和度的打包带符号整数 . . .4-215
+PADDUSB/PADDUSW _添加带无符号饱和度的打包无符号整数 . . .4-219
+PALIGNR = 打包对齐右侧 . . . . .4-223
+PAND _逻辑和 . . . . . .4-227
+PANDN 逻辑和未. . . . . .4-230
+PAUSE_旋转循环提示 . . . . . .4-233
+PAVGB/PAVGW =平均包装整数. . . . .4-234
+PBLENDVB – 可变混合包装字节. . . . . .4-238
+PBLENDW = 混合包装的单词. . . . .4-242
+PCLMULQDQ = 携带无乘法四字 . . . .4-245
+PCMPEQB/PCMPEQW/PCMPEQD_比较包装数据相等 . . .4-248
+PCMPEQQ = 比较打包的 Qword 数据为相等 . . .4-254
+PCMPESTRI = 打包比较显式长度字符串，返回索引 . .4-257
+PCMPESTRM = 打包比较显式长度字符串，返回掩码 . . .4-259
+PCMPGTB/PCMPGTW/PCMPGTD_ 比较大于 的打包带符号整数。.4-261
+PCMPGTQ = 比较大于 . . .4-267
+PCMPISTRI = 打包比较隐式长度字符串，返回索引 . .4-270
+PCMPISTRM = 打包比较隐式长度字符串，返回掩码 . . .4-272
+PDEP = 并行位沉积 . . . . . .4-274
+PEXT = 并行位提取 . . . . . .4-276
+PEXTRB/PEXTRD/PEXTRQ = 提取字节/记号/Qword . . .4-278
+PEXTRW_提取字. . . . . .4-281
+PHADDW/PHADDD = 包装水平添加 . . . .4-284
+PHADDSW = 包装水平添加和饱和度 . . .4-288
+PHMINPOSUW = 包装水平字最小值 . . . .4-290
+PHSUBW/PHSUBD = 包装水平减法 . . . .4-292
+PHSUBSW = 包装水平减法和饱和度. . .4-295
+PINSRB/PINSRD/PINSRQ = 插入字节/记号/Qword . . .4-297
+PINSRW_插入单词 . . . . . .4-300
+PMADDUBSW = 乘法和添加打包的带符号和未签名字节 . . .4-302
+PMADDWD_乘法和添加包装整数 . . . . .4-305
+PMAXSB/PMAXSW/PMAXSD/PMAXSQ_包装带整数的最大数量. .4-308
+PMAXUB/PMAXUW =包装无符号整数的最大数量 . . .4-315
+PMAXUD/PMAXUQ =包装无符号整数的最大数量 . . .4-320
+PMINSB/PMINSW=包装签名整数的最小值 . . .4-324
+PMINSD/PMINSQ =包装签名整数的最小值 . . .4-329
+PMINUB/PMINUW=包装未签名整数的最小值 . . .4-333
+PMINUD/PMINUQ =包装未签名整数的最小值. . .4-338
+PMOVMSKB_移动字节掩码 . . . . . .4-342
+PMOVSX_带符号扩展的打包移动 . . . .4-344
+PMOVZX_包装移动与零扩展 . . . . .4-353
+PMULDQ _乘包装双字整数 . . .4-362
+PMULHRSW = 包装乘以高与圆和缩放 . . . .4-365
+PMULHUW _乘以打包的无符号整数并存储高结果. .4-369
+PMULHW _乘包装有符号整数和存储高结果 . .4-373
+PMULLD/PMULLQ =乘以包装整数和存储低结果. .4-377
+PMULLW _乘包装有符号整数和存储低结果 . .4-381
+PMULUDQ_乘包装无符号双字整数. . .4-385
+POP_从堆栈中弹出一个值 . . . .4-388
+POPA/POPAD_弹出所有通用寄存器 . . .4-393
+POPCNT = 将设置为 1 的位数数返回。. . . .4-395
+POPF/POPFD/POPFQ_Pop 堆栈到 EFLAGS 寄存器 . . . .4-397
+POR_位逻辑或 . . . . . .4-401
+PREFETCHh_预取数据到缓存 . . . . .4-404
+PREFETCHW — 预取数据到缓存中，以预期写入 . . .4-406
+PSADBW =绝对差异的计算总和. . .4-408
+PSHUFB = 打包随机播放字节 . . . . .4-412
+PSHUFD _随机包装双字 . . . .4-416
+PSHUFHW _随机包装高字. . . .4-420
+PSHUFLW _随机包装低字 . . . .4-423
+PSHUFW _随机包装的单词 . . . .4-426
+PSIGNB/PSIGNW/PSIGND = 包装符号 . . . .4-427
+PSLLDQ_移位双四字左逻辑 . . . .4-431
+PSLLW/PSLLD/PSLLQ_移位打包数据左逻辑 . . .4-433
+PSRAW/PSRAD/PSRAQ_移位打包数据正确算术 . . .4-445
+PSRLDQ_移位双四字右逻辑 . . .4-455
+PSRLW/PSRLD/PSRLQ_移位打包数据正确逻辑 . . .4-457
+PSUBB/PSUBW/PSUBD_减去包装整数 . . .4-469
+PSUBQ _减去包装四字整数 . . . .4-476
+PSUBSB/PSUBSW _减去带符号饱和度的打包有符号整数. .4-479
+PSUBUSB/PSUBUSW =减去带无符号饱和度的打包无符号整数。 .4-483
+PTEST-逻辑比较 . . . . .4-487
+PTWRITE - 将数据写入处理器跟踪数据包 . . . .4-489
+PUNPCKHBW/PUNPCKHWD/PUNPCKHDQ/PUNPCKHQQ_解压高数据. .4-491
+PUNPCKLBW/PUNPCKLWD/PUNPCKLDQ/PUNPCKLQQ_解压缩低数据. .4-501
+PUSH_将单词、双字或四字字推到堆栈上. . .4-511
+PUSHA/PUSHAD_推送所有通用寄存器. . .4-514
+PUSHF/PUSHFD/PUSHFQ_将电子标志寄存器推送到堆栈 . . .4-516
+PXOR_逻辑独占或 . . . . . .4-518
+RCL/RCR/ROL/ROR_旋转 . . . .4-521
+RCPPS_压缩单精度浮点值的计算倒数。 .4-526
+RCPSS_Scalar 单精度浮点值的计算倒数 。 .4-528
+RDFSBASE/RDGSBASE_读取 FS/GS 分段库 . . .4-530
+RDMSR_从模型特定寄存器读取. . . . .4-532
+RDPID_读取处理器 ID . . . . .4-534
+RDPKRU_用户页面的读取保护密钥权限 . . .4-535
+RDPMC_读取性能监控计数器 . . .4-537
+RDRAND_读取随机数. . . . .4-539
+RDSEED_读取随机种子 . . . . .4-541
+RDTSC_读取时间戳计数器 . . . .4-543
+RDTSCP_读取时间戳计数器和处理器 ID . . .4-545
+REP/REPE/REPZ/REPNE/REPNZ_重复字符串操作前缀 . . .4-547
+RET_从程序返回 . . . . .4-551
+RORX = 向右旋转逻辑，不影响标志 . . .4-561
+ROUNDPD = 圆形包装双精度浮点值 . . .4-562
+ROUNDPS = 圆形包装单精度浮点值 . . .4-565
+ROUNDSD = 圆形标量双精度浮点值 . . .4-568
+ROUNDSS = 圆形标量单精度浮点值 . . .4-570
+RSM_从系统管理模式恢复 . . .4-572
+RSQRTPS_压缩单精度浮点值的平方根的计算倒数值 .4-574
+RSQRTSS_Scalar单精度浮点值平方根的计算倒数。.4-576
+SAHF_将 AH 存储到标志中 . . . . . .4-578
+SAL/SAR/SHL/SHR_Shift . . . .4-580
+SARX/SHLX/SHRX = 移位不会影响标志 . . .4-585
+SBB_包含借入的整数减法. . . .4-587
+SCAS/SCASB/SCASW/SCASD_扫描字符串 . . .4-590
+SETcc _在条件设置字节 . . . . . .4-594
+SFENCE_商店围栏. . . . . . .4-597
+SGDT_存储全局描述符表寄存器 . . . .4-598
+SHA1RNDS4=执行四轮 SHA1 操作 . . .4-600
+SHA1NEXTE =在四轮后计算SHA1状态变量E. .4-602
+SHA1MSG1_对接下来的四个 SHA1 消息 Dwords 执行中间计算。.4-603
+SHA1MSG2_对接下来的四个 SHA1 消息字词执行最终计算。 .4-604
+SHA256RNDS2_执行两轮 SHA256 操作 . . .4-605
+SHA256MSG1_对下一个四个 SHA256 消息 Dwords .4-607 执行中间计算
+SHA256MSG2_对接下来的四个SHA256消息字词执行最终计算。.4-608
+SHLD_双精度向左移位 . . . . .4-609
+SHRD_双精度向右移位. . . . .4-612
+SHUFPD_双精度浮点值对的打包交错随机播放。.4-615
+SHUFPS =单精度浮点值四重点的打包交错随机播放。 .4-620
+SIDT_存储中断描述符表寄存器. . .4-624
+SLDT_存储本地描述符表寄存器 . . . .4-626
+SMSW_存储计算机状态字. . . . .4-628
+SQRTPD_双精度浮点值的平方根。 .4-630
+SQRTPS_单精度浮点值的平方根。 .4-633
+SQRTSD_Scalar双精度浮点值的计算平方根。 .4-636
+SQRTSS_Scalar 单精度值的计算平方根 . .4-638
+STAC_在电子信号寄存器中设置交流标志. . . .4-640
+STC_Set 携带标志 . . . . . . .4-641
+STD_设置方向标志 . . . . . .4-642
+STI_Set 中断标志 . . . . . .4-643
+STMXCSR_存储 MXCSR 注册状态 . . . .4-645
+STOS/STOSB/STOSW/STOSD/STOSQ_存储字符串 . . .4-646
+STR_存储任务寄存器 . . . . .4-650
+SUB_减法 . . . . . .4-652
+SUBPD _减去打包的双精度浮点值. . .4-654
+SUBPS_减去打包的单精度浮点值. . .4-657
+SUBSD _减去标量双精度浮点值. . .4-660
+SUBSS_减去标量单精度浮点值 . . .4-662
+SWAPGS_交换GS基础寄存器 . . . . .4-664
+SYSCALL_快速系统呼叫 . . . . . .4-666
+SYSENTER 系统呼叫速度...4-668
+SYSEXIT_快速从快速系统呼叫返回...4-671
+SYSRET_从快速系统调用返回. . . . .4-674
+TEST_逻辑比较 . . . . .4-677
+TPAUSE _时间暂停 . . . . .4-679
+TZCNT = 计算尾随零位的数量. . . .4-681
+UCOMISD_无序比较Scalar双精度浮点值和设置EFLAGS 。.4-683
+UCOMIS_无序比较Scalar单精度浮点值和设置EFLAGS 。.4-685
+UD =未定义指令 . . . . .4-687
+UMONITOR_用户级别设置监视器地址 . . . .4-688
+UMWAIT_用户级监视器等待 . . . .4-690
+UNPCKHPD 解包和交错高包装双精度浮点值。.4-692
+UNPCKHPS_解包和交错高包装单精度浮点值。.4-696
+UNPCKLPD_解包和交错低包装双精度浮点值. .4-700
+UNPCKLPS_解包和交错低包装单精度浮点值。.4-704
+
+第 5 章
+指令设置参考，V-Z
+5.1 三元位矢量逻辑表 . . . . .5-1
+5.2 说明 （V-Z） . . . . . .5-4
+VALIGND/VALIGNQ=对齐双字/四字矢量. . .5-5
+VBLENDMPD/VBLENDMPS_混合浮动64/Float32矢量使用面法蒙控。.5-9
+VBROADCAST _加载与广播浮点数据 . . . .5-12
+VCOMPRESSPD — 将稀疏打包的双精度浮点值存储到密集内存中。.5-20
+VCOMPRESSPS_将稀疏打包的单精度浮点值存储到密集内存中。 .5-22
+VCVTPD2QQ_将打包的双精度浮点值转换为打包的四字整数。5-24
+VCVTPD2UDQ= 将打包的双精度浮点值转换为打包的无符号双字整数。5-27
+VCVTPD2UQQ_将打包的双精度浮点值转换为打包的无符号四字整数。5-30
+VCVTPH2PS_将 16 位 FP 值转换为单精度 FP 值 . .5-33
+VCVTPS2PH_将单精度FP值转换为16位FP值. .5-36
+VCVTPS2UDQ _将打包的单精度浮点值转换为打包的未签名双字整数值 . . . . .5-40
+VCVTPS2QQ_将打包的单精度浮点值转换为打包的单字整数值。5-43
+VCVTPS2UQQ _将打包的单精度浮点值转换为打包的无符号四字整数值 . . . . .5-46
+VCVTQQ2PD_将包装四字整数转换为打包的双精度浮点值。5-49
+VCVTQQ2PS_将打包的四字整数转换为打包的单精度浮点值。5-51
+VCVTSD2USI_将标量双精度浮点值转换为无符号双字整数。5-53
+VCVTSS2USI_将Scalar单精度浮点值转换为无符号双字整数。5-54
+VCVTTPD2QQ _使用截断打包的双精度浮点值转换为打包的四字整数. . . . . .5-56
+VCVTTPD2UDQ _使用截断打包双精度浮点值转换为打包的无符号双字整数 . . . .5-58
+VCVTTPD2UQQ _使用截断打包双精度浮点值转换为打包的无符号四字整数 . . . .5-61
+VCVTTPS2UDQ _使用截断打包的单精度浮点值转换为打包的无符号双字整数值 . . . .5-63
+VCVTTPS2QQ _使用截断打包单精度浮点值转换为打包单字整数值. . . . .5-65
+VCVTTPS2UQQ _使用截断打包单精度浮点值转换为打包的无符号四字整数值 . . . .5-67
+VCVTTSD2USI_使用截断标量双精度浮点值转换为无符号整数。5-69
+VCVTTSS2USI_使用截断标量单精度浮点值转换为无符号整数。5-70
+VCVTUDQ2PD_将打包的无符号双字整数转换为打包的双精度浮点值。5-72
+VCVTUDQ2PS_将打包的无符号双字整数转换为打包的单精度浮点值。5-74
+VCVTUQQ2PD_将打包的无符号四字整数转换为打包的双精度浮点值。5-76
+VCVTUQQ2PS_将打包的无符号四字整数转换为打包的单精度浮点值。5-78
+VCVTUSI2SD_将未带符号的整数转换为Scalar双精度浮点值。.5-80
+VCVTUSI2SS_将未带符号的整数转换为Scalar单精度浮点值。 .5-82
+VDBPSADBW_双块打包和绝对差异（SAD）上的未签名字节。.5-84
+VEXPANDPD_从密集内存加载稀疏打包的双精度浮点值。.5-88
+VEXPANDPS_从密集内存加载稀疏打包的单精度浮点值。.5-90
+VERR/VERW=验证用于阅读或写作的段 . . .5-92
+VEXTRACTF128/VEXTRACTF32x4/VEXTRACTF64x2/VEXTRACTF32x8/VEXTRACTF64x4_提取包装浮点值. . .5-94
+VEXTRACTI128/VEXTRACTI32x4/VEXTRACTI64x2/VEXTRACTI32x8/VEXTRACTI64x4_提取包装整数值 . . . .5-100
+VFIXUPIMMPD_修复特殊包装浮动64值. . .5-106
+VFIXUPIMMPS_修复特殊包装浮动32值 . . .5-110
+VFIXUPIMMSD_修复特殊的标量浮64值 . . .5-114
+VFIXUPIMMSS_修复特殊的标卡尔浮动32值 . . .5-117
+VFMADD132PD/VFMADD213PD/VFMADD231PD_熔融倍增包装双精度浮点值. . . .5-120
+VFMADD132PS/VFMADD213PS/VFMADD231PS_熔融乘法-包装单精度浮点值. . . .5-127
+VFMADD132SD/VFMADD213SD/VFMADD231SD_熔融倍增-扩展标卡尔双精度浮点值 . . . . .5-134
+VFMADD132SS/VFMADD213SS/VFMADD231SS_熔融倍增标单精度浮点值. . . . .5-137
+VFMADDSUB132PD/VFMADDSUB213PD/VFMADDSUB231PD_熔融乘法加/减装双精度浮点值. . . .5-140
+VFMADDSUB132PS/VFMADDSUB213PS/VFMADDSUB231PS_熔融乘法加/减装单精度浮点值. . . .5-150
+VFMSUBADD132PD/VFMSUBADD213PD/VFMSUBADD231PD_熔融乘法-交替减法/加装双精度浮点值. . .5-159
+VFMSUBADD132PS/VFMSUBADD213PS/VFMSUBADD231PS_熔融乘法-交替减法/加装单精度浮点值. . .5-169
+VFMSUB132PD/VFMSUB213PD/VFMSUB231PD_熔融乘法-减去打包的双精度浮点值. . . . .5-179
+VFMSUB132PS/VFMSUB213PS/VFMSUB231PS_熔融乘法-减去打包的单精度浮点值. . . . .5-186
+VFMSUB132SD/VFMSUB213SD/VFMSUB231SD_Scalar双精度浮点值的熔融乘法-减法。 . . . .5-193
+VFMSUB132SS/VFMSUB213SS/VFMSUB231SS_Scalar单精度浮点值的熔融乘法-减法. . . . .5-196
+VFNMADD132PD/VFNMADD213PD/VFNMADD231PD_熔融负乘法-包装双精度浮点值. . . .5-199
+VFNMADD132PS/VFNMADD213PS/VFNMADD231PS_熔融负乘-加装单精度浮点值. . . .5-206
+VFNMADD132SD/VFNMADD213SD/VFNMADD231SD_熔融负乘法-Scalar双精度浮点值. . . .5-212
+VFNMADD132SS/VFNMADD213SS/VFNMADD231SS_熔融负乘法-Scalar单精度浮点值. . . .5-215
+VFNMSUB132PD/VFNMSUB213PD/VFNMSUB231PD_熔融负乘法-压缩双精度浮点值. . . .5-218
+VFNMSUB132PS/VFNMSUB213PS/VFNMSUB231PS_熔融负乘-减装单精度浮点值. . . .5-224
+VFNMSUB132SD/VFNMSUB213SD/VFNMSUB231SD_Scalar双精度浮点值的熔融负乘法-减法. . . .5-230
+VFNMSUB132SS/VFNMSUB213SS/VFNMSUB231SS_Scalar单精度浮点值的熔融负乘法-减法. . . .5-233
+VFPCLASSPD_测试打包浮子的类型64 值 . . .5-236
+VFPCLASSPS_测试打包浮子32值的类型 . . .5-239
+VFPCLASSSD_测试Scalar浮子64值的类型. . .5-241
+VFPCLASSSS_测试Scalar浮子32值的类型. . .5-243
+VGATHERDPD/VGATHERQPD – 使用带符号的Dword/Qword指数收集打包的DP FP值。.5-245
+VGATHERDPS/VGATHERQPS – 使用带符号的Dword/Qword索引收集打包的SP FP值。 .5-250
+VGATHERDPS/VGATHERDPD_收集包装单，包装双与签名的Dword 。.5-255
+VGATHERQPS/VGATHERQPD_收集打包的单，包装双与签名Qword索引。.5-258
+VGETEXPPD_将打包的 DP FP 值的指数转换为 DP FP 值 . .5-261
+VGETEXPPS_将打包的 SP FP 值的指数转换为 SP FP 值 . .5-264
+VGETEXPSD _将 Scalar DP FP 值的指数转换为 DP FP 值 . .5-268
+VGETEXPSS_将Scalar SP FP值的指数转换为SP FP值. . .5-270
+VGETMANTPD_从浮法64矢量中提取标准化的曼蒂萨浮法64矢量。.5-272
+VGETMANTPS_从浮法32矢量中提取标准化的曼蒂萨的浮法32矢量。.5-276
+VGETMANTSD _从 Float64 Scalar 中提取标准化的 Mantisss64 . .5-279
+VGETMANTSS_从浮法32矢量中提取标准化的Mantissa的浮法32矢量。.5-281
+VINSERTF128/VINSERTF32x4/VINSERTF64x2/VINSERTF32x8/VINSERTF64x4_插入包装浮点值 . . . .5-283
+VINSERTI128/VINSERTI32x4/VININI64x2/VININI32x8/VININI64x4_插入封装整数值 .5-287
+VMASKMOV_条件SIMD包装负载和存储 . . .5-291
+VPBLENDD = 混合包装的字词 . . . . .5-294
+VPBLENDMB/VPBLENDMW_使用操作框控件混合字节/字矢量。 .5-296
+VPBLENDMD/VPBLENDMQ_使用面膜控件混合Int32/Int64矢量。.5-298
+VPBROADCASTB/W/D/Q_加载与广播整数数据从通用寄存器。.5-301
+VPBROADCAST_加载整数和广播 . . . .5-304
+VPATOM_广播掩码到矢量寄存器 . . .5-313
+VPCMPB/VPCMPUB_将打包的字节值比较到掩码 . . .5-315
+VPCMPD/VPCMPUD_将打包的整数值比较到掩码 . . .5-318
+VPCMPQ/VPCMPUQ_将打包的整数值比较到掩码 . . .5-321
+VPCMPW/VPCMPUW_将打包的字值比较到掩码 . . .5-324
+VPCOMPRESSD_将稀疏打包的双字整数值存储到密集内存/寄存器 中。.5-327
+VPCOMPRESSQ_将稀疏打包的四字整数值存储到密集内存/寄存器 中。.5-329
+VPROCKD/Q=检测打包的Dword/Qword值的矢量内的冲突到密集内存/寄存器中。5-331
+VPERM2F128 = Permute 浮点值 . . .5-334
+VPERM2I128 = Permute 整数值 . . . . .5-336
+VPERMB_Permute 打包字节元素 . . . .5-338
+VPERMD/VPERMW_permute打包双字/单词元素 . .5-340
+VPERMI2B = 两个表对字节的完全写入覆盖索引. .5-343
+VPERMI2W/D/Q/PS/PD_来自两个表的完全Permute覆盖索引. .5-345
+VPERMILPD_双精度浮点值对的Permute内带。 .5-351
+VPERMILPS_单精度浮点值四重的Permute内线。 .5-356
+VPERMPD_Permute 双精度浮点元件 . . .5-361
+VPERMPS_Permute 单精度浮点元件 . . .5-364
+VPERMQ_Qwords 元素排列. . . . .5-367
+VPERMT2B = 两个表中的字节完全覆盖覆盖表 . . .5-370
+VPERMT2W/D/Q/PS/PD_两个表的完全Permute覆盖一个表. .5-372
+VPEXPANDD_加载稀疏打包双字整数值从密集内存/寄存器 。.5-377
+VPEXPANDQ_从密集内存/寄存器加载稀疏打包四字整数值。.5-379
+VPGATHERDD/VPGATHERQD – 使用带符号的Dword/Qword指数收集打包的Dword值。5-381
+VPGATHERDD/VPGATHERDQ_收集包装的Dword，包装Qword与签名的Dword索引。.5-385
+VPGATHERDQ/VPGATHERQQ – 使用带符号的Dword/Qword索引收集打包的Qword值。.5-388
+VPGATHERQD/VPGATHERQQ_收集包装的Dword，包装Qword与签名Qword索引。.5-392
+VPLZCNTD/Q=计算打包 Dword 的前导零位数，打包 Qword 值 .5-395
+VPMADD52HUQ _ 无符号 52 位无符号整数的打包倍数，并将高 52 位产品添加到 64 位累加器 . . . .5-398
+VPMADD52LUQ _ 无符号 52 位整数的打包乘数，并将低 52 位产品添加到 Qword 累量累积器中. . . .5-400
+VPMASKMOV = 条件 SIMD 整数包装负载和存储 . .5-402
+VPMOVB2M/VPMOVW2M/VPMOVD2M/VPMOVQ2M_将矢量寄存器转换为掩码。.5-405
+VPMOVDB/VPMOVSDB/VPMOVUSDB_Down 将DWord转换为字节 . . .5-408
+VPMOVDW/VPMOVSDW/VPMOVUSDW_Down 将DWord转换为Word . .5-412
+VPMOVM2B/VPMOVM2W/VPMOVM2D/VPMOVM2Q_将掩码寄存器转换为矢量寄存器。5-416
+VPMOVQB/VPMOVSQB/VPMOVUSQB_向下转换QWord字节 . . .5-419
+VPMOVQD/VPMOVSQD/VPMOVUSQD_Down 将 QWord 转换为 DWord . .5-423
+VPMOVQW/VPMOVSQW/VPMOVUSQW_Down 将QWord转换为Word . .5-427
+VPMOVWB/VPMOVSWB/VPMOVUSWB_Down 将Word转换为字节 . . .5-431
+VPMULTISHIFTQB – 从四字源中选择打包未对齐字节 . . .5-435
+VPROLD/VPROLVD/VPROLQ/VPROLVQ_位向左旋转 . . .5-437
+VPRORD/VPRORVD/VPRORQ/VPRORVQ_位向右旋转. . .5-442
+VPSCATTERDD/VPSCATTERDQ/VPSCATTERQD/VPSCATTERQQ_散点包装的Dword，带符号Dword的打包Qword，签名的Qword索引. . .5-447
+VPSLLVW/VPSLLVD/VPSLLVQ_可变位移位左逻辑 . . .5-451
+VPSRAVW/VPSRAVD/VPSRAVQ_可变位移位右算术 . . .5-456
+VPSRLVW/VPSRLVD/VPSRLVQ_可变位移位右逻辑 . . .5-461
+VPTERNLOGD/VPTERNLOGQ_位位三元逻辑. . .5-466
+VPTESTMB/VPTESTMW/VPTESTMD/VPTESTMQ_逻辑和设置掩码 . .5-469
+VPTESTNMB/W/D/Q_逻辑 NAND 和设置 . . .5-472
+VRANGEPD_范围限制计算为浮动64值的打包对 . . .5-476
+VRANGEPS_范围限制计算为浮动32值的打包对. . .5-481
+VRANGED_范围限制计算从一对Scalar浮64值 . . .5-485
+VRANGESS_范围限制计算从一对Scalar浮法32值 . . .5-488
+VRCP14PD_计算打包浮子值的近似倒数值. .5-491
+VRCP14SD=计算Scalar浮子64值的近似倒数值. .5-493
+VRCP14PS_计算打包浮点32值的近似倒数值. .5-495
+VRCP14SS_计算Scalar浮子32值的近似倒数值. .5-497
+VREDUCEPD_对包装的浮子64值执行还原变换. .5-499
+VSSD _对 Scalar Float64 值执行缩减变换 . .5-502
+VREDUCEPS_对包装的浮点32值执行还原变换. . .5-504
+VREDUCESS _对 Scalar Float32 值执行缩减变换 . .5-506
+VRNDSCALEPD_圆形包装浮64值，以包括给定的分数位数。.5-508
+VRNDSCALESD_圆形标量浮64值，以包括给定分数位数。.5-512
+VRNDSCALEPS_圆形包装浮法32值，以包括给定的分数位数。.5-514
+VRNDSCALESS_圆形Scalar浮法32值，以包括给定分数位数。 .5-517
+VRSQRT14PD_计算包装浮下64个值的平方根的近似倒数。 .5-519
+VRSQRT14SD_计算Scalar浮法64值平方根的近似倒数。.5-521
+VRSQRT14PS_计算包装浮下32个值的平方根的近似倒数。.5-523
+VRSQRT14SS_计算Scalar浮法32值平方根的近似倒数。.5-525
+VSCALEFPD_缩放打包浮动64值与浮64值. .5-527
+VSCALEFSD_缩放 Scalar Float64 值与 Float64 值 . . .5-530
+VSCALEFPS_缩放打包的浮点32值与浮点32值. .5-532
+VSCALEFSS_缩放Scalar浮动32值与浮子32值 . . .5-535
+VSCATTERDPS/VSCATTERDPD/VSCATTERQPS/VSCATTERQPD_散散包装单，包装双与签名的Dword和Qword索引 . . .5-537
+VSHUFF32x4/VSHUFF64x2/VSHUFI32x4/VSHUFI64x2_128 位粒度下随机排列包装值。.5-541
+VTESTPD/VTESTPS_包装位测试 . . . .5-546
+VZEROALL_零所有YMM寄存器 . . . . .5-549
+VZEROUPPER_YMM 寄存器的零上位. . . .5-550
+WAIT/FWAIT 等待 .... . .5-551
+WBINVD_写回和无效缓存 . . . . .5-552
+WRFSBASE/WRGSBASE_写入FS/GS分段基础. .5-554
+WRMSR_写入模型特定寄存器. . . .5-556
+WRPKRU_将数据写入用户页面密钥寄存器 . . .5-558
+XACQUIRE/XRELEASE_硬件锁定前缀提示 . . .5-559
+XABORT = 事务中止 . . . . .5-563
+XADD_交换和添加 . . . . .5-565
+XBEGIN = 事务开始 . . . . .5-567
+XCHG_交换寄存器/内存与寄存器 . . . .5-570
+XEND = 事务结束 . . . . . .5-572
+XGETBV_获取扩展控制寄存器的值. . . .5-574
+XLAT/XLATB_表查找翻译 . . . .5-576
+XOR_逻辑独占或 . . . . . .5-578
+XORPD_按位逻辑 XOR 的打包双精度浮点值 . . .5-580
+XORPS_按位逻辑 XOR 的打包单精度浮点值 . . .5-583
+XRSTOR_恢复处理器扩展状态 . . . .5-586
+XRSTORS_恢复处理器扩展状态监控器 . . .5-591
+XSAVE_保存处理器扩展状态. . . . .5-595
+XSAVEC _保存处理器扩展状态与压缩 . . .5-598
+XSAVEOPT_保存处理器扩展状态优化 . . .5-601
+XSAVE_保存处理器扩展状态监控器. . .5-604
+XSETBV_设置扩展控制寄存器. . . . .5-607
+XTEST = 测试是否处于事务执行中 . . . .5-609
+第 6 章
+SAFER 模式扩展参考
+6.1 概述 . . . . . . .6-1
+6.2 SMX 功能 . . . . . .6-1
+6.2.1 检测和启用 SMX . . . . . .6-1
+6.2.2 SMX 指令摘要 . . . . .6-2
+6.2.2.1 GETSEC [功能] . . . . . . .6-3
+6.2.2.2 GETSEC[ENTERACCS] . . . . .6-3
+6.2.2.3 GETSEC [EXITAC] . . . .6-3
+6.2.2.4 GETSEC[服务] . . . . .6-4
+6.2.2.5 GETSEC[SEXIT] . . . .6-4
+6.2.2.6 GETSEC[参数] . . . . .6-4
+6.2.2.7 GETSEC[SMCTRL] . . . . . .6-4
+6.2.2.8 GETSEC[唤醒] . . . . .6-4
+6.2.3 测量环境和 SMX . . . . .6-5
+6.3 GETSEC 叶函数 . . . . . . .6-5
+GETSEC[功能] - 报告 SMX 功能 . . .6-7
+GETSEC [ENTERACCS] - 执行经过身份验证的芯片组代码 . . .6-10
+GETSEC_EXITAC__退出已验证的代码执行模式 . . .6-18
+GETSEC_SENTER_输入测量环境 . . . .6-21
+GETSEC_SEXIT_退出测量环境 . . . .6-30
+GETSEC_参数_=报告SMX参数. . .6-33
+GETSEC_SMCTRL_SMX 模式控制 . . . .6-37
+GETSEC_WAKEUP__唤醒在测量环境中的睡眠处理器. .6-40
+第七章
+指导设置参考英特尔 XEon PHI 处理器
+PREFETCHWT1_预取矢量数据到缓存中，意图写入和T1提示。.6-2
+V4FMADDPS/V4FNMADDPS = 包装单精度浮点熔融倍增（4次迭代） .6-4
+V4FMADDSS/V4FNMADDSS =Scalar 单精度浮点熔融倍增（4 次迭代） .6-6
+VEXP2PD — 小于 2^-23 相对误差的封装双精度浮点值的指数 2_x 的近似值. . . .6-8
+VEXP2PS_近似于小于2^-23相对误差的包装单精度浮点值的指数2+x。 . .6-10
+VGATHERPF0DPS/VGATHERPF0QPS/VGATHERPF0DPD/VGATHERPF0QPD_稀疏预取打包SP/DP数据值，带带符号的Dword，使用T0提示签名Qword索引. .6-12
+VGATHERPF1DPS/VGATHERPF1QPS/VGATHERPF1DPD/VGATHERPF1QPD_稀疏预取打包SP/DP数据值，带带符号的Dword，使用T1提示签名的Qword索引. .6-14
+VP4DPWSSDS = 带有 Dword 累积和饱和度的带符号单词的点积（4 次迭代）。6-16
+VP4DPWSSD = 带有 Dword 累积的带签名单词的点积（4 次迭代）。.6-18
+VRCP28PD = 小于 2^-28 相对误差的打包双精度浮点值的近似值 . . . .6-20
+VRCP28SD = 与Scalar双精度浮点值的近似值小于2~-28相对误差. . . . .6-22
+VRCP28PS=近似于小于2^-28相对误差的打包单精度浮点值的倒数。 . .6-24
+VRCP28SS_近似于小于2^-28相对误差的Scalar单精度浮点值的倒数值. . .6-26
+VRSQRT28PD _ 封装双精度浮点值的倒数平方根的近似值小于 2*-28 相对误差 . . . . .6-28
+VRSQRT28SD = 以小于 2^-28 相对误差的Scalar双精度浮点值的倒数平方根的近似值. .6-30
+VRSQRT28PS_近似于小于2^-28相对误差的包装单精度浮点值的倒数平方根。 .6-32
+VRSQRT28SS_近似于Scalar单精度浮点值的倒数平方根，相对误差小于2^-28 . . .6-34
+VSCATTERPF0DPS/VSCATTERPF0QPS/VSCATTERPF0DPD/VSCATTERPF0QPD_稀疏预取打包SP/DP数据值，带带符号的Dword，使用T0提示签名Qword索引，意图写入。.6-36
+VSCATTERPF1DPS/VSCATTERPF1QPS/VSCATTERPF1DPD/VSCATTERPF1QPD_稀疏预取打包SP/DP数据值，带有带符号的Dword，使用T1提示签名Qword索引，意图写入。.6-38
